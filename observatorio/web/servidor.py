@@ -108,13 +108,15 @@ def _validar_origens_cors(origens_admin) -> frozenset[str]:
     return frozenset(validadas)
 
 
-def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, origens_admin=()):
+def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, origens_admin=(), *, modo_producao: bool = False):
     caminho_banco, acervo = pasta_dados / "observatorio.sqlite3", Acervo(pasta_dados / "acervo")
     caminho_snapshot_publico = pasta_dados / indicadores.ARQUIVO_SNAPSHOT_PUBLICO
     _cache_snapshot_publico: dict[str, object] = {"mtime_ns": None, "snap": None}
     contas = Contas(pasta_dados / "contas.sqlite3")
     origens = _validar_origens_cors(origens_admin)
     token_legado = (token_gerencia or "").strip()
+    # A-10: em produção a interface legada /estatico/ não é servida (404); o painel oficial é só /painel/.
+    estatico_legado = not (modo_producao or os.environ.get("GEDIV_MODO_PRODUCAO") == "1")
 
     class Manipulador(BaseHTTPRequestHandler):
         server_version = "PainelGEDIV"
@@ -377,6 +379,8 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
                 return self._arquivo("index.html", UNIFICADO)
             if rota.startswith("/painel/"):
                 return self._arquivo(rota[len("/painel/"):], UNIFICADO)
+            if (rota == "/estatico" or rota.startswith("/estatico/")) and not estatico_legado:
+                raise Erro(404, "rota inexistente")
             if rota in ("/estatico", "/estatico/"):
                 return self._arquivo("index.html", ESTATICO)
             if rota.startswith("/estatico/"):
@@ -745,6 +749,7 @@ def criar_servidor(pasta_dados: str | Path, token_gerencia: str | None = None, e
         if len(token_gerencia) < min_len:
             raise ValueError(f"a credencial da gerência precisa de pelo menos {min_len} caracteres")
     Banco(Path(pasta_dados) / "observatorio.sqlite3").fechar()        # cria ou atualiza o esquema antes de atender
-    servidor = ThreadingHTTPServer((endereco, porta), criar_manipulador(Path(pasta_dados), token_gerencia or "", origens_admin))
+    servidor = ThreadingHTTPServer((endereco, porta), criar_manipulador(Path(pasta_dados), token_gerencia or "", origens_admin,
+                                                                      modo_producao=modo_producao))
     servidor.daemon_threads = True
     return servidor

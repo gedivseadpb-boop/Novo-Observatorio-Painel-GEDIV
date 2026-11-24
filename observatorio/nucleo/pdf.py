@@ -92,6 +92,10 @@ def _paginas(dados: bytes) -> tuple[int | None, str | None]:
         return None, "PYPDF_INDISPONIVEL"
     try:
         leitor = PdfReader(io.BytesIO(dados), strict=False)
+        if leitor.is_encrypted and not leitor.decrypt(""):
+            # Exige senha de usuário: o conteúdo não é público por este endereço. Nada é contornado; o arquivo fica
+            # retido com motivo explícito (caso das cópias da CGE-PB, que servem só como listagem/cobertura).
+            return None, "PDF_PROTEGIDO_POR_SENHA"
         total = len(leitor.pages)
     except Exception as erro:  # qualquer falha estrutural vira diagnóstico, nunca exceção
         return None, f"ESTRUTURA_ILEGIVEL ({type(erro).__name__})"

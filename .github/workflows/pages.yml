@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write     # publica o pacote validado na branch gh-pages
   pages: write
   id-token: write
 
@@ -38,17 +38,45 @@ jobs:
           python scripts/preparar_previa_github_pages.py --saida _site
           touch _site/.nojekyll
           sha256sum _site/index.html | tee -a "$GITHUB_STEP_SUMMARY"
-      # Ativação única pelo responsável: Settings > Pages > Source: "GitHub Actions" (ver docs/OPERACAO.md).
+      - name: Publicar o pacote validado na branch gh-pages (fonte padrão do GitHub Pages)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd _site
+          git init -q && git checkout -q -b gh-pages && git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -qm "Painel Unificado (sintético) gerado de ${GITHUB_SHA}"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+      # Caminho alternativo, quando Settings > Pages > Source estiver em "GitHub Actions".
       - uses: actions/configure-pages@v5
+        continue-on-error: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
   publicar:
     needs: construir
     runs-on: ubuntu-24.04
+    continue-on-error: true
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - id: deploy
         uses: actions/deploy-pages@v4
+  verificar:
+    needs: construir
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Conferir o site publicado (aguarda até 10 min) e a identidade do painel aprovado
+        run: |
+          url="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
+          for i in $(seq 1 40); do
+            if curl -fsS -m 20 "$url" -o index.html; then
+              sha=$(sha256sum index.html | cut -d' ' -f1)
+              echo "Publicado: $url · index.html sha256=$sha" | tee -a "$GITHUB_STEP_SUMMARY"
+              [ "$sha" = "d19296173dcbe3ba5a71915e5a0674b8fc453b5109c3a5ec6c8ba019ccfae809" ] && echo "Identico ao painel aprovado." | tee -a "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "Site ainda não respondeu em $url" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1

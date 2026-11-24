@@ -66,6 +66,24 @@ jobs:
           for t in r.get("tentativas", []):
               print(f"- Download: {t.get('url')} → {t.get('erro') or t.get('integridade')} sha256={t.get('sha256')} páginas={t.get('paginas')}")
           PY
+      - name: Cobertura oficial independente (CGE-PB, só listagem; os PDFs da CGE exigem senha e não são baixados)
+        if: always()
+        run: |
+          set +e
+          python -m observatorio.operacao coletar-intervalo --fonte cge --dry-run \
+            --inicio "$(date -d '3 days ago' +%F)" --fim "$(date +%F)" --dados "$RUNNER_TEMP/cobertura-cge" > cobertura-cge.json
+          echo "codigo=$?"
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          r = json.load(open("cobertura-cge.json", encoding="utf-8"))
+          p = r["fontes"]["cge"]
+          print("## Cobertura oficial independente (CGE-PB)")
+          print(f"- robots.txt: {p.get('robots')}")
+          for v in p.get("varreduras", []):
+              print(f"- Listagem {v.get('mes')}/{v.get('ano')}: {v.get('listadas')} edições" + (f" · erro: {v['erro']}" if v.get("erro") else ""))
+          for d in (p.get("downloads") or {}).get("previstas", []):
+              print(f"- Edição do período: {d.get('data')}")
+          PY
       - name: Rotina completa (somente com diretório de dados persistente e privado)
         if: env.GEDIV_DADOS_DIR != '' && steps.sonda.outputs.codigo == '0'
         run: |
@@ -76,7 +94,9 @@ jobs:
         if: always()
         with:
           name: sonda-doe-${{ github.run_id }}
-          path: sonda-doe.json
+          path: |
+            sonda-doe.json
+            cobertura-cge.json
           retention-days: 30
       - name: Resultado (vermelho = fonte oficial não alcançada; o GitHub avisa por e-mail)
         if: steps.sonda.outputs.codigo != '0'

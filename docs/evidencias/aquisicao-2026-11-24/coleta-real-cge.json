@@ -1,0 +1,12 @@
+{
+ "o_que_e": "Coleta oficial real executada pelo coletor do Observatório (transporte direto, robots.txt respeitado) contra a fonte oficial auxiliar CGE-PB, a partir da nuvem do Claude Code, em 24/11/2026.",
+ "comando": "python -m observatorio.operacao coletar-intervalo --fonte cge --inicio 2026-11-20 --fim 2026-11-24",
+ "robots_txt": "LIDO — 'User-agent: * / Allow: /' (só robôs de treinamento de IA são vetados; o coletor se identifica como ObservatorioGEDIV)",
+ "listagem_novembro_2026": {"situacao": "VALIDA", "edicoes_listadas": 14, "ultima_edicao": "2026-11-24"},
+ "downloads": [
+  {"data": "2026-11-20", "status_http": 200, "bytes": 2785527, "content_length_confere": true, "sha256": "30f97239acfb2c55955b6e86f1ee121cea33707c6333e16720fcc2ca35c6c794", "resultado": "QUARENTENA", "motivo": "PDF_PROTEGIDO_POR_SENHA"},
+  {"data": "2026-11-24", "status_http": 200, "bytes": 1609950, "content_length_confere": true, "sha256": "70f8c336d35ff6cc33fb384ca7f7e66a8d900dc90ac603d53b399d9b2d118a17", "resultado": "QUARENTENA", "motivo": "PDF_PROTEGIDO_POR_SENHA"}
+ ],
+ "comparacao_com_a_uniao": {"edicao": "2026-11-07", "sha256_cge": "bedf9330811e82c85884103b18fd0f852b1566168d5dc7488a6f941bfdbd3508", "sha256_a_uniao_manifesto": "8bac8dad7d7e18f9fd2f1848c45ad1b6b8ac07cc05de0a79a2d24496cffb9fd1", "identicos": false, "observacao": "as cópias da CGE são arquivos distintos e exigem senha de usuário (AES-128, R4); nenhuma tentativa de contornar a proteção foi feita"},
+ "conclusao": "A CGE-PB é alcançável da nuvem e serve como LISTAGEM OFICIAL INDEPENDENTE (cobertura diária: quais edições existem). O CONTEÚDO dos PDFs só é público pela A União, que recusa conexões vindas da nuvem (B-01)."
+}

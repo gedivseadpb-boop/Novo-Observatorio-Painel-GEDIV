@@ -1,6 +1,7 @@
 name: Painel no GitHub Pages
 
-# Publica o Painel Unificado (Delicadeza Visual) como prévia pública estática com dados 100% SINTÉTICOS.
+# Publica o Painel Unificado (Delicadeza Visual) como prévia pública estática com dados 100% SINTÉTICOS,
+# em https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/ (Pages servido pela branch gh-pages).
 # O pacote é gerado a partir do próprio código do repositório e validado (sem PII, sem credenciais,
 # paleta de 240 cores) antes de qualquer envio. Dados reais nunca são publicados por este workflow.
 on:
@@ -16,7 +17,6 @@ on:
 permissions:
   contents: write     # publica o pacote validado na branch gh-pages
   pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -47,26 +47,16 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -qm "Painel Unificado (sintético) gerado de ${GITHUB_SHA}"
           git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
-      # Caminho alternativo, quando Settings > Pages > Source estiver em "GitHub Actions".
-      - uses: actions/configure-pages@v5
-        continue-on-error: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-  publicar:
-    needs: construir
-    runs-on: ubuntu-24.04
-    continue-on-error: true
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
+      - name: Solicitar o build do Pages a partir da branch gh-pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" --silent || echo "Build será disparado pelo próprio push."
   verificar:
     needs: construir
     runs-on: ubuntu-24.04
     steps:
+      - name: Aguardar o build do Pages
+        run: sleep 60
       - name: Conferir o site publicado (aguarda até 10 min) e a identidade do painel aprovado
         run: |
           url="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"

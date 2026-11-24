@@ -84,6 +84,7 @@ jobs:
           for d in (p.get("downloads") or {}).get("previstas", []):
               print(f"- Edição do período: {d.get('data')}")
           PY
+          tail -n 8 "$GITHUB_STEP_SUMMARY"
       - name: Rotina completa (somente com diretório de dados persistente e privado)
         if: env.GEDIV_DADOS_DIR != '' && steps.sonda.outputs.codigo == '0'
         run: |

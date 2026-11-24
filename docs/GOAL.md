@@ -16,10 +16,10 @@ Legenda: ✅ comprovado · 🟡 implementado e testado, aguardando ação instit
 | Segurança (achados F-01…F-11, A-10) | ✅ | C-07…C-13 |
 | Backup cifrado e restauração | ✅ | C-14 |
 | Automação agendada (09h/14h, todos os dias) | 🟡 | C-16: agendada e executando; a coleta real depende de B-01 |
-| **Coleta oficial real automática** | ⛔ | B-01: a fonte recusa as nuvens disponíveis; exige runner na rede institucional |
-| Hospedagem web do painel | 🟡 | B-03: pacote validado no GitHub; falta ativar o Pages (1 clique) |
+| **Coleta oficial real automática** | ⛔ | B-01: a A União recusa as nuvens disponíveis. A listagem oficial independente pela CGE-PB roda diariamente (C-23), mas os PDFs da CGE exigem senha. O conteúdo exige um executor na rede institucional |
+| Hospedagem web do painel | ✅ | C-22: https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/ (verificado, idêntico ao aprovado) |
 | Independência dos repositórios antigos | ✅ | Nenhuma referência de código aos repositórios antigos; o build e os testes usam só este repositório |
-| Exclusão dos repositórios antigos com backups verificados | 🟡 | C-17 e B-06: backups verificados; a exclusão aguarda aprovação específica |
+| Exclusão dos repositórios antigos com backups verificados | 🟡 | C-17 e B-06: backups 7/7 verificados e no Drive; a exclusão aguarda aprovação específica |
 | Homologação normativa GEDIV | ⛔ | B-02 |
 | Piloto de 7 dias e produção | ⛔ | Depende de B-01 e B-08 |
 

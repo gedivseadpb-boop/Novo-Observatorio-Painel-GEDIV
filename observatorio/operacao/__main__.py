@@ -22,6 +22,10 @@
         F-04: promove o candidato a snapshot público, com registro na trilha de auditoria
     python -m observatorio.operacao revogar-snapshot-publico --dados PASTA --responsavel NOME --justificativa TEXTO
         F-04: retira o snapshot público na hora (a API pública passa a responder 503), com auditoria
+    python -m observatorio.operacao backup --dados PASTA --saida PASTA_BACKUPS
+        backup CIFRADO (AES-256-GCM; frase-senha em GEDIV_BACKUP_CHAVE ou GEDIV_BACKUP_CHAVE_ARQUIVO) de banco, contas e acervo
+    python -m observatorio.operacao restaurar --arquivo X.gedivbak --destino PASTA_NOVA
+        restaura só em pasta nova, confere manifesto/SHA-256/integrity_check e encerra as sessões
 
 Aquisição dos PDFs oficiais (Etapa 05):
     python -m observatorio.operacao sonda --fonte auniao [--saida sonda.json]
@@ -60,7 +64,7 @@ from . import fluxo, saida
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="observatorio.operacao", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("comando", choices=["executar", "demonstracao", "publicar-snapshot-publico", "gerar-candidato-snapshot",
-                                        "promover-snapshot-publico", "revogar-snapshot-publico", "validar-real", "ouro", "corpus",
+                                        "promover-snapshot-publico", "revogar-snapshot-publico", "backup", "restaurar", "validar-real", "ouro", "corpus",
                                         "sonda", "coletar-dia", "coletar-intervalo", "cobertura", "reabrir", "liberar-fonte"])
     ap.add_argument("origem", nargs="?")
     ap.add_argument("--dados", default="dados")
@@ -84,6 +88,8 @@ def main(argv=None) -> int:
     ap.add_argument("--reverificar", action="store_true", help="aquisição: consulta de novo publicações já baixadas")
     ap.add_argument("--contingencia", help="aquisição: manifesto JSON de arquivos obtidos por outro meio")
     ap.add_argument("--permitir-longo", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--arquivo", help="restaurar: arquivo .gedivbak")
+    ap.add_argument("--destino", help="restaurar: pasta NOVA de destino")
     ap.add_argument("--gerar", action="store_true", help="promover-snapshot-publico: gera o candidato antes de promover")
     ap.add_argument("--hashes", help="sonda: JSON {url_oficial: sha256} com hashes históricos para comparação")
     ap.add_argument("--guardar", help="sonda: pasta (fora do Git) onde copiar o PDF baixado")
@@ -172,6 +178,22 @@ def main(argv=None) -> int:
     if a.comando == "demonstracao":
         from . import demonstracao
         print(json.dumps(demonstracao.criar(a.dados), ensure_ascii=False, indent=2))
+        return saida.SUCESSO
+    if a.comando in ("backup", "restaurar"):
+        from . import backup
+        try:
+            if a.comando == "backup":
+                r = backup.gerar(a.dados, a.saida or "backups")
+            else:
+                if not a.arquivo or not a.destino:
+                    print(json.dumps({"resultado": "USO", "erro": "informe --arquivo e --destino"}, ensure_ascii=False))
+                    return saida.USO_INCORRETO
+                r = backup.restaurar(a.arquivo, a.destino)
+        except backup.ErroBackup as erro:
+            print(json.dumps({"resultado": "FALHA", "erro": str(erro), "codigo_de_saida": saida.FALHA}, ensure_ascii=False))
+            return saida.FALHA
+        r["codigo_de_saida"] = saida.SUCESSO
+        print(json.dumps(r, ensure_ascii=False, indent=2))
         return saida.SUCESSO
     if a.comando in ("gerar-candidato-snapshot", "promover-snapshot-publico", "revogar-snapshot-publico"):
         from . import snapshot

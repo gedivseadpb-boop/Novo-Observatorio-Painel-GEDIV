@@ -108,6 +108,15 @@ print(f"Backup OK: {dest} ({dest.stat().st_size} bytes, sha256={sha})")
 PY
 find "$BACKUP_DIR" -maxdepth 1 -type f -name 'observatorio-*.sqlite3*' -mtime "+$RETENCAO_DIAS" -delete
 
+# Backup CIFRADO (banco + contas + acervo de PDFs) quando a frase-senha institucional estiver configurada no host
+# (GEDIV_BACKUP_CHAVE_ARQUIVO=/etc/gediv/backup.chave, permissão 600). Restauração: operacao restaurar (pasta nova).
+if [ -n "${GEDIV_BACKUP_CHAVE:-}" ] || [ -n "${GEDIV_BACKUP_CHAVE_ARQUIVO:-}" ]; then
+  "$PYTHON_BIN" -m observatorio.operacao backup --dados "$DADOS_DIR" --saida "$BACKUP_DIR/cifrado"
+  find "$BACKUP_DIR/cifrado" -maxdepth 1 -type f -name 'gediv-*.gedivbak*' -mtime "+$RETENCAO_DIAS" -delete
+else
+  echo "[AVISO] Backup cifrado não configurado (defina GEDIV_BACKUP_CHAVE_ARQUIVO); apenas a cópia SQLite local foi feita."
+fi
+
 echo "[4/6] Verificando integridade e ausência de dados pessoais no frontend aprovado de 29/10..."
 "$PYTHON_BIN" - "$APP_DIR/observatorio/web/unificado/index.html" <<'PY'
 import re, sys

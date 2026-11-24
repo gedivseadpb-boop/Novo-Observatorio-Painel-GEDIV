@@ -38,9 +38,8 @@ jobs:
           python scripts/preparar_previa_github_pages.py --saida _site
           touch _site/.nojekyll
           sha256sum _site/index.html | tee -a "$GITHUB_STEP_SUMMARY"
+      # Ativação única pelo responsável: Settings > Pages > Source: "GitHub Actions" (ver docs/OPERACAO.md).
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

@@ -26,6 +26,7 @@ import os
 import secrets
 import shutil
 import sqlite3
+from contextlib import closing
 import struct
 import tarfile
 import tempfile
@@ -75,9 +76,9 @@ def _sha256_arquivo(caminho: Path) -> str:
 
 
 def _copiar_sqlite(origem: Path, destino: Path) -> None:
-    with sqlite3.connect(origem.resolve().as_uri() + "?mode=ro", uri=True) as src, sqlite3.connect(destino) as dst:
+    with closing(sqlite3.connect(origem.resolve().as_uri() + "?mode=ro", uri=True)) as src, closing(sqlite3.connect(destino)) as dst:
         src.backup(dst)
-    with sqlite3.connect(destino) as chk:
+    with closing(sqlite3.connect(destino)) as chk:
         if chk.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise ErroBackup(f"cópia de {origem.name} reprovada no integrity_check")
 
@@ -94,7 +95,7 @@ def _montar_tar(dados: Path, pasta_tmp: Path) -> tuple[Path, dict]:
     if (dados / "contas.sqlite3").is_file():
         _copiar_sqlite(dados / "contas.sqlite3", preparados / "contas.sqlite3")
         itens["contas.sqlite3"] = _sha256_arquivo(preparados / "contas.sqlite3")
-    with sqlite3.connect(preparados / "observatorio.sqlite3") as con:
+    with closing(sqlite3.connect(preparados / "observatorio.sqlite3")) as con:
         hashes = [r[0] for r in con.execute("SELECT sha256 FROM arquivo ORDER BY sha256")]
     ausentes = []
     tar_caminho = pasta_tmp / "conteudo.tar"
@@ -218,14 +219,15 @@ def restaurar(arquivo: str | Path, destino_dir: str | Path, frase: str | None = 
                 raise ErroBackup(f"item não confere com o manifesto: {relativo}")
         for nome in ("observatorio.sqlite3", "contas.sqlite3"):
             if (extraido / nome).is_file():
-                with sqlite3.connect(extraido / nome) as con:
+                with closing(sqlite3.connect(extraido / nome)) as con:
                     if con.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                         raise ErroBackup(f"{nome} reprovado no integrity_check")
         sessoes_encerradas = 0
         if (extraido / "contas.sqlite3").is_file():
-            with sqlite3.connect(extraido / "contas.sqlite3") as con:
+            with closing(sqlite3.connect(extraido / "contas.sqlite3")) as con:
                 sessoes_encerradas = con.execute("DELETE FROM sessao").rowcount
-        with sqlite3.connect(extraido / "observatorio.sqlite3") as con:
+                con.commit()
+        with closing(sqlite3.connect(extraido / "observatorio.sqlite3")) as con:
             contagens = {t: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
                          for t in ("arquivo", "publicacao", "ato", "decisao", "auditoria")}
         destino.parent.mkdir(parents=True, exist_ok=True)

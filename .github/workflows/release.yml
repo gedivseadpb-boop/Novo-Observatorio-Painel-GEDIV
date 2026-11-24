@@ -1,0 +1,38 @@
+name: Release
+
+# Cria a release no GitHub quando uma tag vN.N.N é enviada. As notas vêm de docs/releases/<tag>.md.
+# Antes de publicar, roda a suíte completa: uma release nunca sai com teste falhando.
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: Portão de qualidade (suíte completa)
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-por
+          python -m pip install -q -r requirements-dev.txt
+          python -m unittest discover -s tests -t .
+      - name: Pacote do painel (sintético) para anexar à release
+        run: |
+          python scripts/preparar_previa_github_pages.py --saida painel-sintetico
+          (cd painel-sintetico && zip -qr ../painel-unificado-sintetico-${GITHUB_REF_NAME}.zip .)
+          sha256sum painel-unificado-sintetico-${GITHUB_REF_NAME}.zip > painel-unificado-sintetico-${GITHUB_REF_NAME}.zip.sha256
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "Observatório GEDIV $GITHUB_REF_NAME" \
+            --notes-file "docs/releases/${GITHUB_REF_NAME}.md" \
+            "painel-unificado-sintetico-${GITHUB_REF_NAME}.zip" "painel-unificado-sintetico-${GITHUB_REF_NAME}.zip.sha256"

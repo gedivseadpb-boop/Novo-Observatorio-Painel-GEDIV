@@ -2,6 +2,7 @@
 import hashlib
 import shutil
 import sqlite3
+from contextlib import closing
 import tempfile
 import unittest
 from pathlib import Path
@@ -13,7 +14,7 @@ FRASE = "frase-senha-de-teste-bem-longa-2026"
 
 
 def contar(caminho, tabela):
-    with sqlite3.connect(caminho) as con:
+    with closing(sqlite3.connect(caminho)) as con:
         return con.execute(f"SELECT COUNT(*) FROM {tabela}").fetchone()[0]
 
 
@@ -54,7 +55,7 @@ class TesteBackupCifrado(unittest.TestCase):
         for tabela in ("arquivo", "publicacao", "ato", "decisao", "auditoria"):
             self.assertEqual(contar(destino / "observatorio.sqlite3", tabela),
                              contar(self.dados / "observatorio.sqlite3", tabela), tabela)
-        with sqlite3.connect(destino / "observatorio.sqlite3") as con:
+        with closing(sqlite3.connect(destino / "observatorio.sqlite3")) as con:
             hashes = [h for (h,) in con.execute("SELECT sha256 FROM arquivo")]
         for sha in hashes:
             pdf = destino / "acervo" / sha[:2] / f"{sha}.pdf"

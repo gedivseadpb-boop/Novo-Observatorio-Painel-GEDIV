@@ -611,6 +611,7 @@ class TesteGruposEAssuntosAmbiguos(unittest.TestCase):
         codigo, expressao, pendencia = C.avaliar_grupo("GRUPO OCUPACIONAL DE APOIO JUDICIARIO GAJ-1700")
         self.assertEqual((codigo, pendencia), ("GAJ", None))
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_tec_adm_e_stf_regras_de_normalizacao_e_recusa_de_ambiguos(self):
         # Etapa 4B: TEC. ADM compatível com cargo administrativo normaliza para AST preservando grupo_expressao;
         # STF sem enquadramento fiscal comprovado ou combinações incompatíveis permanecem sem grupo.

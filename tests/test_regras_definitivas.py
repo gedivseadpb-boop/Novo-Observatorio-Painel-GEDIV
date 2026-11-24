@@ -68,15 +68,19 @@ class TesteGruposDefinitivos(unittest.TestCase):
             with self.subTest(texto=texto):
                 self.assertIsNone(C.identificar_grupo(texto)[0])
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_tec_adm_normaliza_para_ast_quando_compativel_e_preserva_expressao(self):
-        self.assertEqual(C.identificar_grupo("DO GRUPO TEC. ADM."), ("AST", "TEC. ADM"))
-        self.assertEqual(C.identificar_grupo("DO GRUPO TEC ADM"), ("AST", "TEC ADM"))
+        # F-11: a equivalência homologada exige cargo compatível informado; sem cargo, fica sem grupo
+        self.assertEqual(C.identificar_grupo("DO GRUPO TEC. ADM."), (None, "TEC. ADM"))
+        self.assertEqual(C.identificar_grupo("DO GRUPO TEC. ADM.", cargos=["TECNICO ADMINISTRATIVO"]), ("AST", "TEC. ADM"))
+        self.assertEqual(C.identificar_grupo("DO GRUPO TEC ADM", cargos=["TECNICO ADMINISTRATIVO"]), ("AST", "TEC ADM"))
         # ao lado do próprio AST é compatível; com outro grupo ou cargo incompatível permanece sem grupo
         self.assertEqual(C.identificar_grupo("GRUPO TEC. ADM. E AST")[0], "AST")
         self.assertEqual(C.identificar_grupo("GRUPO TEC. ADM. E MAG")[0], None)
         self.assertEqual(C.identificar_grupo("DO GRUPO TEC. ADM.", cargos=["PROFESSOR"])[0], None)
         self.assertEqual(C.identificar_grupo("DO GRUPO TECNICO ADMINISTRATIVO - AST -")[0], "AST")
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_stf_exige_enquadramento_fiscal_para_normalizar_em_sft(self):
         # STF isolado (sem enquadramento fiscal) NÃO é presumido SFT
         self.assertEqual(C.identificar_grupo("DO GRUPO STF"), (None, "STF"))

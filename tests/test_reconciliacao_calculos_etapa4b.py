@@ -514,6 +514,7 @@ class TesteReconciliacaoEtapa4B(unittest.TestCase):
         self.assertEqual(p["indicadores"]["decisoes"], 5)
 
     # 9. AST e SFT normalizados sem alterar total geral + fundamentos normativos + Q U E D E F E R I U
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_09_ast_sft_normativos_e_merito_espacado_sem_alterar_total_geral(self):
         # 9a. Expressões normativas e espaçadas (Resenhas 140/2026, 013/2026, Leis estaduais)
         self.assertEqual(C.avaliar_grupo("PROFISSIONAIS DA EDUCACAO LEI 7.419/03")[0], "MAG")
@@ -988,6 +989,7 @@ class TesteReconciliacaoEtapa4B(unittest.TestCase):
         self.assertIsNone(snap["painel"]["apoio"]["eventos_fora_do_acervo"])
 
     # 15. Grupos com cargos mistos, desconhecidos ou similares não comprovados (AST)
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_15_ast_com_cargos_mistos_desconhecidos_ou_nao_comprovados_sem_alterar_total(self):
         # 15a. Allowlist estrita em catalogo.avaliar_grupo:
         # Cargos desconhecidos (ENGENHEIRO CIVIL, ADVOGADO), similares não comprovados (ASSISTENTE/AUXILIAR ADMINISTRATIVO)

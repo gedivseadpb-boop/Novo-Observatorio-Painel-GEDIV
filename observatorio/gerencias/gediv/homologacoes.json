@@ -1,0 +1,8 @@
+{
+  "o_que_e": "Registro versionado das equivalências normativas homologadas formalmente pela GEDIV. Só entra aqui uma equivalência com o ato que a homologou (número/data do ato ou processo administrativo). Alterar este arquivo muda VERSAO_REGRAS e torna as classificações anteriores desatualizadas.",
+  "pendentes_de_decisao": [
+    {"expressao": "TEC. ADM", "grupo": "AST", "questao": "Q de docs/homologacao/questoes-pendentes-gediv.md: 'TEC. ADM' corresponde ao grupo AST (Técnicos Administrativos)?"},
+    {"expressao": "STF", "grupo": "SFT", "questao": "Q de docs/homologacao/questoes-pendentes-gediv.md: 'STF' corresponde ao grupo SFT (Servidores Fiscais Tributários)?"}
+  ],
+  "equivalencias_homologadas": []
+}

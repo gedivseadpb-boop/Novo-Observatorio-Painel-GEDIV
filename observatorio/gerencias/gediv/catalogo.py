@@ -12,12 +12,75 @@ como candidata e nunca altera sozinha a classificação nem os totais.
 """
 from __future__ import annotations
 
+import json
 import re
 import unicodedata
+from contextlib import contextmanager
 from dataclasses import dataclass
+from pathlib import Path
 
-VERSAO_REGRAS = "gediv-2026.11.14-1"   # 05.3.4: dois grupos no mesmo ato e TS-04/TS-06 sem o requisito viram pendência
-# (antes: "gediv-2026.11.12-1" — grupos definitivos (SSA, ESP, INT), TEC. ADM e STF sem grupo, exclusões)
+# Versão-base das regras. Bump único (repositório-mãe, 24/11/2026): consolida a exclusão de atos normativos pelo
+# cabeçalho, o Abono de Permanência, a correção OCR OF1->OFI e a regra de homologação explícita das equivalências
+# condicionais (F-11). Reclassificar bases HISTÓRICAS com esta versão exige autorização normativa da GEDIV e deve
+# ser feito sempre sobre uma CÓPIA (ver docs/DECISOES.md).
+# (antes: "gediv-2026.11.14-1" — dois grupos no mesmo ato e TS-04/TS-06 sem o requisito viram pendência;
+#  "gediv-2026.11.12-1" — grupos definitivos (SSA, ESP, INT), TEC. ADM e STF sem grupo, exclusões)
+VERSAO_REGRAS_BASE = "gediv-2026.11.24-1"
+
+# Equivalências condicionais ('TEC. ADM' -> AST, 'STF' -> SFT) só são aplicadas quando constam do registro
+# versionado de homologações da GEDIV, com o ato que as homologou. Sem homologação, o ato fica sem grupo e com
+# pendência para revisão humana, preservando a expressão publicada (achado F-11 e conjunto-ouro 03/10).
+ARQUIVO_HOMOLOGACOES = Path(__file__).with_name("homologacoes.json")
+EQUIVALENCIAS_CONDICIONAIS = {"TEC. ADM": "AST", "STF": "SFT"}
+
+
+def _ler_homologacoes(caminho: Path = ARQUIVO_HOMOLOGACOES) -> dict[str, dict]:
+    """{expressão: registro} das equivalências homologadas. Arquivo ausente ou malformado => nenhuma (falha fechada)."""
+    try:
+        dados = json.loads(caminho.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    validas = {}
+    for item in dados.get("equivalencias_homologadas", []) if isinstance(dados, dict) else []:
+        if not isinstance(item, dict):
+            continue
+        exp, grupo = item.get("expressao"), item.get("grupo")
+        ato = str(item.get("ato_de_homologacao") or "").strip()
+        # Só vale com o ato formal e o grupo exatamente igual ao previsto para a expressão.
+        if exp in EQUIVALENCIAS_CONDICIONAIS and grupo == EQUIVALENCIAS_CONDICIONAIS[exp] and ato:
+            validas[exp] = item
+    return validas
+
+
+HOMOLOGACOES = _ler_homologacoes()
+
+
+def _versao_regras(homologacoes: dict[str, dict]) -> str:
+    if not homologacoes:
+        return VERSAO_REGRAS_BASE
+    sufixo = "+".join(sorted(EQUIVALENCIAS_CONDICIONAIS[e] for e in homologacoes))
+    return f"{VERSAO_REGRAS_BASE}+{sufixo}"
+
+
+# A versão muda quando o conjunto homologado muda: classificações antigas aparecem como desatualizadas.
+VERSAO_REGRAS = _versao_regras(HOMOLOGACOES)
+
+
+def equivalencia_homologada(expressao: str) -> bool:
+    return expressao in HOMOLOGACOES
+
+
+@contextmanager
+def homologacoes_temporarias(*expressoes: str):
+    """Somente para testes: simula equivalências homologadas sem tocar no registro versionado."""
+    global HOMOLOGACOES
+    anterior = HOMOLOGACOES
+    HOMOLOGACOES = {e: {"expressao": e, "grupo": EQUIVALENCIAS_CONDICIONAIS[e], "ato_de_homologacao": "TESTE"}
+                    for e in expressoes}
+    try:
+        yield
+    finally:
+        HOMOLOGACOES = anterior
 
 PROGRESSAO = "PROGRESSAO"
 TEMPO = "TEMPO_SERVICO"
@@ -125,6 +188,14 @@ EXPRESSOES_SEM_GRUPO = (
     ("STF", r"\bSTF\b", "sigla 'STF' sem cargo ou enquadramento fiscal/tributário verificado: grupo SFT não atribuído automaticamente"),
 )
 
+PENDENCIA_NAO_HOMOLOGADA = {
+    "TEC. ADM": "expressão 'TEC. ADM' publicada: equivalência com o grupo AST aguarda homologação formal da GEDIV "
+                "(registro homologacoes.json); grupo não atribuído",
+    "STF": "sigla 'STF' publicada: equivalência com o grupo SFT aguarda homologação formal da GEDIV "
+           "(registro homologacoes.json); grupo não atribuído",
+}
+
+_PAT_SIGLA_AST = re.compile(r"\bAST\b")
 _PAT_TEC_ADM = re.compile(r"\bTEC\.?\s*-?\s*ADM\b")
 _PAT_STF = re.compile(r"\bSTF\b")
 # Comprovação positiva estrita para AST: não presume que ASSISTENTE ADMINISTRATIVO,
@@ -257,7 +328,14 @@ def avaliar_grupo(preambulo_normalizado: str, *, cargos=None) -> tuple[str | Non
         # Cargos desconhecidos (ex.: ENGENHEIRO CIVIL, ADVOGADO) ou denominações não comprovadas
         # (ex.: ASSISTENTE ADMINISTRATIVO, AUXILIAR ADMINISTRATIVO) impedem atribuição automática.
         cargo_incomp = bool(cargos_norm) and any(_PAT_CARGO_INCOMPATIVEL_AST.search(c) for c in cargos_norm)
-        cargo_nao_comprovado = bool(cargos_norm) and not all(_PAT_CARGO_COMPATIVEL_AST.search(c) for c in cargos_norm)
+        if _PAT_SIGLA_AST.search(preambulo_normalizado) and not outros and not cargo_incomp:
+            # A sigla AST literal no mesmo ato é a própria evidência do grupo; não depende da equivalência.
+            # A mera citação da Lei nº 14.386/2026 NÃO basta ao lado de 'TEC. ADM' (Q1 e Q11 pendentes; 03/10/2026).
+            return "AST", exp_lit, None
+        if not equivalencia_homologada("TEC. ADM"):
+            return None, exp_lit, PENDENCIA_NAO_HOMOLOGADA["TEC. ADM"]
+        # F-11: mesmo homologada, a equivalência exige evidência POSITIVA de cargo compatível (cargos ausentes não bastam).
+        cargo_nao_comprovado = not cargos_norm or not all(_PAT_CARGO_COMPATIVEL_AST.search(c) for c in cargos_norm)
         if outros or cargo_incomp or cargo_nao_comprovado:
             return None, exp_lit, EXPRESSOES_SEM_GRUPO[0][2]
         return "AST", exp_lit, None
@@ -269,6 +347,8 @@ def avaliar_grupo(preambulo_normalizado: str, *, cargos=None) -> tuple[str | Non
             _PAT_CARGO_COMPATIVEL_SFT.search(c) for c in cargos_norm
         )
         cargo_incomp = bool(cargos_norm) and any(_PAT_CARGO_INCOMPATIVEL_SFT.search(c) for c in cargos_norm)
+        if not equivalencia_homologada("STF"):
+            return None, "STF", PENDENCIA_NAO_HOMOLOGADA["STF"]
         if enquadramento_ok and not outros and not cargo_incomp:
             return "SFT", "STF", None
         return None, "STF", EXPRESSOES_SEM_GRUPO[1][2]

@@ -115,3 +115,17 @@ A resposta é registrada neste arquivo e só então a regra é programada, numa 
 - **3. Corte definitivo para autenticação exclusiva por cookie `HttpOnly + Secure` sob HTTPS:**
   - **Como o sistema opera hoje:** o servidor emite e valida o cookie `gediv_sessao` (`HttpOnly; SameSite=Strict; Path=/api`, `Secure` sob HTTPS e proteção CSRF), mantendo suporte paralelo a `Authorization: Bearer` via `sessionStorage` no cliente SPA.
   - **Estado:** **RECOMENDADO PARA ATIVAÇÃO EM PRODUÇÃO SOB HTTPS INSTITUCIONAL**.
+
+---
+
+## Q12 — A citação da Lei nº 14.386/2026 identifica, sozinha, o grupo `AST`? (registrada em 24/11/2026)
+
+- **O que aparece no Diário:** as resenhas 524/2026 e 527/2026 (03/10/2026, edição 18.685) citam "Lei nº 14.386/2026" e o
+  grupo "TEC. ADM." no preâmbulo, sem a sigla `AST`.
+- **Como o sistema opera hoje:** a regra "Lei 14.386/2026 → AST" entrou no catálogo na Etapa 4B (commit `a0a2399` do
+  repositório antigo) sem fonte documental registrada. No repositório-mãe, ao lado de `TEC. ADM`, só a sigla `AST`
+  literal dispensa a homologação da Q1; a citação da lei, sozinha, deixa o ato **sem grupo e com pendência**.
+- **Efeito medido:** com essa regra o conjunto-ouro passa a **5/5** com os PDFs oficiais (antes 4/5).
+- **Para fechar:** a GEDIV homologa a equivalência (registro `observatorio/gerencias/gediv/homologacoes.json`, com o
+  número do ato) ou corrige o gabarito `docs/validacao/conjunto_ouro.json`.
+- **Estado:** PENDENTE DE DELIBERAÇÃO GEDIV

@@ -471,6 +471,7 @@ class TesteIndicadoresHomologacao(LB.Base):
         i = indicadores.painel(self.banco, {}, GER)["indicadores"]
         self.assertEqual((i["decisoes"], i["processos"]), (3, 2))            # o processo ausente não é inventado nem contado
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_10_grupo_compatibilidade_e_grupo_nao_homologado_preservam_total_no_painel(self):
         # TEC. ADM compatível com cargo administrativo normaliza para AST preservando expressão original;
         # STF sem enquadramento fiscal permanece sem grupo, mas conta no total geral sem perda.

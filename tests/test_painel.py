@@ -193,6 +193,7 @@ class TesteIndicadores(Base):
         self.assertEqual(self.painel(busca="ficticia tres")["indicadores"]["decisoes"], 1)
         self.assertEqual(self.painel(eixo="INVENTADO", grupo="XYZ")["indicadores"]["decisoes"], 8)   # valores fora do dicionário são ignorados
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_series_mantem_dois_eixos_e_as_sete_subcategorias_visiveis(self):
         self.conferir_tudo()
         s = self.painel()["series"]

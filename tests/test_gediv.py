@@ -28,7 +28,7 @@ class TesteCatalogo(unittest.TestCase):
         self.assertTrue(all(g.estado in (C.CONFIRMADA, C.PROVISORIA) for g in C.GRUPOS))
 
     def test_expressoes_dos_grupos(self):
-        casos = {"GRUPO OCUPACIONAL DE APOIO JUDICIARIO GAJ-1700:": "GAJ", "DO GRUPO FAP-1300": "FAP", "DO GRUPO TEC. ADM.": "AST",
+        casos = {"GRUPO OCUPACIONAL DE APOIO JUDICIARIO GAJ-1700:": "GAJ", "DO GRUPO FAP-1300": "FAP", "DO GRUPO TEC. ADM.": None,
                  "DO GRUPO TECNICO ADMINISTRATIVO - AST -:": "AST", "DOS PROFISSIONAIS DO GRUPO SAUDE ABAIXO": "SSA",
                  "DOS PROFISSIONAIS DO GRUPO MAG. ABAIXO": "MAG", "DOS PROFISSINAIS DA FAZENDA": "SFT", "DO GRUPO ANS-900": "ANS",
                  "DO GRUPO ESPECIAL": "ESP", "DO GRUPO DPS-1600": "DPS", "DO GRUPO OSPB": "OSPB", "DO GRUPO GPC": "GPC",
@@ -84,6 +84,7 @@ class TesteClassificador(unittest.TestCase):
         self.assertEqual((len(r.atos), len(r.decisoes), len({d.processo for d in r.decisoes})), (1, 3, 2))
         self.assertEqual(len({d.id for d in r.decisoes}), 3)
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_progressao_vertical_traz_classe_anterior_e_posterior(self):
         r = um(T.VERTICAL_SEM_GEDIV)
         self.assertEqual(r.decisoes[0].detalhe, {"classe_anterior": "A", "classe_posterior": "F",
@@ -230,6 +231,7 @@ class TesteFormatosVistosEmTextoReal(unittest.TestCase):
         r = um(T.PORTARIA_SEM_EFEITO.replace("PROGRESSÃO FUNCIONAL", "PROGRESSÃO FUN\x02CIONAL").replace("competência", "com\x02petência"))
         self.assertEqual((len(r.eventos), r.eventos[0].tipo), (1, C.SEM_EFEITO))
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_variante_stf_auditor_fiscal_tributario_normaliza_com_enquadramento_e_preserva_literal(self):
         ato = self.vertical("SAD-PSE-2026/90023 900023-4 PESSOA FICTICIA AUDITOR FISCAL TRIBUTARIO EST D E",
                             "STF - AUDITOR FISCAL TRIBUTARIO").atos[0]

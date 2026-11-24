@@ -120,10 +120,13 @@ class TestIntegracaoUnificadaGEDIV(unittest.TestCase):
             else _bootstrap_sintetico()
         )
 
+    @C.homologacoes_temporarias("TEC. ADM", "STF")  # cenário com equivalências homologadas pela GEDIV
     def test_01_regra_especial_grupos_ocupacionais(self) -> None:
         """Etapa 4B: TEC. ADM compatível normaliza para AST preservando expressão original;
         casos incompatíveis/ambíguos (TEC-ADM+PROFESSOR, STF sem enquadramento fiscal) permanecem pendentes."""
-        g_tec, exp_tec, pend_tec = adaptador.mapear_grupo_para_backend("TEC-ADM")
+        # F-11: sem cargo informado, nem a equivalência homologada presume o grupo AST
+        self.assertEqual(adaptador.mapear_grupo_para_backend("TEC-ADM"), (None, "TEC. ADM", True))
+        g_tec, exp_tec, pend_tec = adaptador.mapear_grupo_para_backend("TEC-ADM", cargo="TECNICO ADMINISTRATIVO")
         self.assertEqual(g_tec, "AST")
         self.assertEqual(exp_tec, "TEC. ADM")
         self.assertFalse(pend_tec)

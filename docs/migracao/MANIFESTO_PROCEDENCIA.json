@@ -1,0 +1,1817 @@
+{
+ "o_que_e": "Manifesto de procedência da migração para o repositório-mãe Novo-Observatorio-Painel-GEDIV.",
+ "repositorio_origem": "gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE",
+ "base": {
+  "main": "d9be033ecca7cba3ff6adb8d34d6f805485c0e2b",
+  "pr22_fix_ocr_serie_processo_ofi": "7b36d1d",
+  "feat_exclusao_atos_normativos": "92103b7",
+  "commit_integrado_local": "adf1b01f713e4884f4ee1cc641a3e79c536daeed"
+ },
+ "regra": "Cada arquivo migrado é idêntico ao blob Git de origem no momento da importação; alterações posteriores ficam no histórico Git deste repositório.",
+ "migrados": [
+  {
+   "destino": ".agents/skills/gediv-webdesigner-senior/SKILL.md",
+   "origem": ".agents/skills/gediv-webdesigner-senior/SKILL.md",
+   "blob_git": "a53267c030d111755195659d11ff6b153d3c0edd",
+   "sha256": "3dbc883212a917fc33b4a4a0ef2acdf3b75ce000709a52ac4275b05f3aebdb5d",
+   "bytes": 11308
+  },
+  {
+   "destino": ".agents/skills/gediv-webdesigner-senior/references/ACCEPTANCE.md",
+   "origem": ".agents/skills/gediv-webdesigner-senior/references/ACCEPTANCE.md",
+   "blob_git": "3c9a508dfbb7e1675179fd335ae1519f1fefbda7",
+   "sha256": "aadb41f9e7e2905db9445f299e9b3aa1d1a494d939a42c5ec6458709acba12a3",
+   "bytes": 1784
+  },
+  {
+   "destino": ".agents/skills/gediv-webdesigner-senior/references/DESIGN_TOKENS.json",
+   "origem": ".agents/skills/gediv-webdesigner-senior/references/DESIGN_TOKENS.json",
+   "blob_git": "b9c83cfddcff5a42038b643da3d4b12db1f1b795",
+   "sha256": "c0e1499cf6d6eed4ab74c078dd9c52dd8cba203e5674eeea34ec8057388e94b0",
+   "bytes": 2101
+  },
+  {
+   "destino": ".agents/skills/gediv-webdesigner-senior/references/TOKENS_IMPLEMENTADOS.json",
+   "origem": ".agents/skills/gediv-webdesigner-senior/references/TOKENS_IMPLEMENTADOS.json",
+   "blob_git": "747fb57b91a0d2554127f9f4130d4176fe42140c",
+   "sha256": "1f9d2704304be72b384eb0eb5ce38b5d74e5d330a1887004afbc2e2cba6750bd",
+   "bytes": 4516
+  },
+  {
+   "destino": ".agents/skills/gediv-webdesigner-senior/references/UX_CHECKLIST.md",
+   "origem": ".agents/skills/gediv-webdesigner-senior/references/UX_CHECKLIST.md",
+   "blob_git": "7fc86f9498e4abfecafe1fb7cb935fad46ebda4f",
+   "sha256": "3611a6ef12d3580f737ca69fae7dc66f342d509fb547f3c7a53fa1d7cc67006d",
+   "bytes": 3414
+  },
+  {
+   "destino": ".agents/skills/gediv-webdesigner-senior/scripts/check_contrast.py",
+   "origem": ".agents/skills/gediv-webdesigner-senior/scripts/check_contrast.py",
+   "blob_git": "a8f0188d74e69aafc25770319f055a443b79d74c",
+   "sha256": "8202dd2be376478b6a799b71ffdf63f72a40883b0ebbdd78d7f10960159ada87",
+   "bytes": 1617
+  },
+  {
+   "destino": ".claude/skills/gediv-ux-arquiteto-senior/SKILL.md",
+   "origem": ".claude/skills/gediv-ux-arquiteto-senior/SKILL.md",
+   "blob_git": "46c7c001c7deaec3f77743b11b2e947adf03f2bb",
+   "sha256": "736892cc0b7f0c1f8aa2af44ccdff9d7cbe20b1247a0b251aa2ba2839659c95c",
+   "bytes": 11776
+  },
+  {
+   "destino": ".claude/skills/gediv-ux-arquiteto-senior/references/arquitetura-informacao.md",
+   "origem": ".claude/skills/gediv-ux-arquiteto-senior/references/arquitetura-informacao.md",
+   "blob_git": "154dc0dec0e1b64d76d3ad7ca5c10dde4ea2e8b9",
+   "sha256": "579ba733350cb64d1106395ac3a1f1c83056a741c2169b8d9b0ea154ca7afe65",
+   "bytes": 8411
+  },
+  {
+   "destino": ".claude/skills/gediv-ux-arquiteto-senior/references/design-system.md",
+   "origem": ".claude/skills/gediv-ux-arquiteto-senior/references/design-system.md",
+   "blob_git": "6419b13ae1ad16ce18e9f2cbfaf531fe562e64e5",
+   "sha256": "156546cd16c8eb7f297b86bd8a50961a4c167b3121fa509f61b05f6589136240",
+   "bytes": 7483
+  },
+  {
+   "destino": ".claude/skills/gediv-ux-arquiteto-senior/references/execucao-e-aceite.md",
+   "origem": ".claude/skills/gediv-ux-arquiteto-senior/references/execucao-e-aceite.md",
+   "blob_git": "3c91f3df440a955f3f155a5b26a3b860d30bab36",
+   "sha256": "fead2d52824e2b24fb33a060c5111747b6e7f199707f4fa5edfbccd79370da4d",
+   "bytes": 7425
+  },
+  {
+   "destino": ".gitattributes",
+   "origem": ".gitattributes",
+   "blob_git": "4f9a1721a481ef1c71fb4d443c9a643293acff9e",
+   "sha256": "c2a35ca9c58fd717bf4376045cd5f011ad2881068dcc2317c619146a71a72ecb",
+   "bytes": 564
+  },
+  {
+   "destino": ".github/workflows/sonda.yml",
+   "origem": ".github/workflows/sonda.yml",
+   "blob_git": "21e9956d1a6f1f9db23552e502123c9d8dc03cd7",
+   "sha256": "e6594b6b596116615c765e054e0c44323af43c3b6cd1134cfb30bf02185ff95b",
+   "bytes": 1861
+  },
+  {
+   "destino": ".github/workflows/testes.yml",
+   "origem": ".github/workflows/testes.yml",
+   "blob_git": "2223ffba51dd7561ddd8ee757d07376ffed019a2",
+   "sha256": "56f39c5402216fd8c96d26f85c4b4c87891f64d093d46fe9cf481c9a555ddf1f",
+   "bytes": 1211
+  },
+  {
+   "destino": ".gitignore",
+   "origem": ".gitignore",
+   "blob_git": "b3c90280efb2a27f53a19fe63bef50e3c771ba01",
+   "sha256": "4a9ec78c0caf95cf17de501b4a99774e1d02b27842c68c25aa3423592139d6de",
+   "bytes": 531
+  },
+  {
+   "destino": "docs/historico/ENTREGA_PAINEL_COMPLETO_REFERENCIAS.md",
+   "origem": "ENTREGA_PAINEL_COMPLETO_REFERENCIAS.md",
+   "blob_git": "3d3356b83f8f8ea0a5a5323e541da63980549c43",
+   "sha256": "596b8fdb7959aac91083caadc36b257e7be25ed298f003afaa3840e8876c536b",
+   "bytes": 11796
+  },
+  {
+   "destino": "docs/historico/README-observatorio-claude.md",
+   "origem": "README.md",
+   "blob_git": "57a9bca5039e27db1b885ffe95100a170532dc11",
+   "sha256": "bd1599dbdbba26dfb5d2d7d69c7239f439b03cb18df135f02c0b55e55c32d720",
+   "bytes": 13559
+  },
+  {
+   "destino": "deploy_autonomo/GUIA_IMPLANTACAO_AUTONOMA.md",
+   "origem": "deploy_autonomo/GUIA_IMPLANTACAO_AUTONOMA.md",
+   "blob_git": "057518c230d72edab0bdf432b6442419384a870c",
+   "sha256": "6b04519e4b6d241b5a729c9cd54611b82154bd0c4661b3125b5ca8a493491024",
+   "bytes": 9907
+  },
+  {
+   "destino": "deploy_autonomo/admin.env.exemplo",
+   "origem": "deploy_autonomo/admin.env.exemplo",
+   "blob_git": "ae97121d494f7e6f139396ecd1aa80aceb2d16b5",
+   "sha256": "d8ce3dc9799ab7944052e20f7ccf30edf3c31d8550f33976369650a83a0f8cc1",
+   "bytes": 736
+  },
+  {
+   "destino": "deploy_autonomo/feriados_oficiais.example.txt",
+   "origem": "deploy_autonomo/feriados_oficiais.example.txt",
+   "blob_git": "b7e35b43fd317a2c188e9da8a53ae04f4178c23c",
+   "sha256": "26ed6acc2606d25dd3f8e675692e0ea4b67aafd688f14278da994726bfd548a3",
+   "bytes": 606
+  },
+  {
+   "destino": "deploy_autonomo/gediv-admin.service",
+   "origem": "deploy_autonomo/gediv-admin.service",
+   "blob_git": "ef38755f26562d910fdf78ea2852753f4b64f847",
+   "sha256": "b2cd3c9834a7a050d0ffed80a4ce8849c633b304402c069c9c9d11ffbc7c004c",
+   "bytes": 817
+  },
+  {
+   "destino": "deploy_autonomo/gediv-diario.service",
+   "origem": "deploy_autonomo/gediv-diario.service",
+   "blob_git": "c3e208512f381ab47920172abf195d64f9f6f14f",
+   "sha256": "c2eebebf637938c53931ab329bcb19fff89090e39e61dbd353bcf88ef8b43dc3",
+   "bytes": 548
+  },
+  {
+   "destino": "deploy_autonomo/gediv-diario.timer",
+   "origem": "deploy_autonomo/gediv-diario.timer",
+   "blob_git": "fe7537d4f5b76c88aab3ca49168f9aa907e08188",
+   "sha256": "0371ab77f44c7c1b3bd553fdac9d380fe943a13a7c7fed08728c1cb85b54ea64",
+   "bytes": 495
+  },
+  {
+   "destino": "deploy_autonomo/homologar_ambiente_linux.sh",
+   "origem": "deploy_autonomo/homologar_ambiente_linux.sh",
+   "blob_git": "51671241f3d7853353540393076c9754332319f8",
+   "sha256": "287d43ba8a454352a6d4a396a3f6c308b862622d0c7c6018f93577295c89e62d",
+   "bytes": 10141
+  },
+  {
+   "destino": "deploy_autonomo/recuperar_edicoes_manual.sh",
+   "origem": "deploy_autonomo/recuperar_edicoes_manual.sh",
+   "blob_git": "b9d57bbb7c3a9e01d559792313ddefae38e96068",
+   "sha256": "cc5f872688a15ab369ef82fd2bbe1d211a27758d85a8d5b33db011057aa35a4f",
+   "bytes": 1299
+  },
+  {
+   "destino": "deploy_autonomo/rodar_diario.sh",
+   "origem": "deploy_autonomo/rodar_diario.sh",
+   "blob_git": "9d37cd9a2c8231b28c91f485aba25c60c7dd0c5f",
+   "sha256": "8f2949cf817d9e53186e927a030eb6a31a9d1f6e5040751fdf43811cdde5747f",
+   "bytes": 7328
+  },
+  {
+   "destino": "deploy_autonomo/verificar_ambiente_linux.sh",
+   "origem": "deploy_autonomo/verificar_ambiente_linux.sh",
+   "blob_git": "36283b42e426a23d30e7ff5ccce6325d166d29b2",
+   "sha256": "76ac74df9333178764e2ba68e39b1cb692b81be89286e5bd496542e3e763d779",
+   "bytes": 2946
+  },
+  {
+   "destino": "docs/historico/01-recuperacao-diagnostico.md",
+   "origem": "docs/01-recuperacao-diagnostico.md",
+   "blob_git": "1997d2e85a09b0c1028aa8d8da420ee72ca50d5f",
+   "sha256": "3362817bb994d71faccf8ececb482b378016c1e72e150d65cbc810a11cff2a33",
+   "bytes": 9513
+  },
+  {
+   "destino": "docs/historico/02-plano-desenvolvimento.md",
+   "origem": "docs/02-plano-desenvolvimento.md",
+   "blob_git": "9306559f79fad3046cdcdeb7d81e54e2d10bdd11",
+   "sha256": "609697d60246ab00f0c41a4379bcde809b2c94146f8ed87b307ca57b3dbf54c3",
+   "bytes": 12724
+  },
+  {
+   "destino": "docs/historico/03-etapa1-resultados.md",
+   "origem": "docs/03-etapa1-resultados.md",
+   "blob_git": "2c8f8a88d752b672c690487ed223fe8f7f104b5f",
+   "sha256": "67f00d38e4636d58efeec3140233f922fe1aa91cc64fab9d455db24c162b29e3",
+   "bytes": 5765
+  },
+  {
+   "destino": "docs/historico/04-coleta-em-lotes-e-leitura.md",
+   "origem": "docs/04-coleta-em-lotes-e-leitura.md",
+   "blob_git": "257e472cc4834a256ac43769de5e0e098735625c",
+   "sha256": "92382f435e763de21d5a1bc9f96b46f2e55055234de40e4307f381852e32b1be",
+   "bytes": 9640
+  },
+  {
+   "destino": "docs/historico/05-leitura-validacao-e-fontes-independentes.md",
+   "origem": "docs/05-leitura-validacao-e-fontes-independentes.md",
+   "blob_git": "96169d99b5bd9d080b2910a6deebf4795b9d02f8",
+   "sha256": "37a1dd59453c53164ee555f0cc59f6fcf11fc195c15ff2d9fe35134268d49ef4",
+   "bytes": 9042
+  },
+  {
+   "destino": "docs/historico/06-regras-consolidadas.md",
+   "origem": "docs/06-regras-consolidadas.md",
+   "blob_git": "af7703cf6f3869a97f34dcc0c74878d9458716f0",
+   "sha256": "8aa11dfe76f72c937631697a05a9e49eb89111e32d21d115f1210d7edd9369cf",
+   "bytes": 10194
+  },
+  {
+   "destino": "docs/historico/07-integracao-testes-e-evidencias.md",
+   "origem": "docs/07-integracao-testes-e-evidencias.md",
+   "blob_git": "026c7136dd27876ab4d9c6108c0687f1e3dafc11",
+   "sha256": "d47d496a77fbca250e84adcc07150ce4ebf9e339af687e98f788d585e9faf247",
+   "bytes": 11014
+  },
+  {
+   "destino": "docs/historico/08-validacao-com-pdf-oficial.md",
+   "origem": "docs/08-validacao-com-pdf-oficial.md",
+   "blob_git": "c7ad7997c4bc6d95126190c07ed2ab5d7d21ac08",
+   "sha256": "eb75d672aa8cd11866193ea97cbd1f3c3b683b6adb9065c464310f8ae02aad88",
+   "bytes": 11340
+  },
+  {
+   "destino": "docs/historico/09-etapa03-regras-definitivas-e-leitura.md",
+   "origem": "docs/09-etapa03-regras-definitivas-e-leitura.md",
+   "blob_git": "ffeaafcea9251d82bb8149dd6067889a4c96bf1b",
+   "sha256": "eefa3f0a61e82e954761d927ff788e257c05b733dae24e29c41e415a9131a737",
+   "bytes": 5740
+  },
+  {
+   "destino": "docs/historico/10-etapa04-pdfs-dificeis.md",
+   "origem": "docs/10-etapa04-pdfs-dificeis.md",
+   "blob_git": "b43fa08a399830d2f8ceff0a915d93d373f99077",
+   "sha256": "db39bb3ad362bec1405a91f9338ba576010b94394f3980a0f728a7472676c1e9",
+   "bytes": 10653
+  },
+  {
+   "destino": "docs/historico/11-etapa05-1-integracao.md",
+   "origem": "docs/11-etapa05-1-integracao.md",
+   "blob_git": "3fa005a2e39f6f2f74bf9c77560448e0a1d2e0ed",
+   "sha256": "037c3ba8a7378e8e3c3f48cce3332fcc92f50bb7be7bbbf10bf596499f0034f3",
+   "bytes": 6808
+  },
+  {
+   "destino": "docs/historico/12-etapa05-3-pr01-seguranca-ci-validacao.md",
+   "origem": "docs/12-etapa05-3-pr01-seguranca-ci-validacao.md",
+   "blob_git": "1a349d3af24c29e5d6be1ac9dec571c4501d48b2",
+   "sha256": "4c170fddcc73a147242a9271261fcca1a26549931610497341094f218eb14920",
+   "bytes": 13715
+  },
+  {
+   "destino": "docs/historico/13-etapa05-3-pr02-coleta-cobertura.md",
+   "origem": "docs/13-etapa05-3-pr02-coleta-cobertura.md",
+   "blob_git": "bf8f885de1efe1133ba366fa09238428582c4d28",
+   "sha256": "350cdbc34cf9e29160c4737dd7be744ddce6dda879265b2878adcd0a91562040",
+   "bytes": 11794
+  },
+  {
+   "destino": "docs/historico/14-etapa05-3-pr03-leitura-banco-revisao.md",
+   "origem": "docs/14-etapa05-3-pr03-leitura-banco-revisao.md",
+   "blob_git": "914d614998901c0a4c07f24385dfbfef8d1ea600",
+   "sha256": "243898f35979d5721728d96241d1c969b02fe4f699cd4c464f8149ac839ac189",
+   "bytes": 12575
+  },
+  {
+   "destino": "docs/historico/15-etapa05-3-pr04-extracao-ocr-classificacao.md",
+   "origem": "docs/15-etapa05-3-pr04-extracao-ocr-classificacao.md",
+   "blob_git": "4f9bde8615b25e42b380c96e771cdaa71f07bb1e",
+   "sha256": "667468482f03f8626184f7eef412f7a41cbe3884fccc9e319a8d39380bc3ad15",
+   "bytes": 25116
+  },
+  {
+   "destino": "docs/historico/16-etapa05-3-pr05-homologacao-geral.md",
+   "origem": "docs/16-etapa05-3-pr05-homologacao-geral.md",
+   "blob_git": "f197d4067873d5bb9321a21bdcc6cad00ce27d1e",
+   "sha256": "77558403572c91291222f78ea28738226aa44f7d1131966b5c52a37bb655a699",
+   "bytes": 31629
+  },
+  {
+   "destino": "docs/historico/17-etapa05-3-pr06-integridade-codex.md",
+   "origem": "docs/17-etapa05-3-pr06-integridade-codex.md",
+   "blob_git": "6e1bc7bfea7e1d5fe2df46486043d2a842434f10",
+   "sha256": "8ecfc55f6a3429ffb6e53af18d71b4312c79154f4018ce7232d8b6ff83514ebf",
+   "bytes": 3850
+  },
+  {
+   "destino": "docs/historico/18-etapa05-3-pr09-paddleocr-complementar.md",
+   "origem": "docs/18-etapa05-3-pr09-paddleocr-complementar.md",
+   "blob_git": "6d09a08df34e0126af678a877fb28bc9d2cf276e",
+   "sha256": "64416a0c411c3060456b87b05c9902c4314221fb7ff5eb648c5ebabb2b7c333f",
+   "bytes": 5361
+  },
+  {
+   "destino": "docs/historico/19-etapa05-3-pr09-4-identificacao-institucional.md",
+   "origem": "docs/19-etapa05-3-pr09-4-identificacao-institucional.md",
+   "blob_git": "d2d53926b06c82e6b43fed1c4b9eb08f59b1e46f",
+   "sha256": "2abed58944d330fb65a3c7aac4571346b5b657360fd3a9de3e4d8e6c254b5de0",
+   "bytes": 2251
+  },
+  {
+   "destino": "docs/historico/20-etapa05-3-pr10-1-referencia-entre-colunas.md",
+   "origem": "docs/20-etapa05-3-pr10-1-referencia-entre-colunas.md",
+   "blob_git": "50ca4ec33ccb323469c29d936f8dde0161544f23",
+   "sha256": "6d8d3fa9eae01ae90e44f85d9c2f33faaf866ebf7a3071b3075a6cb66a5304d7",
+   "bytes": 2114
+  },
+  {
+   "destino": "docs/historico/21-entrega-painel-publico.md",
+   "origem": "docs/21-entrega-painel-publico.md",
+   "blob_git": "72e10c40c046f818e421b30d7522f862b52be316",
+   "sha256": "efa265491df2d0d4b09f19896004557447067a2deb12c8deb7da460b599eb548",
+   "bytes": 4088
+  },
+  {
+   "destino": "docs/historico/22-validacao-visual-painel.md",
+   "origem": "docs/22-validacao-visual-painel.md",
+   "blob_git": "b6bf103d0b8f6acc19f601961c31da435dac9c5b",
+   "sha256": "56e0dac9cda056c4d4c10fa8f38e0080b658ffd60068b05b7e7b54712355317e",
+   "bytes": 4148
+  },
+  {
+   "destino": "docs/historico/23-preparacao-publicacao-internet.md",
+   "origem": "docs/23-preparacao-publicacao-internet.md",
+   "blob_git": "73cb12bd212678672e9290cf032bdfa0999b973d",
+   "sha256": "395a5d2707c4b66a3ef625695395ba312203fd95e3739fd30c2a80836558d229",
+   "bytes": 9867
+  },
+  {
+   "destino": "docs/historico/24-nova-interface-ux-e-desativacao-reversivel.md",
+   "origem": "docs/24-nova-interface-ux-e-desativacao-reversivel.md",
+   "blob_git": "469bf9073747357f20c95d99ebe32df4f956b461",
+   "sha256": "42a73afd1ffc1ddf62fc8fd2bb621511be3e7ce0408791db803f12dbee816f1d",
+   "bytes": 12395
+  },
+  {
+   "destino": "docs/historico/25-painel-do-admin.md",
+   "origem": "docs/25-painel-do-admin.md",
+   "blob_git": "eed946c5a15652bf8d24c1ee4e51cf243f190466",
+   "sha256": "e90462520c805f891ac9ad77ba81521aa34dce00bdcd7e05394a31aa0ca744a7",
+   "bytes": 7345
+  },
+  {
+   "destino": "docs/historico/26-homologacao-20261117.md",
+   "origem": "docs/26-homologacao-20261117.md",
+   "blob_git": "cb12bfd8d86ac1351cfcdb736394bcdf59039258",
+   "sha256": "f4e4e920ebb429c313c2d85823a753c34de8317a4cf6affc3c2d6d6ae0c1a69d",
+   "bytes": 4681
+  },
+  {
+   "destino": "docs/historico/27-redesign-clareza.md",
+   "origem": "docs/27-redesign-clareza.md",
+   "blob_git": "f0e5eab4138e1d56d582ff590391c70f14c65a0e",
+   "sha256": "91306080a68a9f87b5ca88cf1e7e2e777a9382fb652f1359c12cf1b4fca60f81",
+   "bytes": 5666
+  },
+  {
+   "destino": "docs/historico/28-integracao-revisao-2910.md",
+   "origem": "docs/28-integracao-revisao-2910.md",
+   "blob_git": "3fe2ab18a08e5c8663a6e0f3f94f8ec8ab4b72f0",
+   "sha256": "8b9bada9499f813cd1edd9913690a37a65046c1b6f6d09501c075209010d30e4",
+   "bytes": 13401
+  },
+  {
+   "destino": "docs/historico/29-etapa-2b2-rotas-e-preservacao-d1-d6.md",
+   "origem": "docs/29-etapa-2b2-rotas-e-preservacao-d1-d6.md",
+   "blob_git": "b8c6791950a3c22e5ac79d17ef218f6b70419489",
+   "sha256": "df589e3ba51cd2f1fa7da8f37e300e1d998b4d234104e80e8b89991dbd58128c",
+   "bytes": 13071
+  },
+  {
+   "destino": "docs/historico/30-previa-publica-github-pages.md",
+   "origem": "docs/30-previa-publica-github-pages.md",
+   "blob_git": "5d41872ef82d0f6e3191734f0a753c7a7277468c",
+   "sha256": "a013af15a99dbffa6f4a65f2dc0ef6f25d6aeb981a73f2693cc60182eaeb399c",
+   "bytes": 6923
+  },
+  {
+   "destino": "docs/historico/RELATORIO_ETAPA05.md",
+   "origem": "docs/RELATORIO_ETAPA05.md",
+   "blob_git": "1c124b3d0f3c3973617871ff9803d64516525a1f",
+   "sha256": "0c53833bc8762cbea28475508cdf5f3b5aef2e39487fd3b9467cddf6fbb3fc6c",
+   "bytes": 17547
+  },
+  {
+   "destino": "docs/evidencias/conjunto-ouro/2026-11-12-antes-da-correcao-de-leitura.json",
+   "origem": "docs/evidencias/conjunto-ouro/2026-11-12-antes-da-correcao-de-leitura.json",
+   "blob_git": "94a3cbacd78814d435458667d14837c1936d0a1c",
+   "sha256": "282b50fc1823366136fb2cdaf823c9b65c17a0498509f6e0353ba8543107d724",
+   "bytes": 8989
+  },
+  {
+   "destino": "docs/evidencias/conjunto-ouro/2026-11-12-depois-da-correcao-de-leitura.json",
+   "origem": "docs/evidencias/conjunto-ouro/2026-11-12-depois-da-correcao-de-leitura.json",
+   "blob_git": "c09b64a17f2865d2560f3894319eac7c2a56129d",
+   "sha256": "315d1bdd306adfe20fbfdaa61b56e14bbb149ffc593e24e404c5ceffbaf633a7",
+   "bytes": 8872
+  },
+  {
+   "destino": "docs/evidencias/etapa04/2026-11-13-conjunto-ouro.json",
+   "origem": "docs/evidencias/etapa04/2026-11-13-conjunto-ouro.json",
+   "blob_git": "3a5a18e450ff262ba9c36f4350629ab5993619fd",
+   "sha256": "2c6f88b0e16a260169870e41ccf4e1dd6487b05a7d25554aa69c86337ed405f1",
+   "bytes": 8872
+  },
+  {
+   "destino": "docs/evidencias/etapa04/2026-11-13-corpus-por-campo.json",
+   "origem": "docs/evidencias/etapa04/2026-11-13-corpus-por-campo.json",
+   "blob_git": "f1460de639efcd691d31f2e63fc75f86252af097",
+   "sha256": "881bb4d8054e78bd424ba41b597e9f71f668f0a071957672e82cf14cdc491711",
+   "bytes": 8093
+  },
+  {
+   "destino": "docs/evidencias/fluxo-demonstracao-2026-11-10.json",
+   "origem": "docs/evidencias/fluxo-demonstracao-2026-11-10.json",
+   "blob_git": "41cc38a0b73c2900824d6f99c772e6b51ddb72b5",
+   "sha256": "8cb752dadd39a1379304ecea59df7ded6f42484ea40e3a530a755f44469ae37b",
+   "bytes": 928
+  },
+  {
+   "destino": "docs/evidencias/integracao-2910/celular.png",
+   "origem": "docs/evidencias/integracao-2910/celular.png",
+   "blob_git": "4d2420151ca39a26702e9167cad3f939deb6404e",
+   "sha256": "8d5df2e8283ba03df21138fe7a2b7378d45ef08c1e05417c7bd5db4592f4cf55",
+   "bytes": 291945
+  },
+  {
+   "destino": "docs/evidencias/integracao-2910/desktop.png",
+   "origem": "docs/evidencias/integracao-2910/desktop.png",
+   "blob_git": "aa761a186a2244d82c8894cc1ffcda569cb2ce29",
+   "sha256": "b4aea834ff360eb08a094b504ccf6706f65104473905bfe991841986c607bbcf",
+   "bytes": 341274
+  },
+  {
+   "destino": "docs/evidencias/integracao-2910/resultados-browser.json",
+   "origem": "docs/evidencias/integracao-2910/resultados-browser.json",
+   "blob_git": "f7a7431ebdc11e694676a245be33285fa9750407",
+   "sha256": "31f794ff2217018b2d9eb2ab6d6aef9bdfad650530e494345deba4344f2139df",
+   "bytes": 338
+  },
+  {
+   "destino": "docs/evidencias/painel/01-consulta-publica-agregados.png",
+   "origem": "docs/evidencias/painel/01-consulta-publica-agregados.png",
+   "blob_git": "c27d6d5f118309877f21c9871170fea4b07512ab",
+   "sha256": "c346c5172d3ab6994823b6cdff152b82bbdc075953f6cb3b0b2ae48704c6e892",
+   "bytes": 516571
+  },
+  {
+   "destino": "docs/evidencias/painel/02-gerencia-visao-geral-e-detalhe.png",
+   "origem": "docs/evidencias/painel/02-gerencia-visao-geral-e-detalhe.png",
+   "blob_git": "acd376e36d526c9d50f98f6379140e86750505c6",
+   "sha256": "0ca0f0d99b257ad9f27e79a461ca46d2179cec9615273f5c7192c45cca81acc3",
+   "bytes": 725613
+  },
+  {
+   "destino": "docs/evidencias/painel/03-cartao-indeferidos-por-processo.png",
+   "origem": "docs/evidencias/painel/03-cartao-indeferidos-por-processo.png",
+   "blob_git": "6ca7eeede2dcf2ee73294cda1a1ae006527266ef",
+   "sha256": "bc80d5484014cad7dee5ceb347946cba1b8d65f50871c4306ee407d04ce426e8",
+   "bytes": 481592
+  },
+  {
+   "destino": "docs/evidencias/painel/04-alteracoes-em-conferencia.png",
+   "origem": "docs/evidencias/painel/04-alteracoes-em-conferencia.png",
+   "blob_git": "e3ef1992e3a887346abe6f9b2a09afd6eb1cd3fb",
+   "sha256": "e4c436799269f30dadd23e9ce044e32a24bc69abe523f315b633051e84cfd330",
+   "bytes": 416266
+  },
+  {
+   "destino": "docs/evidencias/painel/05-outras-publicacoes.png",
+   "origem": "docs/evidencias/painel/05-outras-publicacoes.png",
+   "blob_git": "466a7b16c9cde61166d4dcd3763bb604ff141f1b",
+   "sha256": "4c0ab0a0f8a19283939a9593ff961b55512a281b5930efb896ac78d03d085cf5",
+   "bytes": 277054
+  },
+  {
+   "destino": "docs/evidencias/painel/06-tempo-de-servico.png",
+   "origem": "docs/evidencias/painel/06-tempo-de-servico.png",
+   "blob_git": "fbb8295942038f018a338f708086e224dc0c41c0",
+   "sha256": "4cd2680aba278d1f9fc2f4de7775b0777144ec24a4e7f8425f1203d87586601e",
+   "bytes": 481746
+  },
+  {
+   "destino": "docs/evidencias/painel/verificacao-no-navegador.json",
+   "origem": "docs/evidencias/painel/verificacao-no-navegador.json",
+   "blob_git": "c98dc2381100f622126ee06859e40e9498622b5e",
+   "sha256": "3ddb5f6604c98a83a865f902710eed89a26033e7cdd82395e4e8bc8edb83176e",
+   "bytes": 4532
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/comparacao-com-historico.json",
+   "origem": "docs/evidencias/pdf-oficial/comparacao-com-historico.json",
+   "blob_git": "e9df8bb4d40e8bd48dee205d963b8756bc6c815f",
+   "sha256": "2312e03c04663f7214024b7a1ee221bcd03ddecccb6a9dcd225fce5e4d8c1696",
+   "bytes": 1059
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/painel-01-consulta-publica.png",
+   "origem": "docs/evidencias/pdf-oficial/painel-01-consulta-publica.png",
+   "blob_git": "cc2b3ff510db062b3c9c17d2762c15bbd2ba89d6",
+   "sha256": "338ef8e47ea80f5be6543f53f69bebc075a59bb18eb2362331a5c7b88232627f",
+   "bytes": 354782
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/painel-02-gerencia-em-conferencia.png",
+   "origem": "docs/evidencias/pdf-oficial/painel-02-gerencia-em-conferencia.png",
+   "blob_git": "8b081d826cb265da9a78a126ffb027f76a5d41a8",
+   "sha256": "db7fa885be06d5de8b974a79f77e3acca3c53ab9f42436debd3b5024bf78ec80",
+   "bytes": 468119
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/painel-verificacao-no-navegador.json",
+   "origem": "docs/evidencias/pdf-oficial/painel-verificacao-no-navegador.json",
+   "blob_git": "868a203e441fd91b57f54dbbf3fde7b65f449dd1",
+   "sha256": "d36f602138045af1b75e2eb0cbcc31ebb366666d4e20db60d9d0acd33990bdda",
+   "bytes": 4610
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/validacao-real-2026-10-01.json",
+   "origem": "docs/evidencias/pdf-oficial/validacao-real-2026-10-01.json",
+   "blob_git": "712b93bffdd26b412390cbe0937666dff2b1983a",
+   "sha256": "1169439931963aecdbadddad840bc89817e631faa5939dad9cd5349f8cfd4efb",
+   "bytes": 12413
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/validacao-real-2026-10-02.json",
+   "origem": "docs/evidencias/pdf-oficial/validacao-real-2026-10-02.json",
+   "blob_git": "5a4e19c9ae62448f902a35b5424af8d73d0efed8",
+   "sha256": "75b04171febddb5e00c7508469bea369d05c9be88d8faaef6e43c32ff6d89feb",
+   "bytes": 12183
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/validacao-real-2026-10-03.json",
+   "origem": "docs/evidencias/pdf-oficial/validacao-real-2026-10-03.json",
+   "blob_git": "91ede9b276f4f6635c60c904bae687cbc9b5b7fe",
+   "sha256": "9321afcdbe52395122885cba21c3b0568a4d49ee66eb8ec4d6edf9e0f86cc5ae",
+   "bytes": 13063
+  },
+  {
+   "destino": "docs/evidencias/pdf-oficial/validacao-real-2026-10-06.json",
+   "origem": "docs/evidencias/pdf-oficial/validacao-real-2026-10-06.json",
+   "blob_git": "53edc063b46d4c4adf2d7b53cc749b8ecf3bbb25",
+   "sha256": "11b8002677f5e33fd46b3de589acd4db8d5f9bebc33bed139efc2c8afa9a5438",
+   "bytes": 7550
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/contraste.json",
+   "origem": "docs/evidencias/redesign-20261117/calendario/contraste.json",
+   "blob_git": "1c86612c55f4235aedc2e2c3132f34274aa7f55e",
+   "sha256": "ad75ebc187767bd09102c6ff0b6a3805a6f9103119bf1de48cefd8b9a07fceb7",
+   "bytes": 10604
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/dark-1440.png",
+   "origem": "docs/evidencias/redesign-20261117/calendario/dark-1440.png",
+   "blob_git": "2fc1a6a9490b2cd7d16c20006c40e375571e0b1a",
+   "sha256": "4cbaf4ee6a61611b60647f37625d44dfc391dabbaca63a45832f7b77ea8b0c9e",
+   "bytes": 208041
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/dark-320.png",
+   "origem": "docs/evidencias/redesign-20261117/calendario/dark-320.png",
+   "blob_git": "eb8132a480ee86f16af49f32fbfdbe749e12878e",
+   "sha256": "af05e625c23c4cc702ca60f36533d7ef2ed04ff61d57c1bee81ffcaa16dcc1f1",
+   "bytes": 48193
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/dark-390.png",
+   "origem": "docs/evidencias/redesign-20261117/calendario/dark-390.png",
+   "blob_git": "008524a0c7493c7540c5455e6a5d6009a50f8135",
+   "sha256": "ef721d9d8a9ab0949ff8fc5b4818ceffef90edd745c75b31e2d4fae4aa375a9d",
+   "bytes": 50202
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/light-1440.png",
+   "origem": "docs/evidencias/redesign-20261117/calendario/light-1440.png",
+   "blob_git": "5ffa2349fc9516e0d9f528a40d7cdd8903293a96",
+   "sha256": "97470f1ec848aa4fd86eadedc8d61300c6f6729522eb0f33c0754f759b5607bc",
+   "bytes": 207381
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/light-320.png",
+   "origem": "docs/evidencias/redesign-20261117/calendario/light-320.png",
+   "blob_git": "14cd709b7a8542843249cc7e0b2f20ef1569e0a1",
+   "sha256": "e7534bdb53b933c9335ef37e120f6b20ae3b5913cfccc45eb0f5a9cc7e7259a3",
+   "bytes": 46734
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/light-390.png",
+   "origem": "docs/evidencias/redesign-20261117/calendario/light-390.png",
+   "blob_git": "644cf1ee946d034a98bff282184f0ebebd9c20c5",
+   "sha256": "5254a3728a6cd7478e5f45c1d2b3cba55a3d4c21e0778e23dbfa0ed5685058e7",
+   "bytes": 49342
+  },
+  {
+   "destino": "docs/evidencias/redesign-20261117/calendario/medidas.json",
+   "origem": "docs/evidencias/redesign-20261117/calendario/medidas.json",
+   "blob_git": "b005a6dc0ea034bfda149fca033944f303637afc",
+   "sha256": "d72c710ac350d50e336497e5ed0575a7c99fd840a1644f0b93300193b810c8bb",
+   "bytes": 1771
+  },
+  {
+   "destino": "docs/evidencias/sonda-github-2026-11-10-execucao1.json",
+   "origem": "docs/evidencias/sonda-github-2026-11-10-execucao1.json",
+   "blob_git": "63f111a1dee9d2783916d351e744d726a4124572",
+   "sha256": "247914d2285e642620692347b3af3f67865fcb679fc24420fc7aa17c916f27c2",
+   "bytes": 10279
+  },
+  {
+   "destino": "docs/evidencias/sonda-github-2026-11-10-execucao2.json",
+   "origem": "docs/evidencias/sonda-github-2026-11-10-execucao2.json",
+   "blob_git": "ef8011bcf310c523cf27c2107196cc55bb428553",
+   "sha256": "0ff3540881dd16182f0ef05b0c5ecc18f9a3d0656c837fe9f093cf9e78885a17",
+   "bytes": 10568
+  },
+  {
+   "destino": "docs/evidencias/sonda-github-2026-11-10-execucao3.json",
+   "origem": "docs/evidencias/sonda-github-2026-11-10-execucao3.json",
+   "blob_git": "5fc3ed22658cdeab6795afbec6f18b3ff23bcff0",
+   "sha256": "b19233d494390502f3ae633b14fb4b5f5810aa3451651c97125dbf705990fd70",
+   "bytes": 10570
+  },
+  {
+   "destino": "docs/evidencias/sonda-github-2026-11-11-tres-executores.json",
+   "origem": "docs/evidencias/sonda-github-2026-11-11-tres-executores.json",
+   "blob_git": "6354b1480b0c62afc32b21fb608e5a483d80f4ea",
+   "sha256": "dc4995a7af357dac5b1e4914948b3b0f057465c461339b568d5f90863c172bd9",
+   "bytes": 2609
+  },
+  {
+   "destino": "docs/evidencias/testes-2026-11-10.txt",
+   "origem": "docs/evidencias/testes-2026-11-10.txt",
+   "blob_git": "8195b26fc1a04d01e5b05c255e756bd0f89e459a",
+   "sha256": "51e8c467cb8f0ff47b0c98b18971d5cccdd2506ccb8613960dd9f466bd7af75a",
+   "bytes": 24188
+  },
+  {
+   "destino": "docs/evidencias/validacao-texto-real-2026-11-10.json",
+   "origem": "docs/evidencias/validacao-texto-real-2026-11-10.json",
+   "blob_git": "a3f534ce325affbbd2c9b1497bd4dc7193bfd69a",
+   "sha256": "733d386e1311bd308e7f5af1d3188fcd597779ef1f6bab8e75112626328e7545",
+   "bytes": 2212
+  },
+  {
+   "destino": "docs/homologacao/questoes-pendentes-gediv.md",
+   "origem": "docs/homologacao/questoes-pendentes-gediv.md",
+   "blob_git": "83f7205ac3a27c624239a41e28dd971fb7454ec1",
+   "sha256": "6b416de6860a960e5ac038307848c370304bf16b6aa757783310656720863134",
+   "bytes": 7769
+  },
+  {
+   "destino": "docs/homologacao/roteiro-conferencia-documental.md",
+   "origem": "docs/homologacao/roteiro-conferencia-documental.md",
+   "blob_git": "ea99a263a8693040ef40848dc880090fd4186478",
+   "sha256": "a2c5d6c4adb72656145f9d7c1126a2d69119fd5df857154da79781207df5727d",
+   "bytes": 6027
+  },
+  {
+   "destino": "docs/validacao/conjunto_ouro.json",
+   "origem": "docs/validacao/conjunto_ouro.json",
+   "blob_git": "7f6920e928a673662a06d43f5bf262336189f520",
+   "sha256": "d474f044e26956ce517092491481e8338e7bfc1942d0fa7f8fa18c13f5ce6ea4",
+   "bytes": 6121
+  },
+  {
+   "destino": "docs/validacao/corpus_pdfs_dificeis.json",
+   "origem": "docs/validacao/corpus_pdfs_dificeis.json",
+   "blob_git": "7c760cbf532f1a9aaa091a6739eb4d2884e8bd8c",
+   "sha256": "48188ce2bf5e20bf2806a73c151508f77664421984adff90f131b5c933721d3e",
+   "bytes": 13272
+  },
+  {
+   "destino": "docs/validacao/referencias.json",
+   "origem": "docs/validacao/referencias.json",
+   "blob_git": "f6ac39bf1e8eb69ec7c36f7c297b633a3993807e",
+   "sha256": "635a561eecd14099ec0abaadb39dc197da856729d452d36ff83b5d2adbae708f",
+   "bytes": 1891
+  },
+  {
+   "destino": "observatorio/__init__.py",
+   "origem": "observatorio/__init__.py",
+   "blob_git": "c6516b0af013526364b9d642a3a6c8b42f5c4986",
+   "sha256": "0602d9c301ab28c4fb0b320c335d312da35c6bf84044562ed9456c4180a3e558",
+   "bytes": 150
+  },
+  {
+   "destino": "observatorio/coleta/__init__.py",
+   "origem": "observatorio/coleta/__init__.py",
+   "blob_git": "af134af649604d5ae9c4032ce2cb88fb44a596e2",
+   "sha256": "04a517ad8d5faf26cfe3448575f3ca308d82d95143db3482e49cc4f6a012db4a",
+   "bytes": 87
+  },
+  {
+   "destino": "observatorio/coleta/__main__.py",
+   "origem": "observatorio/coleta/__main__.py",
+   "blob_git": "713ff925e85fab5836407db46cc467198387196f",
+   "sha256": "e53bef11750989b34daba1345f3506d9db3f9e10bfbf76e96cd544e7986bd141",
+   "bytes": 7961
+  },
+  {
+   "destino": "observatorio/coleta/coletor.py",
+   "origem": "observatorio/coleta/coletor.py",
+   "blob_git": "d879b537817aa37025065d3d2c9240b8f7417ca1",
+   "sha256": "b11a86b8aa54cf34bce190f830066c9dbd47d573d6845d92d7c5c5ef1937bd3d",
+   "bytes": 32172
+  },
+  {
+   "destino": "observatorio/coleta/fontes.py",
+   "origem": "observatorio/coleta/fontes.py",
+   "blob_git": "3048db17f3b78b10762158d2d146501731e9fce7",
+   "sha256": "0af0663347f3210d7c7cfebd1befdbea7b60bfd160c79241742eade6a8e2c9d0",
+   "bytes": 9322
+  },
+  {
+   "destino": "observatorio/coleta/inventario.py",
+   "origem": "observatorio/coleta/inventario.py",
+   "blob_git": "1a642cb47183606f0a516ccaa45f98d3990c80c4",
+   "sha256": "74bd101a728f51935d9076ec6c9a9268c37f92f3f8146de0623a446c44d32e49",
+   "bytes": 12493
+  },
+  {
+   "destino": "observatorio/coleta/lotes.py",
+   "origem": "observatorio/coleta/lotes.py",
+   "blob_git": "7ffb59dae2f3aae10b85864d0d121669a238f9d8",
+   "sha256": "87235edba615b518b7a608146643a738c0f95507904f790ddbe1a9addd40e341",
+   "bytes": 9769
+  },
+  {
+   "destino": "observatorio/coleta/transporte.py",
+   "origem": "observatorio/coleta/transporte.py",
+   "blob_git": "ff64a402198b2b8a52c3ff1c710ecf48ace6fc20",
+   "sha256": "5482d9ca97162d5515e72357f092a917706a57696de5b0d16f5905071ba534f3",
+   "bytes": 2693
+  },
+  {
+   "destino": "observatorio/gerencias/__init__.py",
+   "origem": "observatorio/gerencias/__init__.py",
+   "blob_git": "408342ce3200561ba2b583f8e21f21df5988196c",
+   "sha256": "e93ef0e100f10fe430953db076393bd5b04bdb44e9e05f1459f01eaf545232a8",
+   "bytes": 112
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/__init__.py",
+   "origem": "observatorio/gerencias/gediv/__init__.py",
+   "blob_git": "f038fd68cb7a34f67c1e21933f220c7959b807f9",
+   "sha256": "d6f5e18f50b138f115782c1e70e277f7d51136cb4357ab2b5390a9cf4046ffe7",
+   "bytes": 85
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/__main__.py",
+   "origem": "observatorio/gerencias/gediv/__main__.py",
+   "blob_git": "ac55be704e4fa157f797608f1205a8cc595a98a8",
+   "sha256": "69021462d21ec4e5483cce0f936cc87ba6f9487c52d7626d415ee96c8345683d",
+   "bytes": 2600
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/catalogo.py",
+   "origem": "observatorio/gerencias/gediv/catalogo.py",
+   "blob_git": "3d1c359c8282d80f04cb3c39e98fd14ac846c15d",
+   "sha256": "fea13879c9a47ea09901cdb9e1fa455253d9674c32233c7f397d55e1231b62b4",
+   "bytes": 22074
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/classificador.py",
+   "origem": "observatorio/gerencias/gediv/classificador.py",
+   "blob_git": "5b30c9f284bb5048dcbef1fbdcdbe961ae3b6472",
+   "sha256": "2102c5487525df8cf0891ed993c031ce67e85bc5bdef5d6dcd6efb6794051db6",
+   "bytes": 49226
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/exclusoes.py",
+   "origem": "observatorio/gerencias/gediv/exclusoes.py",
+   "blob_git": "4750804d75a00ce091b3f34dafe66ec3a935a55d",
+   "sha256": "b7f89527600033866248b3fae3c9abafa65ee46c43a45ec0f8ffc7b16d1a5a50",
+   "bytes": 2643
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/paddle_complementar.py",
+   "origem": "observatorio/gerencias/gediv/paddle_complementar.py",
+   "blob_git": "4eb01eeaee2d4dd49f065e364437d6c060752a68",
+   "sha256": "0d33110dca5b2e1bf87207f462683351a28189f6379f90668fdf7bcef9d6b2c0",
+   "bytes": 16685
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/paddle_worker.py",
+   "origem": "observatorio/gerencias/gediv/paddle_worker.py",
+   "blob_git": "e086042c281d9789de51ee46b2ad10ec913eef63",
+   "sha256": "309f941578df9e2e768756e98436cd725601b848e57094fde87772ecfd42505f",
+   "bytes": 7500
+  },
+  {
+   "destino": "observatorio/gerencias/gediv/processo.py",
+   "origem": "observatorio/gerencias/gediv/processo.py",
+   "blob_git": "6e6aeb2cac68c72399248b732460990cbf6003ab",
+   "sha256": "c4e94a538827b18c8113293e97bbd054049907b96a89ce567c5f9c78489b6b19",
+   "bytes": 18842
+  },
+  {
+   "destino": "observatorio/leitura/__init__.py",
+   "origem": "observatorio/leitura/__init__.py",
+   "blob_git": "90dffe95eb81ed6880f1b0a1924dd45a351bcbc2",
+   "sha256": "6128b85dc610b2b8f3f73031ae0b80f3edba307154a7890fdae7526e22bca866",
+   "bytes": 248
+  },
+  {
+   "destino": "observatorio/leitura/__main__.py",
+   "origem": "observatorio/leitura/__main__.py",
+   "blob_git": "ff9550b7c7bd43f6afe53d2022a59aed086c0733",
+   "sha256": "4a5800f52ddaf385bc46e0312d9190a0e448e3b1291f72c2902f232e78c114e9",
+   "bytes": 3649
+  },
+  {
+   "destino": "observatorio/leitura/leitor.py",
+   "origem": "observatorio/leitura/leitor.py",
+   "blob_git": "6e95e586daac2c9517822f7aac33a7c29d50bdce",
+   "sha256": "3db7e79366ca512a408606253038a641dd186580361a09daa54cec2bbc760d92",
+   "bytes": 37892
+  },
+  {
+   "destino": "observatorio/leitura/ocr.py",
+   "origem": "observatorio/leitura/ocr.py",
+   "blob_git": "2aba916c0918573762e048b3033e9039514070c4",
+   "sha256": "7faeeb8cabcf5d9dacecab4e2c62866b95afa06660687f814bd3a372050d91b5",
+   "bytes": 5303
+  },
+  {
+   "destino": "observatorio/leitura/pagina.py",
+   "origem": "observatorio/leitura/pagina.py",
+   "blob_git": "31b8350ffe405d3c67a720d53c6408ef45e31088",
+   "sha256": "953315df4991ce9de18ecd29cf4b51a3a9f77e4bda2775b0e86ea7eee96d7ac6",
+   "bytes": 25088
+  },
+  {
+   "destino": "observatorio/leitura/tabela_ocr.py",
+   "origem": "observatorio/leitura/tabela_ocr.py",
+   "blob_git": "53733981339b8ce0762fa295cf7bc6626277e1a8",
+   "sha256": "61e7a436a4d1354840e9fd14aa10f0e17dcdc9fd718f22c7b51e264216a85c36",
+   "bytes": 7787
+  },
+  {
+   "destino": "observatorio/leitura/validacao.py",
+   "origem": "observatorio/leitura/validacao.py",
+   "blob_git": "c8c1f70dfa35700497260d1831987059d98c12ed",
+   "sha256": "92a693233082031b67b713c8c56095011ab3d9726db0b5605c9dfbb7e8cf7671",
+   "bytes": 5528
+  },
+  {
+   "destino": "observatorio/nucleo/__init__.py",
+   "origem": "observatorio/nucleo/__init__.py",
+   "blob_git": "e5944e8009267bbe619427538f312dae8a34e1b0",
+   "sha256": "c5eaf907d053ae01d195eb787a4134759a485b1fb394896ae229553e8bf0b518",
+   "bytes": 70
+  },
+  {
+   "destino": "observatorio/nucleo/acervo.py",
+   "origem": "observatorio/nucleo/acervo.py",
+   "blob_git": "15d31eb1ee3363a42aceda5da51f59c5e5a4e2c4",
+   "sha256": "facde002283095c7e6bc53f2bfc4fe1780866978566cd1e9aede4fc9d518d723",
+   "bytes": 2621
+  },
+  {
+   "destino": "observatorio/nucleo/banco.py",
+   "origem": "observatorio/nucleo/banco.py",
+   "blob_git": "05d736096f3adc217e535a64840c981bc18319e3",
+   "sha256": "77796468095f6ffe2573210f65cbb5c6535a8ed46a0dc29e47846090c70f1545",
+   "bytes": 83527
+  },
+  {
+   "destino": "observatorio/nucleo/pdf.py",
+   "origem": "observatorio/nucleo/pdf.py",
+   "blob_git": "e3f9108d28e1201871e9bdffd8b2b7c802a31e3e",
+   "sha256": "e5424e2eb68c8fc53dda33a8ac77e90705ef74069ea8f9375360470edd028c8c",
+   "bytes": 5407
+  },
+  {
+   "destino": "observatorio/nucleo/rede.py",
+   "origem": "observatorio/nucleo/rede.py",
+   "blob_git": "62fae30f41aee6f71f5edc05fd12a711f92172f6",
+   "sha256": "928303f8b46b0e5b2552542d924592537536f8f52f5bbe243488509f9778bf4d",
+   "bytes": 10453
+  },
+  {
+   "destino": "observatorio/operacao/__init__.py",
+   "origem": "observatorio/operacao/__init__.py",
+   "blob_git": "d46707838316b13577ca539e4b719a4ad787b769",
+   "sha256": "a44ce5747e07495eb6bf778483ca6012cf1bc64d98ba58cc510f46f9a9de2a95",
+   "bytes": 60
+  },
+  {
+   "destino": "observatorio/operacao/__main__.py",
+   "origem": "observatorio/operacao/__main__.py",
+   "blob_git": "be0a1c9be7aac7993d847707615be8fb45cb2052",
+   "sha256": "1df9306a924f71c8637f4fbd62b4809691eb39ca530bacf39acf4d981c0b6eb0",
+   "bytes": 13380
+  },
+  {
+   "destino": "observatorio/operacao/agendamento.py",
+   "origem": "observatorio/operacao/agendamento.py",
+   "blob_git": "dbfbcc049a45a0365cd03e79704edfafff7ffec0",
+   "sha256": "1c8e9563f6aa502bd17491a2a9a206b9365187f0763e2ec31ce56ff85c3f0715",
+   "bytes": 4018
+  },
+  {
+   "destino": "observatorio/operacao/aquisicao.py",
+   "origem": "observatorio/operacao/aquisicao.py",
+   "blob_git": "63da0118f3b1e4738aa10b69f689c4f7265a839a",
+   "sha256": "0f9690e0f5a3d8ab474879fbd17ca38b29311e821775a7dc43ca8f18dbbdf8df",
+   "bytes": 8801
+  },
+  {
+   "destino": "observatorio/operacao/corpus.py",
+   "origem": "observatorio/operacao/corpus.py",
+   "blob_git": "263e502bad82a55e37d4b0394dc4da6c8d3cd4a9",
+   "sha256": "525b635dcbcc5a046883f7580eb430fa4679896c9a4d889d640014db665bc569",
+   "bytes": 14521
+  },
+  {
+   "destino": "observatorio/operacao/demonstracao.py",
+   "origem": "observatorio/operacao/demonstracao.py",
+   "blob_git": "54138abf33cfaf3ca23965d0544ecece648b84cb",
+   "sha256": "ac29ff06877e06ad4e23c75076920279d0c48ed0797da55f015faeb279941c7c",
+   "bytes": 4284
+  },
+  {
+   "destino": "observatorio/operacao/fluxo.py",
+   "origem": "observatorio/operacao/fluxo.py",
+   "blob_git": "107fe95eab99669d54ecd9f55142b246f2d7ae97",
+   "sha256": "a9c0503cd927c92ec3cbfb571fa7519c20b0a039d1ea1921d9b290e464cbda75",
+   "bytes": 7238
+  },
+  {
+   "destino": "observatorio/operacao/ouro.py",
+   "origem": "observatorio/operacao/ouro.py",
+   "blob_git": "4333ead33ae3b2745f88f014f36c11a798c6962f",
+   "sha256": "fc2b3223179097c53a649525293daecd1c8ae8937e07c998216b0ff6afbb9493",
+   "bytes": 6496
+  },
+  {
+   "destino": "observatorio/operacao/previa_sintetica.py",
+   "origem": "observatorio/operacao/previa_sintetica.py",
+   "blob_git": "aebb0b9e1413f498bd0cb39545a6c05ca4e91aa1",
+   "sha256": "7da6585417923a97b0e7e0f716a5a6162ad1bf8f13c2ccbc16bf4c506fe4dd49",
+   "bytes": 26032
+  },
+  {
+   "destino": "observatorio/operacao/saida.py",
+   "origem": "observatorio/operacao/saida.py",
+   "blob_git": "f7bf541a98ed68256152fb8d4e69ccdc98e450a8",
+   "sha256": "a8552dd042b80b0a17ef8959925cb6de1ac95fa5cd8f10cd1bccac8f4995f8a1",
+   "bytes": 1693
+  },
+  {
+   "destino": "observatorio/operacao/sintetico.py",
+   "origem": "observatorio/operacao/sintetico.py",
+   "blob_git": "946fda8397ad4c4cab5eb74a003f94a3c2a872db",
+   "sha256": "86c1160ab61364ecdac577c70ed32c2e9e9ed2635589e6276836af2d092ad436",
+   "bytes": 7371
+  },
+  {
+   "destino": "observatorio/operacao/validacao_real.py",
+   "origem": "observatorio/operacao/validacao_real.py",
+   "blob_git": "00e2ab63c5873c26249af720ea77d77e58f829b4",
+   "sha256": "b8b8b8eb71489e121d50d0858a334190edd5c4cb5cd6b58ad763b46fbba4b81c",
+   "bytes": 11008
+  },
+  {
+   "destino": "observatorio/painel/__init__.py",
+   "origem": "observatorio/painel/__init__.py",
+   "blob_git": "9560c17fe73384175d46c22121672e636138b92c",
+   "sha256": "994632cfef484b67c406acf4f3d54254eaf14b5367f40e6347a952805e98e007",
+   "bytes": 131
+  },
+  {
+   "destino": "observatorio/painel/adaptador.py",
+   "origem": "observatorio/painel/adaptador.py",
+   "blob_git": "06b4c48831ab2f55cfdb732b669bd3f139bcbb84",
+   "sha256": "6f1b5d95772555a0b64815348ca218df182f42d948708ca82bb802fc3f21a826",
+   "bytes": 53659
+  },
+  {
+   "destino": "observatorio/painel/documental.py",
+   "origem": "observatorio/painel/documental.py",
+   "blob_git": "38375343e31cfabb6ddc77920d10ca6c0af849f4",
+   "sha256": "036bdf5a1b4d1dc02d26efc3f10f556abbd2a9ef6290df18ea88400a3d3a6127",
+   "bytes": 4636
+  },
+  {
+   "destino": "observatorio/painel/exportacao.py",
+   "origem": "observatorio/painel/exportacao.py",
+   "blob_git": "cdda7738f64a789e7ed7cf6f9e9d9988f7219fe7",
+   "sha256": "edb645f5c9170581461146cf0ddff5a8694c5d18522107fcb7a34f018f49f1dd",
+   "bytes": 9159
+  },
+  {
+   "destino": "observatorio/painel/indicadores.py",
+   "origem": "observatorio/painel/indicadores.py",
+   "blob_git": "ee65c95ab96a7aede9719af1dc38c738f119e670",
+   "sha256": "17eb86fbf0c21ab1dfe1b6b5c0a04d5041621e94775da0f999e261e4134658ff",
+   "bytes": 89716
+  },
+  {
+   "destino": "observatorio/painel/projecao.py",
+   "origem": "observatorio/painel/projecao.py",
+   "blob_git": "43226e8e9e89c298a42d391093457f0d60808515",
+   "sha256": "339ba0cc2baf066b996902846e1694602f6efc45e2cf688fde69f7bb2568b575",
+   "bytes": 3132
+  },
+  {
+   "destino": "observatorio/revisao/__init__.py",
+   "origem": "observatorio/revisao/__init__.py",
+   "blob_git": "5668ba0ceee284a089a4ec0e459763ba54a9c5a4",
+   "sha256": "2a312100d80063ca7ae8c7b992afc5c2f0a126c436606955e16f538229714fb2",
+   "bytes": 93
+  },
+  {
+   "destino": "observatorio/revisao/__main__.py",
+   "origem": "observatorio/revisao/__main__.py",
+   "blob_git": "197cad73568e6b5a51fd9669312b63376df3e1b7",
+   "sha256": "1895a062c061ee5804adf0722b92a94706c8a60353f710c5fb2ca158ef738ef3",
+   "bytes": 3257
+  },
+  {
+   "destino": "observatorio/revisao/servico.py",
+   "origem": "observatorio/revisao/servico.py",
+   "blob_git": "7fbd980dab61ee9bfb609a731d7c74a68542d7b8",
+   "sha256": "c0eac1f5728bddc58b7ce2cffe30f1ba4e2e24dff215bc685f0e2d508048a085",
+   "bytes": 30759
+  },
+  {
+   "destino": "observatorio/sonda/__init__.py",
+   "origem": "observatorio/sonda/__init__.py",
+   "blob_git": "5a5ff1ee4f4af1198fa5234b3d867625fde2d2ce",
+   "sha256": "857bb5178636db8c189577a438f2766c2cb81fef960e24c0ad563f2372e9876d",
+   "bytes": 59
+  },
+  {
+   "destino": "observatorio/sonda/__main__.py",
+   "origem": "observatorio/sonda/__main__.py",
+   "blob_git": "b346862719b73d7a34ed8e673d8d6a7cdb77fbe0",
+   "sha256": "8d7bcf7174b77de12e21c31a5f1b639830a5ab04644f7e1dcd80a42ed50c5e68",
+   "bytes": 9344
+  },
+  {
+   "destino": "observatorio/web/__init__.py",
+   "origem": "observatorio/web/__init__.py",
+   "blob_git": "9b1a1f89f8c3e458e2f27cf50502e116038b0538",
+   "sha256": "a1369e84ca01ee03a3df6c79f7a3dbc586a58eac7ac37ada10dd01e6f42774d2",
+   "bytes": 61
+  },
+  {
+   "destino": "observatorio/web/__main__.py",
+   "origem": "observatorio/web/__main__.py",
+   "blob_git": "52b02ab4c3a7906c0152857e92fe61396253ccff",
+   "sha256": "ac1f812245e39c656fddca167705560f2e97e3d89c0f7a61368f5bafdd4ad760",
+   "bytes": 3473
+  },
+  {
+   "destino": "observatorio/web/contas.py",
+   "origem": "observatorio/web/contas.py",
+   "blob_git": "54a11467fbf4e7ce469376d173d7afc830acd117",
+   "sha256": "48a97006c7ecc3d9dcb7f2ce709e6844f431f8e1bcda17f0e33150b3d0dbfde5",
+   "bytes": 9268
+  },
+  {
+   "destino": "observatorio/web/estatico/app.js",
+   "origem": "observatorio/web/estatico/app.js",
+   "blob_git": "29b83185569929de5a980abd0fac98a9f5b07ba3",
+   "sha256": "341928d9c2d66cb9906e4ea310bf3d77c89230d5bf84c8436b6e2b3779068512",
+   "bytes": 43609
+  },
+  {
+   "destino": "observatorio/web/estatico/estilo.css",
+   "origem": "observatorio/web/estatico/estilo.css",
+   "blob_git": "a417fdf31ccb4ce8e1cb1eefc42e084bdd7e6a82",
+   "sha256": "219b838ed79d8ac5866ab14f036351a97c2bc54af87f5aaf2206e2501cdfe76a",
+   "bytes": 13715
+  },
+  {
+   "destino": "observatorio/web/estatico/index.html",
+   "origem": "observatorio/web/estatico/index.html",
+   "blob_git": "b6c635c172e7081c1e5eb2a680c034992b9430f9",
+   "sha256": "0656c0986c7dd93ef8bcefe43c78c6dbc114795e609761807f8d8f9ac0af46aa",
+   "bytes": 10478
+  },
+  {
+   "destino": "observatorio/web/estatico/logo.png",
+   "origem": "observatorio/web/estatico/logo.png",
+   "blob_git": "ac1f0393b136244d59e8d7f3b2b85d465ee89102",
+   "sha256": "90a1e128a7b95ef16e04cc6516e0b5d37f6b0e28919752b4c1f48d168e4649fe",
+   "bytes": 66537
+  },
+  {
+   "destino": "observatorio/web/servidor.py",
+   "origem": "observatorio/web/servidor.py",
+   "blob_git": "f315781968fea911fb0c195e1b317ab45f409253",
+   "sha256": "2b58a17223d4297bab62b36edeef258863644dff926a940a8e46d39b9120e8da",
+   "bytes": 38784
+  },
+  {
+   "destino": "observatorio/web/unificado/index.html",
+   "origem": "observatorio/web/unificado/index.html",
+   "blob_git": "187dbec6514fea38b9baa87230b09dd6bcf83130",
+   "sha256": "03e6c2404229dcddebf8cdec1de5a4e8643027e657d2126258c07feaf57e8bf6",
+   "bytes": 374646
+  },
+  {
+   "destino": "observatorio/web/unificado/modelo-base-sanitizado.html",
+   "origem": "observatorio/web/unificado/modelo-base-sanitizado.html",
+   "blob_git": "36094bac6875822c754ac676ddd6fa1158baf250",
+   "sha256": "eb2d2648c047260c21f6997a39566819de710d287406216d8958f4cbda7e7fe3",
+   "bytes": 241128
+  },
+  {
+   "destino": "observatorio/web/unificado/paleta-aprovada.json",
+   "origem": "observatorio/web/unificado/paleta-aprovada.json",
+   "blob_git": "fb1a122d01d5485c6487b3e39f6406d0b894d0cc",
+   "sha256": "8465f196e8d402b15ae960069dfaa3748eae82da889b31b0998d67be373f8f2c",
+   "bytes": 3644
+  },
+  {
+   "destino": "observatorio/web/usuarios.py",
+   "origem": "observatorio/web/usuarios.py",
+   "blob_git": "3a96cd3df268b8c9a808f6bd8cba482c350d9caf",
+   "sha256": "8b07b81711c3880adb0e942459a626b5d3a66c054e701ebdb0d994ec7c64b535",
+   "bytes": 2920
+  },
+  {
+   "destino": "package-lock.json",
+   "origem": "package-lock.json",
+   "blob_git": "5d20854f1ede7e27f4b93aaeb18913e83bce23c1",
+   "sha256": "8ba1fc4aa9a826677b103df9f36efd9084364ab5003cc81f1126c915e3f58a2d",
+   "bytes": 20075
+  },
+  {
+   "destino": "package.json",
+   "origem": "package.json",
+   "blob_git": "1b7e4c5ac204f0cdd595523e140831ec706b7a03",
+   "sha256": "8c9b29184fdcbda8cec50754d1b1cd2597d6ca8f6af65e49a32790c6fb16ad53",
+   "bytes": 820
+  },
+  {
+   "destino": "pyproject.toml",
+   "origem": "pyproject.toml",
+   "blob_git": "f65200c1353a22f89c83c43bb07bc53024b7022e",
+   "sha256": "a81198ab807b0eafdb233ab00e9517b0b12adc47d6091d854a4879e5dc694297",
+   "bytes": 477
+  },
+  {
+   "destino": "requirements-dev.txt",
+   "origem": "requirements-dev.txt",
+   "blob_git": "4b22b9f1a66ad2cb511bc6cf15c4afc6a5dda27a",
+   "sha256": "7f17aab16367de7048eb8b12f18944239ef37226cabbb75b489ba87dbdb91345",
+   "bytes": 52
+  },
+  {
+   "destino": "requirements.txt",
+   "origem": "requirements.txt",
+   "blob_git": "8da72aed60c1beb934abdad0c57da276c12a66c2",
+   "sha256": "55ed0248955fe3a02d6fdcc7552109ca006ab99b3f0721924915ffdd03791045",
+   "bytes": 55
+  },
+  {
+   "destino": "scripts/consolidar_bancos_gediv.py",
+   "origem": "scripts/consolidar_bancos_gediv.py",
+   "blob_git": "0f8c62f6ba88e959f31a761d27b2ece9f4cf1119",
+   "sha256": "878fb1c3816fc633b66de77380746de88d78a597aac7533c36f5e4cad90d0217",
+   "bytes": 40625
+  },
+  {
+   "destino": "scripts/construir_painel_unificado.py",
+   "origem": "scripts/construir_painel_unificado.py",
+   "blob_git": "054ee7c1efd32a8d235b7ee9f7ba1a445b80910e",
+   "sha256": "acd289f09895632d82faaf327791666dd27933f3366237a43f1dcdbdc203b5d6",
+   "bytes": 238159
+  },
+  {
+   "destino": "scripts/preparar_previa_github_pages.py",
+   "origem": "scripts/preparar_previa_github_pages.py",
+   "blob_git": "f40d35940f63b27708b5e4d958fa16067295014c",
+   "sha256": "317cd309c8d1b542a2fbf5116f2890357f68cdae1e1931f47f11693a861f23ec",
+   "bytes": 25720
+  },
+  {
+   "destino": "scripts/reconciliar_acervo_gediv.py",
+   "origem": "scripts/reconciliar_acervo_gediv.py",
+   "blob_git": "c78cb4718da05aa7fc566fea7dd8173b398a92a2",
+   "sha256": "0125cade12cd66b7f15f0100616b63c3a2966a5932e89eaba7ca79cfe377bb50",
+   "bytes": 7898
+  },
+  {
+   "destino": "tests/__init__.py",
+   "origem": "tests/__init__.py",
+   "blob_git": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bytes": 0
+  },
+  {
+   "destino": "tests/apoio.py",
+   "origem": "tests/apoio.py",
+   "blob_git": "b7bbe37367f5419a99038fe7ede87ddbd190e386",
+   "sha256": "1d37033e8134c42e8fa51de82be9ba5a957b1a5ae6bdb6619bce4cba348e7d64",
+   "bytes": 5510
+  },
+  {
+   "destino": "tests/fixtures/auniao_edicoes_recentes.html",
+   "origem": "tests/fixtures/auniao_edicoes_recentes.html",
+   "blob_git": "a9edee2be42903094776b42881a9d31fc8e2a029",
+   "sha256": "284fcc6a3506774b03103faad0248c29aa3e99fbcbb728c0ed856ede318e8b4e",
+   "bytes": 4176
+  },
+  {
+   "destino": "tests/test_abono_permanencia_e_comparativo.py",
+   "origem": "tests/test_abono_permanencia_e_comparativo.py",
+   "blob_git": "ae362bf75f17fc5261aa8f35df4788e43c8cc04b",
+   "sha256": "3c0f717aa3188752584facc1a551529902a92a1a100b35004f0cb6b18a9e5768",
+   "bytes": 13063
+  },
+  {
+   "destino": "tests/test_acessibilidade_navegador.cjs",
+   "origem": "tests/test_acessibilidade_navegador.cjs",
+   "blob_git": "9d2573ec2a7f80f456b7f51ef3c73e116fec2618",
+   "sha256": "615ec5325af1dc49a1f2d32d87bb4917f1322aae9a8b9b817032991036b04529",
+   "bytes": 13241
+  },
+  {
+   "destino": "tests/test_acessibilidade_unificado.cjs",
+   "origem": "tests/test_acessibilidade_unificado.cjs",
+   "blob_git": "2d531fd0f4df1f9630a6bb6f0c60155eb6d8e475",
+   "sha256": "ded25eb7ccf6dcdb793194c3ae7364bce590d98b037851a1288626ece7103a83",
+   "bytes": 5198
+  },
+  {
+   "destino": "tests/test_admin_contas.py",
+   "origem": "tests/test_admin_contas.py",
+   "blob_git": "622e94b44a32520a662751a95ea018571a438514",
+   "sha256": "e4990957c8c84336e34725d179137a4b996eab8c50a24c6ed1f927c14d797902",
+   "bytes": 9333
+  },
+  {
+   "destino": "tests/test_agendamento_feriados.py",
+   "origem": "tests/test_agendamento_feriados.py",
+   "blob_git": "082fe45a00461b35ce9643d4affa0432c15a2e1c",
+   "sha256": "a76167184515ec25840e21d60c4ab7005ca106278e302eceb9526749cbf34de7",
+   "bytes": 4382
+  },
+  {
+   "destino": "tests/test_aquisicao.py",
+   "origem": "tests/test_aquisicao.py",
+   "blob_git": "db75c7c4af6c5c88eb53cad9474218e90167540a",
+   "sha256": "0d8d36a370bc57c0e26029e8b1f44b027279267ec78cef57bb8e4b97e71541a6",
+   "bytes": 25043
+  },
+  {
+   "destino": "tests/test_classificador_resenha_sem_processo.py",
+   "origem": "tests/test_classificador_resenha_sem_processo.py",
+   "blob_git": "d7e7c267b5d436b7060199a50740fa680fd8f947",
+   "sha256": "51f624f1c4d863213e2d8ea0c1b8384c9e2fb8295579aa332c041a392555c1bb",
+   "bytes": 2581
+  },
+  {
+   "destino": "tests/test_codigos_de_saida.py",
+   "origem": "tests/test_codigos_de_saida.py",
+   "blob_git": "689d6abcaec2e7ac1598e24807253e29f71447be",
+   "sha256": "be32e17c158f72782fd86c34ce04b88984f9c364a403646cfb70e0219ac6392a",
+   "bytes": 10401
+  },
+  {
+   "destino": "tests/test_coleta.py",
+   "origem": "tests/test_coleta.py",
+   "blob_git": "4dc73d0e5c287922a9e363f8c195c396ac2c6861",
+   "sha256": "b426c6382f358036eaa34a62dd746de2d75805d455f9197f3f73e6e1897de6c8",
+   "bytes": 14621
+  },
+  {
+   "destino": "tests/test_coleta_cobertura.py",
+   "origem": "tests/test_coleta_cobertura.py",
+   "blob_git": "1778e08b357292a70b5d3bf8f0b53510ccad054c",
+   "sha256": "0240590acb557e758f8dd15aa543d70bd83d606a5a54cdfa7cf6a9aef034cabe",
+   "bytes": 34067
+  },
+  {
+   "destino": "tests/test_conexoes_sqlite.py",
+   "origem": "tests/test_conexoes_sqlite.py",
+   "blob_git": "484b36103fe6a9fadd260f8df6d9c6d15b3ce481",
+   "sha256": "68543d10e2e7b17ad60686de7b257efeb437e9d71eb534c4727826f5e037d9ea",
+   "bytes": 6022
+  },
+  {
+   "destino": "tests/test_consolidacao_bancos.py",
+   "origem": "tests/test_consolidacao_bancos.py",
+   "blob_git": "f6c0e583dd536d2c3ca05fe40a05c9736858119c",
+   "sha256": "dd3b8bec58c89cb4a209fc2c8ddb2d7dff538f1ab82817602498ae78293585a0",
+   "bytes": 12569
+  },
+  {
+   "destino": "tests/test_corpus_validador.py",
+   "origem": "tests/test_corpus_validador.py",
+   "blob_git": "46af69c828c44013976a530b42841ab9ddd24397",
+   "sha256": "e23ac82ed183342e8940a2f3ade3554fd52d4717b9ad26c6bc71e908b7bbd750",
+   "bytes": 15231
+  },
+  {
+   "destino": "tests/test_exclusao_atos_normativos.py",
+   "origem": "tests/test_exclusao_atos_normativos.py",
+   "blob_git": "e15a15a018beb3045e56ba8d58e7040d40ae1abb",
+   "sha256": "e7cdce82abe02e90fbc4cdb36a9943e8fc63a32c77d07da195f32734d0df6ab0",
+   "bytes": 5705
+  },
+  {
+   "destino": "tests/test_extracao_ocr_classificacao.py",
+   "origem": "tests/test_extracao_ocr_classificacao.py",
+   "blob_git": "a96651f0f96d5cb2a31cfd0c30f1df0dd2070f95",
+   "sha256": "48ff879a1717c5f211ed5f76f06d9fc5a9ff4fa16a1e2cce302cc31e20457b92",
+   "bytes": 45298
+  },
+  {
+   "destino": "tests/test_gediv.py",
+   "origem": "tests/test_gediv.py",
+   "blob_git": "43945f74fc549fe3b0edabb45669cd738074be10",
+   "sha256": "d5c4d216048f482480088a79898040166b658fc928728a2073c79a3198b76c03",
+   "bytes": 21397
+  },
+  {
+   "destino": "tests/test_homologacao_geral.py",
+   "origem": "tests/test_homologacao_geral.py",
+   "blob_git": "560f0559aeb26a91b467bf6b1ef6ba287fbd51f6",
+   "sha256": "bed5614f9b8b9b379c7a55f674a7ef9faa36ecb1d18a5b145dd1c73dc9b55a00",
+   "bytes": 38894
+  },
+  {
+   "destino": "tests/test_homologacao_missao_final.py",
+   "origem": "tests/test_homologacao_missao_final.py",
+   "blob_git": "ece8581b4d99716ba49dbb5c004da5d40d213935",
+   "sha256": "d776439bd5d86b037cac73291c22d1507c80d7d86c2760f9e3f20677a47ccacd",
+   "bytes": 18580
+  },
+  {
+   "destino": "tests/test_identificacao_documental.py",
+   "origem": "tests/test_identificacao_documental.py",
+   "blob_git": "bd61881d355f0c6e7100a35a7480db3e9739374b",
+   "sha256": "30feb5cd205974122b60c9ee56c2a414fc1fe7c80696a8f0fdddd57a52b5eada",
+   "bytes": 8232
+  },
+  {
+   "destino": "tests/test_integracao_05_1.py",
+   "origem": "tests/test_integracao_05_1.py",
+   "blob_git": "20b967e97cab462523663627bb5c82e46f883ae1",
+   "sha256": "53d378ed5dc12f37293915f1eb9098a9fddc0cd3c226b2fceca96964f03d38d8",
+   "bytes": 8077
+  },
+  {
+   "destino": "tests/test_integracao_unificada.py",
+   "origem": "tests/test_integracao_unificada.py",
+   "blob_git": "d4cfb910c235f76ff2ddab7eb75961c8b9dbb0a7",
+   "sha256": "9f4e3377bfe5111e555dc2f41a6b2aeebc49d3b908f16d09dab0881f1ffdfbbc",
+   "bytes": 18783
+  },
+  {
+   "destino": "tests/test_integridade_pr06.py",
+   "origem": "tests/test_integridade_pr06.py",
+   "blob_git": "0bbc3b877e05a5f03bc1d05e5924e056733bf397",
+   "sha256": "d468439174b90b16e885217a034b0ce7510fd7082fa68c307943d48a91a11edd",
+   "bytes": 14937
+  },
+  {
+   "destino": "tests/test_leitura.py",
+   "origem": "tests/test_leitura.py",
+   "blob_git": "c979dbb22bbdbbe2e7892d96f4c0014135014dda",
+   "sha256": "d5d28e191da8ab8fc88789717e96fcf0a1651c45d754665880ca1947f1701319",
+   "bytes": 22323
+  },
+  {
+   "destino": "tests/test_leitura_banco_revisao.py",
+   "origem": "tests/test_leitura_banco_revisao.py",
+   "blob_git": "246620a17ba6923cdd1f482108ad7217d71bc55f",
+   "sha256": "d3e27f9b7c36a37a062c3ebfc2f51f5d675f4463ff969a03da6be76c14eda10c",
+   "bytes": 31106
+  },
+  {
+   "destino": "tests/test_leitura_correcoes.py",
+   "origem": "tests/test_leitura_correcoes.py",
+   "blob_git": "41c3513513011661121e81e94a416e71f1a0e0b8",
+   "sha256": "796f07e06d93157aae642608c9103111acf91406613673948b6b27849c8dc1b2",
+   "bytes": 11205
+  },
+  {
+   "destino": "tests/test_limites_do_leitor.py",
+   "origem": "tests/test_limites_do_leitor.py",
+   "blob_git": "2100c60bf7b51eae36e73d5edad470c2990276d2",
+   "sha256": "f949c72f9f396a1b334299ee23624103183cf29138240f9d6b2fd0f6ff176779",
+   "bytes": 25996
+  },
+  {
+   "destino": "tests/test_lotes.py",
+   "origem": "tests/test_lotes.py",
+   "blob_git": "c07c6a7a45537691f5aca3a3655b7a68e1c99867",
+   "sha256": "d32378574ad1c760db7d1688669b4de6e9759ae9a595d1e45af2e64e30f65fbb",
+   "bytes": 16918
+  },
+  {
+   "destino": "tests/test_migracoes.py",
+   "origem": "tests/test_migracoes.py",
+   "blob_git": "c9fcc9e7aa1130d4cb1354caac72934b4b1d2fa8",
+   "sha256": "2f75c0ff36d87c0b75964c16ae6c450f1b117fdb1fba919e2b2686907e7cd12d",
+   "bytes": 9803
+  },
+  {
+   "destino": "tests/test_niveis_verticais_af.py",
+   "origem": "tests/test_niveis_verticais_af.py",
+   "blob_git": "9f73f7cb4a346f1aaab8b07882e3bcc6c02b1b49",
+   "sha256": "f1a7e6ebeae3ba0058e31e115c3884b8f5a61ab954033a5a6a30e8c5654381eb",
+   "bytes": 15003
+  },
+  {
+   "destino": "tests/test_nucleo.py",
+   "origem": "tests/test_nucleo.py",
+   "blob_git": "81485c3b9ff98eccad69ce39f1b5fbe591a391b6",
+   "sha256": "784b1c7774683d6d7321bb8fdd46023ac346ff7a879ce1f82e85135262054c1d",
+   "bytes": 7221
+  },
+  {
+   "destino": "tests/test_ocr_limite.py",
+   "origem": "tests/test_ocr_limite.py",
+   "blob_git": "b8a5a6ffdbe84cefe304b43a63491760e6ec3ef5",
+   "sha256": "a02a3dea117af81d5c3afbd270bf776b08a94d2fd9b9bbefc2ef904750241e0a",
+   "bytes": 4717
+  },
+  {
+   "destino": "tests/test_ocr_serie_processo.py",
+   "origem": "tests/test_ocr_serie_processo.py",
+   "blob_git": "e3b6a28bc90998f2d8ba186e5422e9368b4dc4a5",
+   "sha256": "0be81edbfe404dfe8d91b1ae66c30275eb0c2bab6855125c10eefb9766892fd0",
+   "bytes": 2378
+  },
+  {
+   "destino": "tests/test_operacao_snapshot_cli.py",
+   "origem": "tests/test_operacao_snapshot_cli.py",
+   "blob_git": "13add206329a2ce0ea06c26a3e4c5f30350962a4",
+   "sha256": "219d6146d7420690ba3fca04e75aaa6b000ab50c203bbe22af9757a802d5ccc0",
+   "bytes": 3038
+  },
+  {
+   "destino": "tests/test_paddle_complementar.py",
+   "origem": "tests/test_paddle_complementar.py",
+   "blob_git": "ac1db92e8d7e64423d2600d457a53418497c8f8a",
+   "sha256": "870a80423db76014ca2985682409c6c95be8bd9df925835e58d63e74239557b0",
+   "bytes": 13753
+  },
+  {
+   "destino": "tests/test_painel.py",
+   "origem": "tests/test_painel.py",
+   "blob_git": "c06b117fdeac85f052c95c6a6214b0e7a9a35da2",
+   "sha256": "5139b2045bdf6ded2643f038acfb0f515bd9a7f8284c5e4d5df5a1609bc4c79c",
+   "bytes": 20560
+  },
+  {
+   "destino": "tests/test_pdfs_dificeis.py",
+   "origem": "tests/test_pdfs_dificeis.py",
+   "blob_git": "dcc4a8df974a113e131c6deca0b5ed916afdd21e",
+   "sha256": "1464c611bdbc99e39d547bdb6c8a169f40f332f4a3274b2d7bff756943ff7177",
+   "bytes": 17197
+  },
+  {
+   "destino": "tests/test_ponta_a_ponta.py",
+   "origem": "tests/test_ponta_a_ponta.py",
+   "blob_git": "3cf53166a7707a64d61b4bf0bfc0d6d28283cb7b",
+   "sha256": "1feacd31c5e1cef89e02c84e5fac55273ea698b868fc71ae9eb9c5bb8cfe4679",
+   "bytes": 21644
+  },
+  {
+   "destino": "tests/test_privacidade_publica.py",
+   "origem": "tests/test_privacidade_publica.py",
+   "blob_git": "7ded8995d51299506cfe8720283d6a04adee5055",
+   "sha256": "79245fbbd9dc09963036fb40e806d108491579511a0e0854ca07bb31d2cc506b",
+   "bytes": 10477
+  },
+  {
+   "destino": "tests/test_reconciliacao_calculos_etapa4b.py",
+   "origem": "tests/test_reconciliacao_calculos_etapa4b.py",
+   "blob_git": "dd0c50bfd62f64dc901dd0eca5e329d8c1582d1e",
+   "sha256": "858fc938ab357ce5aca57f01dd526dfa25ca8a09472e95e915281db106673eb5",
+   "bytes": 71898
+  },
+  {
+   "destino": "tests/test_referencia_colunas.py",
+   "origem": "tests/test_referencia_colunas.py",
+   "blob_git": "045ddaabac5ed3794ae1d8eef6b220a2abda5ff6",
+   "sha256": "a0da2d4695622f4d734f0686c40297faf8c40d0badcaab850649b4ad91a989eb",
+   "bytes": 9292
+  },
+  {
+   "destino": "tests/test_regras_definitivas.py",
+   "origem": "tests/test_regras_definitivas.py",
+   "blob_git": "7983a3f957c6b72af12cebed4fe00a6ce77803c2",
+   "sha256": "80aebf956f9eb0959b79c7692483569e42d2b5363cd925a24867eb23f65a69ec",
+   "bytes": 13975
+  },
+  {
+   "destino": "tests/test_regressao_contornos_pr06.py",
+   "origem": "tests/test_regressao_contornos_pr06.py",
+   "blob_git": "412fb6fb2dbab0b998b3c3fbe996c0890e6a6607",
+   "sha256": "d935d43b6c90c5d00d55c062f42b781be668227c41a162c6c60b7f5b0efd5873",
+   "bytes": 5832
+  },
+  {
+   "destino": "tests/test_seguranca_privacidade_api.py",
+   "origem": "tests/test_seguranca_privacidade_api.py",
+   "blob_git": "94cb1d2dbcf5632994fbda363f0676622704bb90",
+   "sha256": "e2d7c2c0ccc08be4517476f808e908184615331402481d37fea4995c71588368",
+   "bytes": 51000
+  },
+  {
+   "destino": "tests/test_sincronizacao_sintetico_canonico.py",
+   "origem": "tests/test_sincronizacao_sintetico_canonico.py",
+   "blob_git": "1d68bef50cc83e720581d907405045e51e477815",
+   "sha256": "33f14a1f105572e0169a2e8dfc4575531e6097b6c49dbbff9fd324fd4e7855d2",
+   "bytes": 5368
+  },
+  {
+   "destino": "tests/test_uiux_perfis_rbac.py",
+   "origem": "tests/test_uiux_perfis_rbac.py",
+   "blob_git": "e03df77c882ab8e02ae431db91dd83c15a0bf106",
+   "sha256": "f3f7b641a434df58fff9b834fa176fdcb084cbb0694973da268b4cde2343fb15",
+   "bytes": 32427
+  },
+  {
+   "destino": "tests/textos_doe.py",
+   "origem": "tests/textos_doe.py",
+   "blob_git": "44dd424254c91ea269048fb10a12eed09d1dcc9d",
+   "sha256": "b8f2e79f127b0894b99c4c37251a4783b8bc0b775d0f7c65e14e79411fe963db",
+   "bytes": 5959
+  }
+ ],
+ "descartados": [
+  {
+   "origem": ".github/workflows/candidata-revisao-2910.yml",
+   "blob_git": "77e5e7053766b7b45ff3817888ab75b7a89bd39a",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": ".github/workflows/painel-publico.yml",
+   "blob_git": "fd16a4821ddd94dcd16a1ed03a98dec830ae261d",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "observatorio/painel/publicacao.py",
+   "blob_git": "ef7cafb52387f0c14b43386b872e599c687065ac",
+   "motivo": "F-08: gerador estático legado incompatível com o esquema SQLite v9."
+  },
+  {
+   "origem": "painel-publico/app.js",
+   "blob_git": "9765d493bc86b51a3928e66f8801cbfed755e200",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/calendario.css",
+   "blob_git": "c1fc62d77dd57d07b2e4ed28baa799c0c9254c38",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/calendario.js",
+   "blob_git": "b7d61659e76cfa5d8b6ffbb5e85f7614d3ea7647",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/dados.json",
+   "blob_git": "cabe195b517fe0a5f40e352c50bdbf8c25a542db",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/estilo.css",
+   "blob_git": "aa7f082a7d0ead6b4c5025a15c7257a1a90dcc92",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/index.html",
+   "blob_git": "2781e5cb74bd6ab9705093b26bde113357da504d",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/logo.png",
+   "blob_git": "ac1f0393b136244d59e8d7f3b2b85d465ee89102",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/modelo.js",
+   "blob_git": "fbfc008b6705c3305976d7bb54b62503f88dd181",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/pdf.js",
+   "blob_git": "920803ebe3b4c914f607f3dd26e065d77399b347",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-publico/xlsx.js",
+   "blob_git": "d8ffaeeb449acdcae10037937f9c70d03c49ac5b",
+   "motivo": "Interface pública legada substituída pelo Painel Unificado (observatorio/web/unificado)."
+  },
+  {
+   "origem": "painel-v2/admin-painel/admin.css",
+   "blob_git": "fac97d984aa7d8d21f7ae9a301aaccbb28082556",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/admin-painel/admin.js",
+   "blob_git": "d5cd44e65e851820924445b7302d64d24b8d06bb",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/admin-painel/config.json",
+   "blob_git": "874d534e64db673684eaf3549ad2cdd5d52c321d",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/admin-painel/index.html",
+   "blob_git": "fe048047a540a4a112ea51e4313741f9c3a3f066",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/app.js",
+   "blob_git": "2b1a34d43dace37ef87d37b13b16d736ba7bfedd",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/estado-site.json",
+   "blob_git": "4b512f8fd935891351232af43075e4c9038dcedd",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/estilo.css",
+   "blob_git": "72e346dec0dd2b82703287cee6d0d25d11e139b7",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/graficos.js",
+   "blob_git": "d51aab28ee9f8b2b46ca964a78962d8c2a51ec19",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "painel-v2/index.html",
+   "blob_git": "49b508ab852d55b882c03fbce264a462fc8c03d3",
+   "motivo": "Interface V2 legada substituída pelo Painel Unificado."
+  },
+  {
+   "origem": "revisao-2910/adapter.js",
+   "blob_git": "c23838c6ac3c6ba2295cc2e79b78f61d3763e16a",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/app.js",
+   "blob_git": "16bc90d9fe704120d250e44af565f5688b1fd8f4",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/config.js",
+   "blob_git": "7c750a2afe410a8269e760731f1ba68601ce6fe5",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/export.js",
+   "blob_git": "7e97b6796f0a0db69adda2bd5eee47d14487c161",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/index.html",
+   "blob_git": "6141f31de78a0de69dba3191e243be235a9209f4",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/logo.png",
+   "blob_git": "ac1f0393b136244d59e8d7f3b2b85d465ee89102",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/modelo.js",
+   "blob_git": "fbfc008b6705c3305976d7bb54b62503f88dd181",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/origem-visual.json",
+   "blob_git": "deb8f2fe2e91c7ec89a8aa1d6e7d0e88939ddda0",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "revisao-2910/styles.css",
+   "blob_git": "c50b7eb73765faa43cc2ba9d291d684d6336bdf2",
+   "motivo": "Referência visual 29/10 já incorporada ao Painel Unificado (docs/historico/28-integracao-revisao-2910.md)."
+  },
+  {
+   "origem": "scripts/preparar_github_pages.py",
+   "blob_git": "9c1a9bd03b1c232d9eaeef42a43f75ceaa94f6b2",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "scripts/preparar_homologacao.py",
+   "blob_git": "d70375d3cd1d965684e3f0903913bd494d33d096",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "scripts/preparar_painel_publico.py",
+   "blob_git": "d38da6fdcb9a93b6c49cd9c02573a0ace7a19a02",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "scripts/preparar_revisao_2910.py",
+   "blob_git": "be32cc3da2f173c8fd1b9c1682dcd12f2bf69db9",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "scripts/preparar_revisao_visual.py",
+   "blob_git": "579a8a70756f3d89dab1c2f046103988592f17d1",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_admin_painel.cjs",
+   "blob_git": "bbc1c77984b056d0a296d6c1cb03a8e7e04261e4",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_consulta_publica.cjs",
+   "blob_git": "ebbde36cba702710955087b4a7d6c23bf28babf7",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_contraste_renderizado.cjs",
+   "blob_git": "4a62e6e28ca52a288e85a21113211897e607e791",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_design_clareza.cjs",
+   "blob_git": "5f56c851e8fad6e3b831df46ef38d52be3f2a08c",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_distribuicao_publica.py",
+   "blob_git": "38909e5042f21b0f1c2825f12735e89cdd24b442",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_exportacao_publica.cjs",
+   "blob_git": "ad9457c5f45a2bcd71d87222b82a01fdfde9864b",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_homologacao_navegador.cjs",
+   "blob_git": "ad66cb71c5e554c43b5041465ae757fde7022eaf",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_interface_publica.cjs",
+   "blob_git": "03310555ede007acd365a4f49dfe38bab8791d5b",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_painel_v2.cjs",
+   "blob_git": "ee443f9bc3032ef5cc4e3c88fddef1173542d024",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_pdf_publico.cjs",
+   "blob_git": "f5ffa4b0c58f67e35908b872c494cd996d9a64ac",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_preparacao_github_pages.py",
+   "blob_git": "402a8d10ef77cd053912535e49fd77643c774919",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_publicacao_painel.py",
+   "blob_git": "b85be4bb76573daeca6c49b5053043a2cd86ccb2",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_revisao_2910.cjs",
+   "blob_git": "c7af80a83e5402a4ec11e1c80668c289247d9d84",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_revisao_2910_browser.cjs",
+   "blob_git": "c974bfe9d57d4ce08e3328cb511557cb6248698a",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  },
+  {
+   "origem": "tests/test_tarefas_clareza.cjs",
+   "blob_git": "afce0aefdb5f236416dd10266b1ac366d4ad9614",
+   "motivo": "Componente/teste exclusivo de interface legada ou do gerador legado descartado."
+  }
+ ]
+}

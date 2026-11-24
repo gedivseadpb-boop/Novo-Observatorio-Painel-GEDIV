@@ -1,0 +1,41 @@
+name: Testes
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ${{ matrix.sistema }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        sistema: [ubuntu-24.04, windows-latest]
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Tesseract com idioma português (OCR)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-por
+      - name: Bibliotecas da leitura de PDF
+        run: python -m pip install -r requirements-dev.txt
+      - name: Testes automatizados (sem acesso à internet)
+        run: python -m unittest discover -s tests -t . -v
+      - uses: actions/setup-node@v7
+        if: matrix.python == '3.13'
+        with:
+          node-version: "20"
+      - name: Testes da interface (Node)
+        if: matrix.python == '3.13'
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test

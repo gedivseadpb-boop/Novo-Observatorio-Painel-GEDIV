@@ -1,0 +1,36 @@
+# Documentos e dados que nunca devem ser versionados
+*.pdf
+entrada-pdfs/
+storage/
+output/
+private/
+*.fernet
+estado*.json
+!painel-v2/estado-site.json
+liberacoes*.json
+
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Python / Node
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+
+# Dados locais do observatório
+dados/
+*.sqlite3
+sonda.json
+
+# Bases de demonstração e exportações locais
+dados-*/
+*.xlsx
+*.csv
+
+# Amostras privadas de conferência (contêm dados pessoais)
+amostra*.txt
+validacao-real*.json
+!docs/evidencias/**/validacao-real*.json

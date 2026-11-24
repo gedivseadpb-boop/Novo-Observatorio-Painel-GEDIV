@@ -1,0 +1,86 @@
+name: Coleta diária do DOE-PB
+
+# Alimentação automática a partir da fonte oficial (A União: /doe e /servicos/doe), todos os dias,
+# inclusive fins de semana e feriados, às 09h e 14h de Brasília.
+#
+# - Executor: variável do repositório GEDIV_RUNNER (ex.: "gediv-br", rótulo de um runner próprio
+#   na rede da SEAD). Sem ela, usa um executor hospedado do GitHub, que serve de SONDA: a fonte
+#   oficial historicamente recusa conexões vindas desses executores (ver docs/BLOQUEIOS.md).
+# - Rotina completa (coleta, leitura, OCR, classificação, backup, candidato a snapshot): somente
+#   quando a variável GEDIV_DADOS_DIR aponta para um diretório PERSISTENTE e privado no executor.
+#   Bancos, PDFs e backups nunca entram no Git nem em artefatos do GitHub.
+# - Falha de acesso à fonte deixa o workflow vermelho: o GitHub avisa o responsável por e-mail.
+on:
+  schedule:
+    - cron: "4 12 * * *"   # 09:04 America/Sao_Paulo (UTC-3)
+    - cron: "4 17 * * *"   # 14:04 America/Sao_Paulo (UTC-3)
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/coleta-diaria.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: coleta-doe-pb
+  cancel-in-progress: false
+
+jobs:
+  coleta:
+    runs-on: ${{ vars.GEDIV_RUNNER || 'ubuntu-24.04' }}
+    timeout-minutes: 90
+    env:
+      TZ: America/Sao_Paulo
+      PYTHONIOENCODING: utf-8
+      GEDIV_DADOS_DIR: ${{ vars.GEDIV_DADOS_DIR }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        if: runner.environment == 'github-hosted'
+        with:
+          python-version: "3.13"
+      - name: Dependências (executor hospedado)
+        if: runner.environment == 'github-hosted'
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-por
+          python -m pip install -q -r requirements.txt
+      - name: Sonda oficial (descoberta + download + SHA-256 + estrutura do PDF, sem guardar o arquivo)
+        id: sonda
+        run: |
+          set +e
+          python -m observatorio.operacao sonda --fonte auniao --saida sonda-doe.json
+          rc=$?
+          set -e
+          echo "codigo=$rc" >> "$GITHUB_OUTPUT"
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          r = json.load(open("sonda-doe.json", encoding="utf-8"))
+          print("## Sonda oficial do DOE-PB")
+          print(f"- Situação: **{r.get('situacao')}**")
+          print(f"- Listagem: {(r.get('listagem') or {}).get('url')} → {(r.get('listagem') or {}).get('erro') or (r.get('listagem') or {}).get('status')}")
+          ed = r.get("edicao") or {}
+          print(f"- Edição mais recente: {ed.get('data')} {ed.get('url_oficial') or ''}")
+          for t in r.get("tentativas", []):
+              print(f"- Download: {t.get('url')} → {t.get('erro') or t.get('integridade')} sha256={t.get('sha256')} páginas={t.get('paginas')}")
+          PY
+      - name: Rotina completa (somente com diretório de dados persistente e privado)
+        if: env.GEDIV_DADOS_DIR != '' && steps.sonda.outputs.codigo == '0'
+        run: |
+          APP_DIR="$GITHUB_WORKSPACE" DADOS_DIR="$GEDIV_DADOS_DIR" BACKUP_DIR="$GEDIV_DADOS_DIR/../backups" \
+          PYTHON_BIN="$(command -v python)" LOCK_ARQ="$GEDIV_DADOS_DIR/.gediv-coleta.lock" \
+          bash deploy_autonomo/rodar_diario.sh
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sonda-doe-${{ github.run_id }}
+          path: sonda-doe.json
+          retention-days: 30
+      - name: Resultado (vermelho = fonte oficial não alcançada; o GitHub avisa por e-mail)
+        if: steps.sonda.outputs.codigo != '0'
+        run: |
+          echo "A fonte oficial não foi alcançada a partir deste executor (código ${{ steps.sonda.outputs.codigo }})."
+          echo "Sem coleta real nesta execução. Ver docs/BLOQUEIOS.md (B-01) para o executor na rede institucional."
+          exit 1

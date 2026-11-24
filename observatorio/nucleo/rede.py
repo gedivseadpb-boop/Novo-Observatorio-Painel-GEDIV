@@ -11,7 +11,10 @@ Regras aplicadas a toda requisição:
 - HTTP 206 (conteúdo parcial) nunca é tratado como arquivo inteiro: o coletor não pede intervalos, e uma resposta 206
   só é aceita se o Content-Range cobrir o arquivo todo (bytes 0-N/N+1) e os bytes recebidos fecharem com ele.
   Outros 2xx que não 200 são recusados;
-- cada falha recebe uma categoria, para que o diagnóstico não dependa de texto livre.
+- cada falha recebe uma categoria, para que o diagnóstico não dependa de texto livre;
+- (F-02) quando a política traz um `autorizar`, ele é consultado ANTES de cada salto, inclusive em cada destino de
+  redirecionamento: é assim que as regras do robots.txt valem por URL e por autoridade em toda requisição
+  (listagens, PDFs, sondas), e não só na primeira listagem.
 
 A validação TLS é sempre a padrão do Python; não há opção para desativá-la.
 """
@@ -25,9 +28,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import urllib.robotparser
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
+from typing import Callable
 
-AGENTE = "ObservatorioGEDIV/0.1 (+https://github.com/gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE)"
+AGENTE = "ObservatorioGEDIV/0.2 (+https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV)"
 _SEGUROS = "/%@:+,;=~!$&'()*-._"
 
 
@@ -60,6 +64,8 @@ class Politica:
     pausa: float = 1.0  # cortesia entre requisições à mesma fonte
     max_redirecionamentos: int = 5
     agente: str = AGENTE
+    # F-02: chamado com a URL de CADA salto antes da requisição; levanta ErroRede para impedir o acesso.
+    autorizar: Callable[[str], None] | None = field(default=None, compare=False, hash=False, repr=False)
 
 
 @dataclass
@@ -131,6 +137,8 @@ def _uma_requisicao(url: str, politica: Politica) -> Resposta:
     atual = normalizar(url)
     for _ in range(politica.max_redirecionamentos + 1):
         validar(atual, politica)
+        if politica.autorizar is not None:
+            politica.autorizar(atual)
         pedido = urllib.request.Request(atual, headers={"User-Agent": politica.agente, "Accept": "*/*"})
         inicio = time.monotonic()
         try:
@@ -220,7 +228,7 @@ def consultar_robots(url_base: str, politica: Politica) -> tuple[str, urllib.rob
     p = urllib.parse.urlsplit(url_base)
     endereco = f"{p.scheme}://{p.netloc}/robots.txt"
     try:
-        resposta = obter(endereco, politica)
+        resposta = obter(endereco, replace(politica, autorizar=None))   # o próprio robots.txt é sempre consultável
     except ErroRede as e:
         if e.categoria in ("HTTP_404", "HTTP_410"):
             return "AUSENTE", None
@@ -233,3 +241,46 @@ def consultar_robots(url_base: str, politica: Politica) -> tuple[str, urllib.rob
     regras = urllib.robotparser.RobotFileParser()
     regras.parse(conteudo.splitlines())
     return "LIDO", regras
+
+
+class AutorizadorRobots:
+    """F-02: aplica o robots.txt a TODA URL requisitada, por autoridade (servidor), conforme a RFC 9309.
+
+    - LIDO: só segue se `can_fetch` permitir a URL exata (categoria ROBOTS_RESTRINGE em caso contrário);
+    - AUSENTE (404/410) ou NAO_E_ROBOTS: sem restrições declaradas;
+    - RECUSADO (outro 4xx): a fonte negou a consulta; nada é acessado (ROBOTS_RECUSADO);
+    - INACESSIVEL (5xx, rede): a RFC 9309 manda presumir proibição total; nada é acessado (ROBOTS_INACESSIVEL),
+      sem suspender a fonte (é transitório).
+    As regras de cada servidor são lidas uma vez por execução. `ao_recusar(categoria, detalhe)` permite à guarda da
+    fonte registrar a suspensão auditada.
+    """
+
+    def __init__(self, politica: Politica, ao_recusar: Callable[[str, str], None] | None = None):
+        self.politica = replace(politica, autorizar=None)
+        self.ao_recusar = ao_recusar
+        self.situacoes: dict[str, tuple[str, urllib.robotparser.RobotFileParser | None]] = {}
+        self.negadas: list[str] = []
+
+    def situacao(self, url: str) -> tuple[str, urllib.robotparser.RobotFileParser | None]:
+        p = urllib.parse.urlsplit(url)
+        autoridade = f"{p.scheme}://{p.netloc}"
+        if autoridade not in self.situacoes:
+            self.situacoes[autoridade] = consultar_robots(url, self.politica)
+        return self.situacoes[autoridade]
+
+    def __call__(self, url: str) -> None:
+        situacao, regras = self.situacao(url)
+        if situacao == "RECUSADO":
+            self.negadas.append(url)
+            if self.ao_recusar:
+                self.ao_recusar("ROBOTS_RECUSADO", f"consulta ao robots.txt recusada pela fonte ({url})")
+            raise ErroRede("ROBOTS_RECUSADO", url)
+        if situacao == "INACESSIVEL":
+            self.negadas.append(url)
+            raise ErroRede("ROBOTS_INACESSIVEL", f"{url} (RFC 9309: robots.txt inacessível = acesso não permitido)")
+        if situacao == "LIDO" and regras is not None and not regras.can_fetch(self.politica.agente, url):
+            self.negadas.append(url)
+            raise ErroRede("ROBOTS_RESTRINGE", url)
+
+    def politica_com_guarda(self, politica: Politica) -> Politica:
+        return replace(politica, autorizar=self)

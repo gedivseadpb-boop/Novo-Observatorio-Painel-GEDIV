@@ -6,7 +6,7 @@ set -euo pipefail
 #   trava flock -> aviso informativo de feriado -> coleta DOE-PB (A União + complementar)
 #   -> extração/OCR/classificação -> backup SQLite íntegro -> projeção pública sanitizada.
 #
-# Repositório canônico único: gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE.
+# Repositório canônico único: gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV.
 # Conexão obsoleta com gediv-painel-redesign-preview foi REMOVIDA para impedir publicação indevida.
 
 export TZ="${TZ:-America/Sao_Paulo}"
@@ -57,6 +57,23 @@ set -e
 if [ "$RC_COLETA" -ne 0 ] && [ "$RC_COLETA" -ne 3 ]; then
   echo "ERRO: coleta retornou código $RC_COLETA (4 = fonte inacessível/bloqueio; 1/2 = falha). Abortando sem simular sucesso."
   exit "$RC_COLETA"
+fi
+
+# F-03: reverificação DELIMITADA das publicações recentes já baixadas (URL estável com bytes trocados vira nova versão;
+# a versão anterior nunca é apagada). Janela curta e limite de downloads para respeitar a fonte.
+REVERIFICAR_DIAS="${REVERIFICAR_DIAS:-1}"
+REVERIFICAR_LIMITE="${REVERIFICAR_LIMITE:-6}"
+if [ "$REVERIFICAR_DIAS" -gt 0 ] && [ "$RC_COLETA" -eq 0 ]; then
+  INICIO_REVER="$(date -d "$REVERIFICAR_DIAS days ago" +%F)"
+  echo "[1b/6] Reverificando publicações já baixadas de $(date -d "$REVERIFICAR_DIAS days ago" +%d/%m/%Y) até $DATA_HOJE_BR (limite $REVERIFICAR_LIMITE)..."
+  set +e
+  "$PYTHON_BIN" -m observatorio.operacao coletar-intervalo --reverificar --inicio "$INICIO_REVER" --fim "$DATA_HOJE" \
+    --limite "$REVERIFICAR_LIMITE" --dados "$DADOS_DIR"
+  RC_REVER=$?
+  set -e
+  if [ "$RC_REVER" -ne 0 ] && [ "$RC_REVER" -ne 3 ]; then
+    echo "[AVISO] Reverificação retornou código $RC_REVER; as versões já guardadas permanecem intactas."
+  fi
 fi
 
 echo "[2/6] Executando extração, OCR (quando necessário) e classificação GEDIV (somente pendentes/novos)..."

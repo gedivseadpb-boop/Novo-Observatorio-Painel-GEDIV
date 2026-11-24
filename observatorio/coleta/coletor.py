@@ -43,6 +43,7 @@ class Guarda:
     def __init__(self, banco: B.Banco, sigla: str):
         self.banco, self.sigla = banco, sigla
         self.requisicoes_evitadas = 0
+        self._robots_lidos: dict = {}
         vigente = banco.suspensao_vigente(sigla)
         self.motivo = f"{vigente['categoria']} (suspensa desde {vigente['desde']} até {vigente['ate']})" if vigente else None
 
@@ -76,12 +77,22 @@ class Guarda:
             self.observar(e)
             raise
 
+    def politica_protegida(self, politica: rede.Politica) -> rede.Politica:
+        """F-02: a mesma política com o robots.txt aplicado a CADA URL e a cada destino de redirecionamento.
+        Recusa da consulta ao robots.txt suspende a fonte (auditado); proibição de uma URL só impede aquela URL."""
+        autorizador = rede.AutorizadorRobots(politica, ao_recusar=lambda categoria, detalhe: self.suspender(categoria, detalhe))
+        autorizador.situacoes.update(self._robots_lidos)          # reaproveita o robots.txt já lido nesta execução
+        self.autorizador = autorizador
+        return autorizador.politica_com_guarda(politica)
+
     def robots(self, url: str, politica: rede.Politica) -> tuple[str, object]:
         """Consulta o robots.txt pela guarda. Proibição ou recusa (4xx exceto 404/410) suspendem a fonte."""
         if self.suspensa:
             self.requisicoes_evitadas += 1
             return "FONTE_SUSPENSA", None
         situacao, regras = rede.consultar_robots(url, politica)
+        partes = urllib.parse.urlsplit(url)
+        self._robots_lidos[f"{partes.scheme}://{partes.netloc}"] = (situacao, regras)
         if situacao == "RECUSADO":
             self.suspender("ROBOTS_RECUSADO", f"consulta ao robots.txt recusada pela fonte ({url})")
         elif regras is not None and not regras.can_fetch(politica.agente, url):
@@ -475,6 +486,8 @@ def _coletar_fonte(fonte, banco: B.Banco, acervo: Acervo, inicio: date, fim: dat
     if guarda.suspensa:
         parte["suspensa"] = guarda.motivo
         return parte
+    if respeitar_robots:
+        p = guarda.politica_protegida(p)           # F-02: robots.txt por URL em listagens, PDFs e redirecionamentos
     if usar_recentes:
         parte["recentes"] = descobrir_recentes(fonte, banco, p, inicio=inicio, fim=fim, guarda=guarda)
     for ano, mes in meses(inicio, fim):
@@ -486,6 +499,8 @@ def _coletar_fonte(fonte, banco: B.Banco, acervo: Acervo, inicio: date, fim: dat
                                           simular=simular, transporte=transporte, guarda=guarda)
     parte["suspensa"] = guarda.motivo
     parte["requisicoes_evitadas_por_suspensao"] = guarda.requisicoes_evitadas
+    if getattr(guarda, "autorizador", None) is not None:
+        parte["urls_negadas_por_robots"] = len(guarda.autorizador.negadas)
     return parte
 
 

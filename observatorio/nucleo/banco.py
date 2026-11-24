@@ -1378,9 +1378,13 @@ class Banco:
                     por_processo.setdefault(_normalizar_chave(b["processo"]), []).append(b)
                 if _normalizar_chave(b["matricula"]):
                     por_matricula.setdefault(_normalizar_chave(b["matricula"]), []).append(b)
-            for outra in instancias:
-                if outra["id"] == principal["id"]:
-                    continue
+            # F-01: um acréscimo ausente na principal mas presente em várias versões mais novas tem UMA representação
+            # vigente (a da versão mais nova); as demais cópias apontam para ela. Por isso as outras representações são
+            # percorridas da mais nova para a mais antiga.
+            acrescimo_proc, acrescimo_mat = {}, {}
+            outras = sorted((i for i in instancias if i["id"] != principal["id"]),
+                            key=lambda i: (i["guardado_em"], i["id"]), reverse=True)
+            for outra in outras:
                 mais_nova = (outra["guardado_em"], outra["id"]) >= (principal["guardado_em"], principal["id"])
                 encontradas = set()
                 for d in self.con.execute("SELECT * FROM decisao WHERE ato_id = ? ORDER BY rowid", (outra["id"],)).fetchall():
@@ -1402,7 +1406,26 @@ class Banco:
                         continue
                     if alvo is None:
                         if mais_nova:
+                            ja = (acrescimo_proc.get(proc) if proc else None) or (acrescimo_mat.get(mat) if mat else None)
+                            if ja is not None and ja != d["id"]:
+                                revisada_ja = self.con.execute("SELECT validacao FROM decisao WHERE id = ?", (ja,)).fetchone()[0]
+                                if d["validacao"] != "PENDENTE" and revisada_ja == "PENDENTE":
+                                    # A revisão humana prevalece: a cópia revisada passa a ser a representação vigente.
+                                    self.con.execute("UPDATE decisao SET vigente = 0, representada_por = ? "
+                                                     "WHERE id = ? OR representada_por = ?", (d["id"], ja, ja))
+                                    self.con.execute("UPDATE decisao SET vigente = 1, representada_por = NULL WHERE id = ?", (d["id"],))
+                                    for registro in (acrescimo_proc, acrescimo_mat):
+                                        for k, v in list(registro.items()):
+                                            if v == ja:
+                                                registro[k] = d["id"]
+                                else:
+                                    self.con.execute("UPDATE decisao SET vigente = 0, representada_por = ? WHERE id = ?", (ja, d["id"]))
+                                continue
                             self.con.execute("UPDATE decisao SET vigente = 1, representada_por = NULL WHERE id = ?", (d["id"],))
+                            if proc:
+                                acrescimo_proc.setdefault(proc, d["id"])
+                            if mat:
+                                acrescimo_mat.setdefault(mat, d["id"])
                         else:
                             self.con.execute("UPDATE decisao SET vigente = 0, representada_por = NULL WHERE id = ?", (d["id"],))
                             self._conflito("decisao", d["id"], "vigencia", "fora dos indicadores",

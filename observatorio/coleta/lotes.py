@@ -141,6 +141,7 @@ def executar_lote(fonte, banco: B.Banco, acervo: Acervo, tipo: str, parametros: 
         if situacao == "RECUSADO":
             # A própria consulta ao robots.txt foi negada (403/429): não se presume permissão.
             return {"executado": False, "motivo": "ROBOTS_RECUSADO_PELA_FONTE"}
+        p = guarda.politica_protegida(p)           # F-02: robots.txt por URL também nos downloads do lote
     itens = (selecionar_piloto(banco, fonte.sigla, parametros) if tipo == PILOTO
              else selecionar_historico(banco, fonte.sigla, parametros, mes))
     if not itens:

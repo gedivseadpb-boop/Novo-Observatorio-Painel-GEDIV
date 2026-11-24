@@ -47,6 +47,8 @@ def sonda(sigla: str = "auniao", hashes_conhecidos: dict[str, str] | None = None
     """
     fonte = fonte or FONTES[sigla]()
     p = coletor.politica_da(fonte, politica or rede.Politica(servidores=frozenset(), tentativas=2, tempo_limite=40))
+    autorizador = rede.AutorizadorRobots(p)
+    p = autorizador.politica_com_guarda(p)         # F-02: a sonda obedece ao mesmo robots.txt por URL que a coleta
     relatorio = {"fonte": fonte.sigla, "inicio_utc": _agora(), "ambiente": ambiente(), "versao_coletor": coletor.VERSAO_COLETOR,
                  "listagem": None, "edicao": None, "tentativas": [], "situacao": None}
     if not hasattr(fonte, "url_recentes"):

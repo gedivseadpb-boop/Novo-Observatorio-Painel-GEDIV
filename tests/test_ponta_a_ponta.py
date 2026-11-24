@@ -65,7 +65,7 @@ class TesteFluxoCompleto(unittest.TestCase):
 
     def test_4_revisao_e_api_entregam_os_sete_indicadores(self):
         from observatorio.operacao import demonstracao
-        from observatorio.web.servidor import criar_servidor
+        from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor  # F-04: promoção explícita
         demonstracao.criar(self.pasta, conferir=True)
         servidor = criar_servidor(self.pasta, "credencial-de-teste-0123456789", porta=0)
         threading.Thread(target=servidor.serve_forever, daemon=True).start()

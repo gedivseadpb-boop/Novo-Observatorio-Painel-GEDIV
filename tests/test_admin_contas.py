@@ -10,7 +10,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from observatorio.web import contas as K
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor  # F-04: promoção explícita
 from tests import test_painel as TP
 
 SENHA = "senha-de-teste-forte-123"
@@ -118,7 +118,7 @@ class TesteServidorAdmin(TP.Base):
             return e.code, dict(e.headers), e.read()
 
     def entrar(self, senha=SENHA, usuario="maria.silva"):
-        return self.pedir("/api/login", corpo={"usuario": usuario, "senha": senha})
+        return self.pedir("/api/login", corpo={"usuario": usuario, "senha": senha, "modo_token": True})
 
     def test_login_sessao_e_saida(self):
         status, _, corpo = self.entrar()

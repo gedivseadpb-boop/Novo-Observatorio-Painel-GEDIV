@@ -163,7 +163,7 @@ class TesteAPIPrivacidade(TP.Base):
                 self.assertEqual(status, 200)
                 self.assertIn("MARCADOR-PRIVADO-7731", corpo.decode("utf-8"))
         Contas(self.pasta / "contas.sqlite3").criar("adm.priv", "Admin Priv", "SenhaAdmPriv#2026", papel="admin")
-        _, _, body_login = self.pedir("/api/login", corpo={"usuario": "adm.priv", "senha": "SenhaAdmPriv#2026"})
+        _, _, body_login = self.pedir("/api/login", corpo={"usuario": "adm.priv", "senha": "SenhaAdmPriv#2026", "modo_token": True})
         tok_adm = json.loads(body_login)["token"]
         status, _, corpo = self.pedir("/api/auditoria", tok_adm)
         self.assertEqual(status, 200)

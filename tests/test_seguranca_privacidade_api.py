@@ -25,6 +25,7 @@ from observatorio.nucleo.banco import Banco
 from observatorio.painel import adaptador, indicadores
 from observatorio.web.contas import Contas
 from observatorio.web.servidor import POLITICA_PRODUCAO, criar_servidor, validar_ambiente_producao
+from tests.apoio_snapshot import promover_snapshot
 
 
 def _http(url: str, token: str | None = None, payload: dict | None = None, headers: dict | None = None, method: str | None = None):
@@ -196,6 +197,7 @@ class TestSegurancaPrivacidadeAPI(unittest.TestCase):
         contas.criar("adm1.gediv", "Admin Geral", "SenhaAdm1#2026", papel="admin")
 
         self.token_legado = "token-legado-super-seguro-32-caracteres-2026"
+        promover_snapshot(self.pasta)  # F-04: promoção explícita antes da consulta pública
         self.srv = criar_servidor(
             self.pasta,
             self.token_legado,
@@ -209,7 +211,7 @@ class TestSegurancaPrivacidadeAPI(unittest.TestCase):
         self.base = f"http://127.0.0.1:{self.srv.server_address[1]}"
 
     def _login(self, usuario: str, senha: str) -> tuple[str, str]:
-        st, hdrs, body = _http(f"{self.base}/api/login", payload={"usuario": usuario, "senha": senha})
+        st, hdrs, body = _http(f"{self.base}/api/login", payload={"usuario": usuario, "senha": senha, "modo_token": True})
         self.assertEqual(st, 200, body)
         cookie = (hdrs.get("Set-Cookie") or "").split(";", 1)[0]
         return json.loads(body)["token"], cookie
@@ -378,7 +380,7 @@ class TestSegurancaPrivacidadeAPI(unittest.TestCase):
         # Bloqueia /api/login vindo de origem não autorizada ou cross-site sem origem autorizada
         st_log_bad, _, _ = _http(
             f"{self.base}/api/login",
-            payload={"usuario": "ger1.gediv", "senha": "SenhaGer1#2026"},
+            payload={"usuario": "ger1.gediv", "senha": "SenhaGer1#2026", "modo_token": True},
             headers={"Origin": "https://atacante.example", "Sec-Fetch-Site": "cross-site"},
         )
         self.assertEqual(st_log_bad, 403)
@@ -386,7 +388,7 @@ class TestSegurancaPrivacidadeAPI(unittest.TestCase):
         # Permite /api/login vindo da origem explicitamente configurada em --origem-admin
         st_log_cors, hdrs_cors, _ = _http(
             f"{self.base}/api/login",
-            payload={"usuario": "ger1.gediv", "senha": "SenhaGer1#2026"},
+            payload={"usuario": "ger1.gediv", "senha": "SenhaGer1#2026", "modo_token": True},
             headers={"Origin": "https://admin-oficial.exemplo.gov.br", "Sec-Fetch-Site": "cross-site"},
         )
         self.assertEqual(st_log_cors, 200)
@@ -500,10 +502,10 @@ class TestSegurancaPrivacidadeAPI(unittest.TestCase):
             self.addCleanup(srv.shutdown)
             base_seq = f"http://127.0.0.1:{srv.server_address[1]}"
 
-            st_g, _, body_g = _http(f"{base_seq}/api/login", payload={"usuario": "ger.seq", "senha": "SenhaSeq#2026"})
+            st_g, _, body_g = _http(f"{base_seq}/api/login", payload={"usuario": "ger.seq", "senha": "SenhaSeq#2026", "modo_token": True})
             self.assertEqual(st_g, 200)
             tok_ger = json.loads(body_g)["token"]
-            st_a, _, body_a = _http(f"{base_seq}/api/login", payload={"usuario": "adm.seq", "senha": "SenhaAdm#2026"})
+            st_a, _, body_a = _http(f"{base_seq}/api/login", payload={"usuario": "adm.seq", "senha": "SenhaAdm#2026", "modo_token": True})
             self.assertEqual(st_a, 200)
             tok_adm = json.loads(body_a)["token"]
 
@@ -674,13 +676,15 @@ class TestSegurancaPrivacidadeAPI(unittest.TestCase):
             self.assertEqual(st_so, 200)
             self.assertNotIn("token", json.loads(body_so))
 
+            # F-10: sob GEDIV_LOGIN_SOMENTE_COOKIE=1 nem a origem CORS autorizada recebe token no JSON,
+            # mesmo pedindo explicitamente `modo_token`.
             st_co, _, body_co = _http(
                 f"{self.base}/api/login",
-                payload={"usuario": "ger1.gediv", "senha": "SenhaGer1#2026"},
+                payload={"usuario": "ger1.gediv", "senha": "SenhaGer1#2026", "modo_token": True},
                 headers={"Origin": "https://admin-oficial.exemplo.gov.br", "Sec-Fetch-Site": "cross-site"},
             )
             self.assertEqual(st_co, 200)
-            self.assertIn("token", json.loads(body_co))
+            self.assertNotIn("token", json.loads(body_co))
         finally:
             if antigo is None:
                 os.environ.pop("GEDIV_LOGIN_SOMENTE_COOKIE", None)

@@ -286,34 +286,28 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
                 raise Erro(403, "permissão administrativa necessária")
 
         def _obter_snapshot_publico(self, banco: Banco) -> dict:
-            """Devolve o snapshot público congelado e validado (`snapshot_publico.json`).
-            Confirmações unitárias em `POST /api/revisao` não alteram este snapshot até nova publicação.
-            Com `GEDIV_EXIGIR_SNAPSHOT_PUBLICO=1`, falha de forma fechada (503) se o arquivo estiver ausente."""
-            if caminho_snapshot_publico.is_file():
-                try:
-                    mtime_ns = caminho_snapshot_publico.stat().st_mtime_ns
-                    if _cache_snapshot_publico["snap"] is not None and _cache_snapshot_publico["mtime_ns"] == mtime_ns:
-                        return _cache_snapshot_publico["snap"]  # type: ignore[return-value]
-                    snap = indicadores.carregar_snapshot_publico(caminho_snapshot_publico)
-                    if snap is not None:
-                        _cache_snapshot_publico["mtime_ns"] = mtime_ns
-                        _cache_snapshot_publico["snap"] = snap
-                        return snap
-                except Exception:
-                    if _cache_snapshot_publico["snap"] is not None:
-                        return _cache_snapshot_publico["snap"]  # type: ignore[return-value]
-                    raise Erro(503, "snapshot público inválido ou indisponível")
-            if _cache_snapshot_publico["snap"] is not None:
-                return _cache_snapshot_publico["snap"]  # type: ignore[return-value]
-            if os.environ.get("GEDIV_EXIGIR_SNAPSHOT_PUBLICO") == "1":
-                raise Erro(503, "snapshot público ainda não publicado")
+            """Devolve o snapshot público PROMOVIDO e validado (`snapshot_publico.json`).
+
+            F-04: a consulta pública nunca publica nem reaproveita dado antigo. Arquivo ausente (retirado/revogado) ou
+            inválido => 503 imediato e cache descartado. A promoção é sempre um ato explícito e auditado
+            (`POST /api/admin/snapshot-publico` ou `python -m observatorio.operacao promover-snapshot-publico`)."""
             try:
-                snap = indicadores.publicar_snapshot_publico(banco, caminho_snapshot_publico)
-                _cache_snapshot_publico["mtime_ns"] = caminho_snapshot_publico.stat().st_mtime_ns
-                _cache_snapshot_publico["snap"] = snap
-                return snap
+                mtime_ns = caminho_snapshot_publico.stat().st_mtime_ns
             except OSError:
-                raise Erro(503, "snapshot público indisponível para gravação")
+                _cache_snapshot_publico["mtime_ns"] = _cache_snapshot_publico["snap"] = None
+                raise Erro(503, "snapshot público não publicado ou revogado")
+            if _cache_snapshot_publico["snap"] is not None and _cache_snapshot_publico["mtime_ns"] == mtime_ns:
+                return _cache_snapshot_publico["snap"]  # type: ignore[return-value]
+            _cache_snapshot_publico["mtime_ns"] = _cache_snapshot_publico["snap"] = None
+            try:
+                snap = indicadores.carregar_snapshot_publico(caminho_snapshot_publico)
+            except Exception:
+                snap = None
+            if snap is None:
+                raise Erro(503, "snapshot público inválido ou indisponível")
+            _cache_snapshot_publico["mtime_ns"] = mtime_ns
+            _cache_snapshot_publico["snap"] = snap
+            return snap
 
         def _enviar(self, status: int, corpo: bytes, tipo: str, extras: dict | None = None) -> None:
             self.send_response(status)
@@ -534,6 +528,14 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
             return p
 
         def _post(self, banco: Banco) -> None:
+            def _confirmacao(p: dict, chave: str) -> bool:
+                """F-05: confirmação documental só vale como booleano JSON literal. Ausente = False; qualquer outro
+                tipo ("false", 1, "sim", []) é recusado com 400 antes de tocar no banco."""
+                valor = p.get(chave, False)
+                if not isinstance(valor, bool):
+                    raise Erro(400, f"'{chave}' deve ser booleano (true/false)")
+                return valor
+
             rota = urlsplit(self.path).path
             if rota == "/api/login":
                 self._verificar_origem_post(exigir_cabecalho=False)
@@ -544,9 +546,12 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
                     raise Erro(401, "usuário ou senha inválidos, ou acesso bloqueado temporariamente")
                 with banco.con:
                     banco.auditar(f"{sessao['nome']} ({sessao['usuario']})", "ENTRAR", "sessao", sessao["usuario"], None, None, None)
-                somente_cookie = bool(p.get("modo_cookie") is True) or (
-                    os.environ.get("GEDIV_LOGIN_SOMENTE_COOKIE") == "1"
-                    and self._origem_permitida() is None
+                # F-10: por padrão o token NUNCA volta no corpo JSON (só no cookie HttpOnly). Clientes técnicos
+                # legados precisam pedir explicitamente `modo_token: true`; GEDIV_LOGIN_SOMENTE_COOKIE=1 proíbe até isso.
+                somente_cookie = (
+                    p.get("modo_token") is not True
+                    or p.get("modo_cookie") is True
+                    or os.environ.get("GEDIV_LOGIN_SOMENTE_COOKIE") == "1"
                 )
                 resposta_login = (
                     {k: v for k, v in sessao.items() if k != "token"} | {"autenticacao": "cookie_httponly"}
@@ -610,6 +615,26 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
                     "indicadores": snap["painel"]["indicadores"],
                     "revision": snap["data"]["dashboard"]["revision"],
                 })
+            if rota == "/api/admin/snapshot-publico/revogar":
+                # F-04: retirada imediata e auditada; a consulta pública responde 503 a partir da próxima requisição.
+                self._exigir_admin()
+                p = self._corpo_json()
+                justificativa = str(p.get("justificativa", "")).strip()[:1000]
+                if not justificativa:
+                    raise Erro(422, "justificativa obrigatória para revogar o snapshot público")
+                if not caminho_snapshot_publico.is_file():
+                    return self._json({"ok": True, "resultado": "NADA_A_REVOGAR"})
+                from datetime import datetime as _dt, timezone as _tz
+                sha = hashlib.sha256(caminho_snapshot_publico.read_bytes()).hexdigest()
+                guardado = caminho_snapshot_publico.with_name(
+                    f"snapshot_publico.revogado-{_dt.now(_tz.utc).strftime('%Y%m%dT%H%M%S%fZ')}.json")
+                os.replace(caminho_snapshot_publico, guardado)
+                _cache_snapshot_publico["mtime_ns"] = _cache_snapshot_publico["snap"] = None
+                with banco.con:
+                    banco.auditar(self._ator(), "REVOGAR_SNAPSHOT_PUBLICO", "snapshot_publico",
+                                  indicadores.ARQUIVO_SNAPSHOT_PUBLICO, {"sha256": sha},
+                                  {"guardado_como": guardado.name}, justificativa)
+                return self._json({"ok": True, "resultado": "REVOGADO", "sha256": sha})
             if rota != "/api/revisao":
                 raise Erro(404, "rota inexistente")
             self._exigir_gerencia()
@@ -622,11 +647,11 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
             comuns = (str(p.get("decisao", "")), responsavel, str(p.get("justificativa", "")))
             alvo = p.get("alvo")
             if alvo == "ato":
-                r = servico.revisar_ato(banco, str(p.get("id", "")), *comuns, bool(p.get("confirma_fonte")), bool(p.get("confirma_vinculo")))
+                r = servico.revisar_ato(banco, str(p.get("id", "")), *comuns, _confirmacao(p, "confirma_fonte"), _confirmacao(p, "confirma_vinculo"))
             elif alvo == "decisao":
                 ids = p.get("ids") if isinstance(p.get("ids"), list) else [p.get("id")]
-                r = servico.revisar_decisoes(banco, [str(i) for i in ids if i], *comuns, bool(p.get("confirma_fonte")),
-                                             bool(p.get("confirma_vinculo")), p.get("correcoes") if isinstance(p.get("correcoes"), dict) else None)
+                r = servico.revisar_decisoes(banco, [str(i) for i in ids if i], *comuns, _confirmacao(p, "confirma_fonte"),
+                                             _confirmacao(p, "confirma_vinculo"), p.get("correcoes") if isinstance(p.get("correcoes"), dict) else None)
             elif alvo == "evento":
                 decs_ev = p.get("decisoes_ids")
                 r = servico.revisar_evento(
@@ -634,14 +659,14 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
                     str(p.get("id", "")),
                     *comuns,
                     p.get("ato_original_id") or None,
-                    bool(p.get("confirma_fonte")),
+                    _confirmacao(p, "confirma_fonte"),
                     decisoes_ids=[str(i) for i in decs_ev if i] if isinstance(decs_ev, list) else None,
                     resultado_novo=str(p.get("resultado_novo")) if p.get("resultado_novo") else None,
                     campos_corrigidos=p.get("campos_corrigidos") if isinstance(p.get("campos_corrigidos"), dict) else None,
                 )
             elif alvo == "ato_classificacao":
                 r = servico.corrigir_ato(banco, str(p.get("id", "")), p.get("correcoes") if isinstance(p.get("correcoes"), dict) else {},
-                                         comuns[1], comuns[2], bool(p.get("confirma_fonte")))
+                                         comuns[1], comuns[2], _confirmacao(p, "confirma_fonte"))
             elif alvo == "decisao_omitida":
                 try:
                     pagina = int(p.get("pagina"))
@@ -649,13 +674,13 @@ def criar_manipulador(pasta_dados: Path, token_gerencia: str | None = None, orig
                     raise Erro(400, "página inválida")
                 r = servico.registrar_decisao_omitida(banco, str(p.get("id", "")), pagina, str(p.get("trecho", "")),
                                                       p.get("correcoes") if isinstance(p.get("correcoes"), dict) else {},
-                                                      comuns[1], comuns[2], bool(p.get("confirma_fonte")))
+                                                      comuns[1], comuns[2], _confirmacao(p, "confirma_fonte"))
             elif alvo == "conflito":
                 try:
                     conflito = int(p.get("id"))
                 except (TypeError, ValueError):
                     raise Erro(400, "conflito inválido")
-                r = servico.resolver_conflito(banco, conflito, *comuns, bool(p.get("confirma_fonte")))
+                r = servico.resolver_conflito(banco, conflito, *comuns, _confirmacao(p, "confirma_fonte"))
             else:
                 raise Erro(400, "alvo inválido")
             self._json(r)

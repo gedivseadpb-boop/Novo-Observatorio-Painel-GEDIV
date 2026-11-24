@@ -26,7 +26,7 @@ from observatorio.nucleo import banco as B
 from observatorio.nucleo.acervo import Acervo
 from observatorio.painel import indicadores
 from observatorio.revisao import servico
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor, promover_snapshot  # F-04: promoção explícita
 from tests import test_leitura_banco_revisao as LB
 from tests import test_painel as TP
 from tests import textos_doe as T
@@ -341,7 +341,9 @@ class TesteCadeiaVersoesERevisao(Cadeia):
         status, corpo = pedir(url, "/api/painel", TOKEN)
         painel = json.loads(corpo)
         self.assertEqual((painel["indicadores"]["decisoes"], painel["apoio"]["decisoes_rejeitadas"]), (2, 1))
-        # público: nenhuma linha, nenhuma pequena contagem (<5), nenhum nome, nenhuma justificativa
+        # público: nenhuma linha, nenhuma pequena contagem (<5), nenhum nome, nenhuma justificativa.
+        # F-04: o público só reflete a revisão depois de uma nova promoção explícita do snapshot.
+        promover_snapshot(self.dados)
         status, corpo = pedir(url, "/api/painel")
         publico = json.loads(corpo)
         self.assertEqual((status, publico["indicadores"]["decisoes"], publico["linhas"], publico["resenhas"]), (200, None, [], []))

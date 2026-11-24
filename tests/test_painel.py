@@ -17,7 +17,7 @@ from observatorio.gerencias.gediv import catalogo as C
 from observatorio.nucleo.banco import Banco
 from observatorio.painel import exportacao, indicadores
 from observatorio.revisao import servico
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor, promover_snapshot  # F-04: promoção explícita
 from tests import textos_doe as T
 
 REVISOR, JUST = "Revisora de Teste", "conferido no PDF sintético"
@@ -323,6 +323,10 @@ class TesteAPI(Base):
         self.assertIn("PDF oficial", json.loads(resposta)["erro"])
         status, _, resposta = self.pedir("/api/revisao", self.TOKEN, {**corpo, "confirma_fonte": True})
         self.assertEqual((status, json.loads(resposta)), (200, {"alterados": 3, "estado": "CONFERIDO"}))
+        # F-04: a revisão NÃO altera o público sozinha; só após nova promoção explícita do snapshot.
+        antes = json.loads(self.pedir("/api/painel")[2])["indicadores"]["decisoes"]
+        self.assertIsNone(antes)
+        promover_snapshot(self.pasta)
         self.assertEqual(json.loads(self.pedir("/api/painel")[2])["indicadores"]["decisoes"], 5)
 
     def test_catalogo_saude_outras_e_rota_inexistente(self):

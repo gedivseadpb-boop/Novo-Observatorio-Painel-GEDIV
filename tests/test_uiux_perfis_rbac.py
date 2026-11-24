@@ -16,7 +16,7 @@ from urllib.request import Request, urlopen
 from observatorio.nucleo.banco import Banco
 from observatorio.painel import adaptador
 from observatorio.web.contas import Contas
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor  # F-04: promoção explícita
 
 REPO_DIR = pathlib.Path(__file__).resolve().parents[1]
 _ENV_ORIGEM = os.environ.get("GEDIV_ORIGEM_HTML")
@@ -174,7 +174,7 @@ class TestUiUxPerfisRBAC(unittest.TestCase):
                 self.assertEqual(_req(f"{base}/api/revisao", payload={"alvo": "decisao"})[0], 401)
 
                 # 2. Perfil Gerência (NÃO possui privilégios de administração)
-                st_l, s_ger = _req(f"{base}/api/login", payload={"usuario": "ger.gediv", "senha": "SenhaGer#2026"})
+                st_l, s_ger = _req(f"{base}/api/login", payload={"usuario": "ger.gediv", "senha": "SenhaGer#2026", "modo_token": True})
                 self.assertEqual((st_l, s_ger["papel"]), (200, "gerencia"))
                 tok_ger = s_ger["token"]
                 st_d, d_ger = _req(f"{base}/api/data", token=tok_ger)
@@ -188,7 +188,7 @@ class TestUiUxPerfisRBAC(unittest.TestCase):
                 self.assertEqual(_req(f"{base}/api/admin/lote", token=tok_ger, payload={"rows": [{"id": "x"}]})[0], 403)
 
                 # 3. Perfil Administração
-                st_a, s_adm = _req(f"{base}/api/login", payload={"usuario": "adm.gediv", "senha": "SenhaAdm#2026"})
+                st_a, s_adm = _req(f"{base}/api/login", payload={"usuario": "adm.gediv", "senha": "SenhaAdm#2026", "modo_token": True})
                 self.assertEqual((st_a, s_adm["papel"]), (200, "admin"))
                 tok_adm = s_adm["token"]
                 st_da, d_adm = _req(f"{base}/api/data", token=tok_adm)
@@ -401,7 +401,7 @@ class TestUiUxPerfisRBAC(unittest.TestCase):
 
                 # Conta admin nominal enxerga trilha global (inclusive USO_TOKEN_TECNICO_LEGADO sem expor o segredo)
                 Contas(pasta / "contas.sqlite3").criar("admin.rbac", "Admin RBAC", "AdminForte#2026", papel="admin")
-                st_adm_l, s_adm_l = _req(f"{base}/api/login", payload={"usuario": "admin.rbac", "senha": "AdminForte#2026"})
+                st_adm_l, s_adm_l = _req(f"{base}/api/login", payload={"usuario": "admin.rbac", "senha": "AdminForte#2026", "modo_token": True})
                 self.assertEqual(st_adm_l, 200)
                 st_aud, aud = _req(f"{base}/api/auditoria", token=s_adm_l["token"])
                 self.assertEqual(st_aud, 200)
@@ -412,7 +412,7 @@ class TestUiUxPerfisRBAC(unittest.TestCase):
                 # Cookie HttpOnly emitido no login + proteção CSRF em pedidos POST via cookie
                 req_login = Request(
                     f"{base}/api/login",
-                    data=json.dumps({"usuario": "analista.ger", "senha": "SenhaGer#2026"}).encode("utf-8"),
+                    data=json.dumps({"usuario": "analista.ger", "senha": "SenhaGer#2026", "modo_token": True}).encode("utf-8"),
                     headers={"Content-Type": "application/json", "X-Forwarded-Proto": "https"},
                     method="POST",
                 )
@@ -553,7 +553,7 @@ class TestUiUxPerfisRBAC(unittest.TestCase):
                 self.assertEqual(_req(f"{base}/api/exportar?formato=xlsx")[0], 401)
 
                 # 5. Perfil Gerência: login, Abono sem TS-08, acesso ao PDF e compatibilidade com endpoints D1–D4
-                st_lg, sess_ger = _req(f"{base}/api/login", payload={"usuario": "ger.rota", "senha": "Gerencia#2026"})
+                st_lg, sess_ger = _req(f"{base}/api/login", payload={"usuario": "ger.rota", "senha": "Gerencia#2026", "modo_token": True})
                 self.assertEqual(st_lg, 200)
                 tok_ger = sess_ger["token"]
 
@@ -588,7 +588,7 @@ class TestUiUxPerfisRBAC(unittest.TestCase):
                 self.assertEqual(_req(f"{base}/api/admin/usuarios", token=tok_ger)[0], 403)
 
                 # 6. Perfil Administração: acesso completo às rotas administrativas
-                st_la, sess_adm = _req(f"{base}/api/login", payload={"usuario": "adm.rota", "senha": "AdminRota#2026"})
+                st_la, sess_adm = _req(f"{base}/api/login", payload={"usuario": "adm.rota", "senha": "AdminRota#2026", "modo_token": True})
                 self.assertEqual(st_la, 200)
                 tok_adm = sess_adm["token"]
                 self.assertEqual(_req(f"{base}/api/admin/usuarios", token=tok_adm)[0], 200)

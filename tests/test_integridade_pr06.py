@@ -16,7 +16,7 @@ from observatorio.nucleo.acervo import Acervo
 from observatorio.operacao import fluxo, saida
 from observatorio.painel import indicadores, exportacao
 from observatorio.revisao import servico
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor  # F-04: promoção explícita
 from tests import test_painel as TP, textos_doe as T
 from tests.apoio import pdf_sintetico
 from tests.test_leitura_banco_revisao import pag

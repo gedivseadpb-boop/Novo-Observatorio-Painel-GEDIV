@@ -18,7 +18,7 @@ from observatorio.gerencias.gediv import catalogo as C, classificador as K, proc
 from observatorio.nucleo import banco as B
 from observatorio.painel import adaptador, indicadores
 from observatorio.revisao import servico
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor  # F-04: promoção explícita
 from tests import test_painel as TP
 
 REV = "Revisora Fictícia GEDIV"

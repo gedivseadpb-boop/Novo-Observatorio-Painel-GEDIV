@@ -29,7 +29,7 @@ from observatorio.gerencias.gediv import catalogo as C
 from observatorio.nucleo.banco import Banco
 from observatorio.painel import adaptador, indicadores
 from observatorio.web.contas import Contas
-from observatorio.web.servidor import criar_servidor
+from tests.apoio_snapshot import criar_servidor_promovido as criar_servidor  # F-04: promoção explícita
 
 REPO_DIR = pathlib.Path(__file__).resolve().parents[1]
 _ENV_ORIGEM = os.environ.get("GEDIV_ORIGEM_HTML")
@@ -335,7 +335,7 @@ class TestIntegracaoUnificadaGEDIV(unittest.TestCase):
                 # 3. Login com conta nominal scrypt
                 req_login = Request(
                     f"{base_url}/api/login",
-                    data=json.dumps({"usuario": "revisor.gediv", "senha": "SenhaForte#2026"}).encode("utf-8"),
+                    data=json.dumps({"usuario": "revisor.gediv", "senha": "SenhaForte#2026", "modo_token": True}).encode("utf-8"),
                     headers={"Content-Type": "application/json"},
                     method="POST",
                 )

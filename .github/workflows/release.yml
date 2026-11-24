@@ -1,13 +1,21 @@
 name: Release
 
-# Cria a release no GitHub quando uma tag vN.N.N é enviada. As notas vêm de docs/releases/<tag>.md.
-# Antes de publicar, roda a suíte completa: uma release nunca sai com teste falhando.
+# Release como código: adicionar docs/releases/vN.N.N.md na branch padrão publica a versão vN.N.N.
+# O próprio GitHub cria a tag no commit do push. Antes de publicar, roda a suíte completa:
+# uma release nunca sai com teste falhando. Versões já publicadas são ignoradas (idempotente).
 on:
   push:
-    tags: ["v*.*.*"]
+    paths:
+      - "docs/releases/v*.md"
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -16,23 +24,41 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+      - name: Versão a publicar (a mais alta em docs/releases/)
+        id: versao
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(ls docs/releases/v*.md | xargs -n1 basename | sed 's/\.md$//' | sort -V | tail -1)
+          echo "versao=$v" >> "$GITHUB_OUTPUT"
+          if gh release view "$v" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "publicada=sim" >> "$GITHUB_OUTPUT"; echo "Release $v já existe; nada a fazer."
+          else
+            echo "publicada=nao" >> "$GITHUB_OUTPUT"; echo "Publicando $v a partir de $GITHUB_SHA"
+          fi
       - uses: actions/setup-python@v7
+        if: steps.versao.outputs.publicada == 'nao'
         with:
           python-version: "3.13"
       - name: Portão de qualidade (suíte completa)
+        if: steps.versao.outputs.publicada == 'nao'
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-por
           python -m pip install -q -r requirements-dev.txt
           python -m unittest discover -s tests -t .
-      - name: Pacote do painel (sintético) para anexar à release
+      - name: Pacote do painel (sintético) para anexar
+        if: steps.versao.outputs.publicada == 'nao'
         run: |
+          V=${{ steps.versao.outputs.versao }}
           python scripts/preparar_previa_github_pages.py --saida painel-sintetico
-          (cd painel-sintetico && zip -qr ../painel-unificado-sintetico-${GITHUB_REF_NAME}.zip .)
-          sha256sum painel-unificado-sintetico-${GITHUB_REF_NAME}.zip > painel-unificado-sintetico-${GITHUB_REF_NAME}.zip.sha256
-      - name: Publicar release
+          (cd painel-sintetico && zip -qr ../painel-unificado-sintetico-$V.zip .)
+          sha256sum painel-unificado-sintetico-$V.zip > painel-unificado-sintetico-$V.zip.sha256
+      - name: Publicar release (cria a tag no commit testado)
+        if: steps.versao.outputs.publicada == 'nao'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "Observatório GEDIV $GITHUB_REF_NAME" \
-            --notes-file "docs/releases/${GITHUB_REF_NAME}.md" \
-            "painel-unificado-sintetico-${GITHUB_REF_NAME}.zip" "painel-unificado-sintetico-${GITHUB_REF_NAME}.zip.sha256"
+          V=${{ steps.versao.outputs.versao }}
+          gh release create "$V" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "Observatório GEDIV $V" --notes-file "docs/releases/$V.md" \
+            "painel-unificado-sintetico-$V.zip" "painel-unificado-sintetico-$V.zip.sha256"

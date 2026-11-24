@@ -68,3 +68,6 @@ Os PDFs oficiais ficam **fora do Git**. Com a pasta local deles:
 ```bash
 GEDIV_PDFS_OURO=/caminho/pdfs .venv/bin/python -m unittest tests.test_leitura_correcoes.TesteConjuntoOuro -v
 ```
+
+## 8. Nova versão (release)
+Crie `docs/releases/vN.N.N.md` com as notas e envie para a branch padrão. O workflow "Release" roda a suíte completa e, se tudo passar, cria a tag e a release no GitHub, com o pacote sintético do painel e o `.sha256` anexados. Versões já publicadas são ignoradas.

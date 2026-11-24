@@ -1,6 +1,6 @@
 # Guia de Implantação Autônoma e Operação Segura — Observatório GEDIV
 
-Este guia descreve os procedimentos de implantação, agendamento automático diário (inclusive fins de semana e feriados), controle de acesso em três perfis, backup e restauração do Observatório GEDIV em servidor Linux persistente, mantendo o repositório canônico `gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE` como **única referência oficial de código**.
+Este guia descreve os procedimentos de implantação, agendamento automático diário (inclusive fins de semana e feriados), controle de acesso em três perfis, backup e restauração do Observatório GEDIV em servidor Linux persistente, mantendo o repositório canônico `gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV` como **única referência oficial de código**.
 
 > **Nota de Documentação Histórica / Opcional:** Para a **demonstração pública gratuita**, a decisão atual do projeto prioriza o **GitHub Pages** estático com dados 100% sintéticos em repositório separado ([docs/30-previa-publica-github-pages.md](../docs/30-previa-publica-github-pages.md)), sem servidores institucionais ou infraestrutura externa obrigatória. Este guia Linux/`systemd` permanece preservado apenas como referência histórica/opcional para eventual uso futuro do backend completo.
 >

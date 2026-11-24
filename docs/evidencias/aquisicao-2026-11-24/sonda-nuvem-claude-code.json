@@ -1,0 +1,20 @@
+{
+  "fonte": "auniao",
+  "inicio_utc": "2026-11-24T16:20:35+00:00",
+  "ambiente": {
+    "sistema": "Linux",
+    "versao_sistema": "6.18.44-fc-v819",
+    "python": "3.13.18",
+    "ci": null,
+    "executor_os": null
+  },
+  "versao_coletor": "coletor-etapa05.3.2-2026.11.14",
+  "listagem": {
+    "url": "https://auniao.pb.gov.br/doe/edicoes-recentes",
+    "erro": "ROBOTS_INACESSIVEL",
+    "detalhe": "ROBOTS_INACESSIVEL: https://auniao.pb.gov.br/doe/edicoes-recentes (RFC 9309: robots.txt inacessível = acesso não permitido; causa: CONEXAO: https://auniao.pb.gov.br/robots.txt ([Errno 104] Connection reset by peer))"
+  },
+  "edicao": null,
+  "tentativas": [],
+  "situacao": "LISTAGEM_INACESSIVEL"
+}

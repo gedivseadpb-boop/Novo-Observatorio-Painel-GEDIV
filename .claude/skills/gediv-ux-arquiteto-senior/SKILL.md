@@ -14,10 +14,10 @@ Esta skill é um **procedimento de implementação**. Use a tarefa do usuário c
 
 ## Contexto e fontes de verdade
 Projeto: Painel Diário Oficial | GEDIV, Paraíba.
-Repositório canônico: `https://github.com/gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE`
+Repositório canônico: `https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV`
 Branch-base reportada: `entrega/painel-completo-referencias`, referência `c3f1eaed0e3e8454887c50bb68de750d3d65ad70` (confirmar SHA/estado remoto; não presumir imutabilidade).
 
-Painel público: `https://gedivseadpb-boop.github.io/Observat-rio-GEDIV-CLAUDE/`
+Painel público: `https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/`
 Referências funcionais: 
 - `[endereço privado removido]`
 - `[endereço privado removido]`

@@ -13,9 +13,9 @@ O usuário quer um dashboard institucional com gráficos e números evidentes, f
 Atue **somente no código e dados públicos autorizados do projeto GEDIV**. Não altere publicação oficial, `main`, área gerencial, dados individuais ou controles de acesso; qualquer deploy requer autorização para a URL/destino e versão específica. Não copie os dados dos protótipos de referência.
 
 ## Contexto GEDIV — ler antes de mudar
-- Site oficial: https://gedivseadpb-boop.github.io/Observat-rio-GEDIV-CLAUDE/#geral
+- Site oficial: https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/#geral
 - Homologação: https://gedivseadpb-boop.github.io/gediv-painel-redesign-preview/#geral
-- Repositório: https://github.com/gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE
+- Repositório: https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV
 - Referência de indicadores e densidade: [endereço privado removido]
 - Referência de filtros: [endereço privado removido]
 - Candidata H1 informada pela responsável: `2026.11.17-h1`, commit `2a71073`. **Verificar estado real** da branch/preview.

@@ -1,0 +1,159 @@
+{
+ "o_que_e": "Inventário verificado dos repositórios antigos para desativação segura (backup por git bundle --all). Os bundles NÃO estão no Git: ficam sob custódia institucional antes de qualquer exclusão.",
+ "gerado_em": "2026-11-24",
+ "repositorios": [
+  {
+   "repositorio": "gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE",
+   "visibilidade": "público",
+   "bundle": "Observat-rio-GEDIV-CLAUDE.bundle",
+   "bundle_sha256": "4ea11079d6b3d9d3d28b5333f7aa7543a11e8b41cb262787383eb28ff61bc52a",
+   "bundle_bytes": 7430770,
+   "bundle_verificado": true,
+   "commits": 150,
+   "referencias": 68,
+   "refs_branches": {
+    "refs/heads/chore/acoes-node24": "2b5243236cdfe550f6796d85fae4c7bca1881795",
+    "refs/heads/claude/eloquent-hawking-k43pj9": "c49f9ecc427239b9a7f177b27746bee02157ae16",
+    "refs/heads/codex/horarios-09-13-18": "037b3153d55cd85cfbcc31bc0acc3b4adbbe2a10",
+    "refs/heads/codex/sonda-leitura-publica-20261123": "3bc6257fb148b26921aee7861f8a28650da0c7a9",
+    "refs/heads/dados/etapa-4b-reconciliacao-indicadores": "6385caa68c1c348dd06e3ba792a1568ad3ebfbc6",
+    "refs/heads/docs/github-pages-previa-estatica": "0b5b10a77fcbab6db5e299d743c285230fed3655",
+    "refs/heads/docs/renomear-projeto": "6976a9e2b3b55450f28d29ff930b25750f4207a6",
+    "refs/heads/docs/skill-claude-gediv-entrega-completa": "e1fed93174affd2d5d3cef179cdaf82ffb417e05",
+    "refs/heads/entrega/painel-completo-referencias": "70da290d6a9bb2b462ebfd5c70b03a11544c93ed",
+    "refs/heads/entrega/painel-publico-gediv": "2240dcd37a74bba4497e239d7c642fca5b5b29c2",
+    "refs/heads/etapa03/pr01-regras-definitivas": "1fc24697ce0de84ca1d71b68adb65e079f5bc52e",
+    "refs/heads/etapa03/pr02-leitura-ouro": "b22528945188e400541916834a492937563b0e57",
+    "refs/heads/etapa05-1/integracao-pdfs-coleta": "964ce4d2c7e2e88f9e18ef4a57690fc6f028f45f",
+    "refs/heads/etapa05-3/pr01-seguranca-ci-validacao": "63e196d6747cd47edc50a6b1c47256e52afcdd05",
+    "refs/heads/etapa05-3/pr02-coleta-cobertura": "8839ae2fbdd9987af3fde6cd6c9397bf7d50096e",
+    "refs/heads/etapa05-3/pr03-leitura-banco-revisao": "54423442e2d70b1af95b15d054cd6e5d708d3c28",
+    "refs/heads/etapa05-3/pr04-extracao-ocr-classificacao": "9abec4cc65d310769fbd0925ef54f3cdc711443a",
+    "refs/heads/etapa05-3/pr05-homologacao-geral": "11681ba9073b2a8d2b2ffb17dff9876b694300cc",
+    "refs/heads/etapa05-3/pr06-integridade-pos-homologacao-codex": "910f6dd9846497aaa0d733b7641df2021eec2e15",
+    "refs/heads/etapa05-3/pr09-4-identificacao-institucional": "0650f82daebf84e76574a6a8bad469c9841048b1",
+    "refs/heads/etapa05-3/pr09-paddleocr-complementar": "b22cfa38bf1a605c8543ab798436a7b41bbccfdf",
+    "refs/heads/etapa05-3/pr10-1-referencia-entre-colunas": "28e4da6d734eda886e7ed547a2f2900ca3522848",
+    "refs/heads/etapa1/coleta": "a02887a9e1fbd9750a8ac34aa46f22e89b7bea8d",
+    "refs/heads/etapa1/lotes-e-leitura": "2ad2572289e6f7e30547ef6bea26b98ea23c264f",
+    "refs/heads/etapa2/leitura-ocr-e-fontes-independentes": "6eba9e5a57fcd4dde3065029df836ea4c669b0c7",
+    "refs/heads/feat/abono-permanencia-e-comparativo-mensal": "434c8525bdb04c58a22b7c70c5dad10cb59481f0",
+    "refs/heads/feat/cli-publicar-snapshot-publico": "07c2eb939eb289e738e39038bd85c0bda57a0b32",
+    "refs/heads/feat/exclusao-atos-normativos": "92103b7e4540bd847d192903573cd76c38b6686b",
+    "refs/heads/feat/sintetico-canonico-a11y-docs": "595b8c62c7f3885b413a04f0f0477cf041b97485",
+    "refs/heads/fix/classificador-indexerror-marcos-vazio": "63be724989de69de1b7e990418239da6d8929340",
+    "refs/heads/fix/coleta-feriados-datas-br": "cb4938036b57aebd3e7e6580f3fbaadb02cf9615",
+    "refs/heads/fix/ocr-serie-processo-ofi": "7b36d1df5a7f101b49406691d44b59bbbaaa4ca7",
+    "refs/heads/fix/progressao-vertical-niveis-af": "da3dc6d9e8321a48b674b345d28d9e0d13449931",
+    "refs/heads/gh-pages": "80931323551f0711d26ca2d1c9addc6ecb0926ad",
+    "refs/heads/integracao/etapa-2b2-rota-principal-e-preservacao": "4b8a8c1eeb429833a3fed6d634d3941f8d7d48d1",
+    "refs/heads/integracao/revisao-2910-dados-workflows": "7beca28d66a3df703a4539b43258850465840418",
+    "refs/heads/integracao/unificacao-gediv-af-ux": "c2bbfd9cbef02faf0147fc374c77e3e1b9ac195a",
+    "refs/heads/main": "d9be033ecca7cba3ff6adb8d34d6f805485c0e2b",
+    "refs/heads/redesign/gediv-ux-dashboard-documentos": "96506e6dac5da9b1da168da835db0ee00daba6fd",
+    "refs/heads/redesign/h1-clareza-institucional": "3fe2426fbbfdddbb22a0a1cd91f8e50bd7ab8b27",
+    "refs/heads/seguranca/etapa-3a-cookie-only-e-homologacao-linux": "58edff713140470f74a500f0e3c694aa09c48e98",
+    "refs/heads/ux/etapa-5a-correcao-funcional-controles": "0bb37a708b1d2bf427b4cd326e812f9aa1a305cb"
+   }
+  },
+  {
+   "repositorio": "gedivseadpb-boop/gediv-painel-unificado-previa",
+   "visibilidade": "público",
+   "bundle": "gediv-painel-unificado-previa.bundle",
+   "bundle_sha256": "2af7a04645ad4d99654ef3ff1d82201ac660e276f60c4c0ca6e422d0b624b23a",
+   "bundle_bytes": 170014,
+   "bundle_verificado": true,
+   "commits": 3,
+   "referencias": 1,
+   "refs_branches": {
+    "refs/heads/main": "4583c111e5f5c3e28bc2487e0a4ca78431955556"
+   }
+  },
+  {
+   "repositorio": "gedivseadpb-boop/gediv-painel-redesign-preview",
+   "visibilidade": "público",
+   "bundle": "gediv-painel-redesign-preview.bundle",
+   "bundle_sha256": "1f5bfbf4aae1ca823a2696dfbc7f070ff4e02dffba012b0c16d397f9f12f5342",
+   "bundle_bytes": 234849,
+   "bundle_verificado": true,
+   "commits": 8,
+   "referencias": 6,
+   "refs_branches": {
+    "refs/heads/backup/h1-2026-11-17": "2a71073dd7a60cdee4bf1684c634008ae0f80bb1",
+    "refs/heads/backup/revisao-2910-retirada-20261118": "8b84f857220018a81c3c6874d6e303e300a7ade7",
+    "refs/heads/gh-pages": "cda385ee5cba192f6ddcb2eabb9f569f6df04b49",
+    "refs/heads/main": "cae5b18ede3af64c10af3b76a8bbdece08e8f62f",
+    "refs/heads/preservacao/painel-publico-original-8093132": "d201b7c0971e92ac42cad0ad40f01a5ce412c7ad",
+    "refs/heads/preservacao/painel-v2-candidato-78e1382": "d28c6fd64d6bc2f0faacba95efbfe966b6e240af"
+   }
+  },
+  {
+   "repositorio": "gedivseadpb-boop/robo-gediv-V2",
+   "visibilidade": "público",
+   "bundle": "robo-gediv-V2.bundle",
+   "bundle_sha256": "643ff2a799bfe2747e9e476fa1389e63633c17d3fb08aa41f92fb3a86f231d59",
+   "bundle_bytes": 300331,
+   "bundle_verificado": true,
+   "commits": 135,
+   "referencias": 20,
+   "refs_branches": {
+    "refs/heads/candidata/integridade-historico-eventos-20261107": "dbd02a83750516a2a2ad1692a54bace3c32edcff",
+    "refs/heads/correcao/acervo-2025-regressao": "95ce28c4c61683b71ca6ab1d4f526e4c41c8878d",
+    "refs/heads/experimento/aquisicao-github-hosted": "48e029c31212b99a187e4f0619cf3e9e166ca0a0",
+    "refs/heads/experimento/automacao-nuvem-gratuita": "42d6ba96919e83c12ce33e1384f56e73dd5258ec",
+    "refs/heads/experimento/integracao-observatorio-gemini": "8d958f290f6aed0e33c7f48812b7ac5c2a9f1fb4",
+    "refs/heads/experimento/prova-direta-cge-20261109": "111fb665c55cc5ec62805dc2334af7ff563fc1e7",
+    "refs/heads/homologacao/portal-gediv": "6aff8ab36f0fe4f836296687f0244cb77fbd5cfc",
+    "refs/heads/implementacao/qualidade-integracao-v2": "802e413b8b4df59125218199d279d493079ceefc",
+    "refs/heads/main": "6bfd3d8aa52a0753a2e22cccae76ba08ff79ad59",
+    "refs/heads/seguranca/pre-privatizacao-candidata-v2": "509a200f2649aa2b6af4c8d7d94a0281e2a86b2e",
+    "refs/heads/seguranca/pre-privatizacao-v2": "2b249e03ad40148e22a66ba8023b0663f1e90048"
+   }
+  },
+  {
+   "repositorio": "gedivseadpb-boop/robo-gediv-gemini",
+   "visibilidade": "público",
+   "bundle": "robo-gediv-gemini.bundle",
+   "bundle_sha256": "58287106e579de35b83e5bb6cbc18e2f19fea613fbbf6ad66f84a39c4aa25982",
+   "bundle_bytes": 210584,
+   "bundle_verificado": true,
+   "commits": 10,
+   "referencias": 6,
+   "refs_branches": {
+    "refs/heads/Staging": "822ddc97c9f37fa95211b3c5f9c87cccad364f8d",
+    "refs/heads/codex/piloto-gediv-20261031": "8e9d0bc6e236d36f2e027449e91e719ef5b5e74f",
+    "refs/heads/fix/backend-unico-20261102": "3cad4f00bd47b17a8489056bccf4fca33d90e942",
+    "refs/heads/main": "de29f9a02130508d0327b061652690840cb06dab"
+   }
+  },
+  {
+   "repositorio": "gedivseadpb-boop/robo-gediv-pb",
+   "visibilidade": "público",
+   "bundle": "robo-gediv-pb.bundle",
+   "bundle_sha256": "9217fbf4fa84ba6d7e84d1276ccd165d7cf311d3b654edc280d44145fccb8895",
+   "bundle_bytes": 217741,
+   "bundle_verificado": true,
+   "commits": 23,
+   "referencias": 8,
+   "refs_branches": {
+    "refs/heads/Staging": "ba0118f33aedfff02be41cc4509dae6631f59ec4",
+    "refs/heads/codex/piloto-gediv-20261031": "7797cf355922fcf369fc33512ffe78bdd613e757",
+    "refs/heads/fix/backend-unico-20261102": "e3073653a10f464c0a7cf8809bb21219500cdea9",
+    "refs/heads/main": "ba0118f33aedfff02be41cc4509dae6631f59ec4"
+   }
+  },
+  {
+   "repositorio": "gedivseadpb-boop/gediv-conferencia-privada",
+   "visibilidade": "privado",
+   "bundle": "gediv-conferencia-privada.bundle",
+   "bundle_sha256": "d8ac0aeccb4cfde2acc61c3d9dfaf7c1e1dc037f54bebaaff092ff9c2f9e8c06",
+   "bundle_bytes": 292813,
+   "bundle_verificado": true,
+   "commits": 8,
+   "referencias": 1,
+   "refs_branches": {
+    "refs/heads/main": "1c456e926314f3b8f3a749662afe7672343f5ea8"
+   }
+  }
+ ]
+}

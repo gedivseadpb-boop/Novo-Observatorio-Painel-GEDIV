@@ -31,7 +31,7 @@ from datetime import datetime, timezone
 
 TEMPO = 12
 NAVEGADOR = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
-ROBO = "ObservatorioGEDIV/0.1 (+https://github.com/gedivseadpb-boop/Observat-rio-GEDIV-CLAUDE)"
+ROBO = "ObservatorioGEDIV/0.2 (+https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV)"
 
 ALVOS = [
     {"servidor": "auniao.pb.gov.br", "papel": "fonte principal",

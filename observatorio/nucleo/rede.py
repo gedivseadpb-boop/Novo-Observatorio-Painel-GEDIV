@@ -218,7 +218,7 @@ def texto(resposta: Resposta) -> str:
     return resposta.corpo.decode("utf-8", "replace")
 
 
-def consultar_robots(url_base: str, politica: Politica) -> tuple[str, urllib.robotparser.RobotFileParser | None]:
+def consultar_robots_detalhado(url_base: str, politica: Politica) -> tuple[str, urllib.robotparser.RobotFileParser | None, str]:
     """Lê o robots.txt do servidor. Devolve (situação, regras).
 
     Situações: LIDO, AUSENTE (404/410: sem restrições declaradas), RECUSADO (403/429 ou outro 4xx:
@@ -231,16 +231,21 @@ def consultar_robots(url_base: str, politica: Politica) -> tuple[str, urllib.rob
         resposta = obter(endereco, replace(politica, autorizar=None))   # o próprio robots.txt é sempre consultável
     except ErroRede as e:
         if e.categoria in ("HTTP_404", "HTTP_410"):
-            return "AUSENTE", None
+            return "AUSENTE", None, e.categoria
         if e.categoria.startswith("HTTP_4"):
-            return "RECUSADO", None
-        return "INACESSIVEL", None
+            return "RECUSADO", None, e.categoria
+        return "INACESSIVEL", None, str(e)[:300]          # causa de rede preservada para diagnóstico
     conteudo = texto(resposta)
     if conteudo.lstrip().startswith("<"):
-        return "NAO_E_ROBOTS", None
+        return "NAO_E_ROBOTS", None, "HTML no lugar do robots.txt"
     regras = urllib.robotparser.RobotFileParser()
     regras.parse(conteudo.splitlines())
-    return "LIDO", regras
+    return "LIDO", regras, ""
+
+
+def consultar_robots(url_base: str, politica: Politica) -> tuple[str, urllib.robotparser.RobotFileParser | None]:
+    situacao, regras, _ = consultar_robots_detalhado(url_base, politica)
+    return situacao, regras
 
 
 class AutorizadorRobots:
@@ -259,13 +264,15 @@ class AutorizadorRobots:
         self.politica = replace(politica, autorizar=None)
         self.ao_recusar = ao_recusar
         self.situacoes: dict[str, tuple[str, urllib.robotparser.RobotFileParser | None]] = {}
+        self.detalhes: dict[str, str] = {}
         self.negadas: list[str] = []
 
     def situacao(self, url: str) -> tuple[str, urllib.robotparser.RobotFileParser | None]:
         p = urllib.parse.urlsplit(url)
         autoridade = f"{p.scheme}://{p.netloc}"
         if autoridade not in self.situacoes:
-            self.situacoes[autoridade] = consultar_robots(url, self.politica)
+            situacao, regras, detalhe = consultar_robots_detalhado(url, self.politica)
+            self.situacoes[autoridade], self.detalhes[autoridade] = (situacao, regras), detalhe
         return self.situacoes[autoridade]
 
     def __call__(self, url: str) -> None:
@@ -277,7 +284,10 @@ class AutorizadorRobots:
             raise ErroRede("ROBOTS_RECUSADO", url)
         if situacao == "INACESSIVEL":
             self.negadas.append(url)
-            raise ErroRede("ROBOTS_INACESSIVEL", f"{url} (RFC 9309: robots.txt inacessível = acesso não permitido)")
+            p = urllib.parse.urlsplit(url)
+            causa = self.detalhes.get(f"{p.scheme}://{p.netloc}") or "causa não registrada"
+            raise ErroRede("ROBOTS_INACESSIVEL",
+                           f"{url} (RFC 9309: robots.txt inacessível = acesso não permitido; causa: {causa})")
         if situacao == "LIDO" and regras is not None and not regras.can_fetch(self.politica.agente, url):
             self.negadas.append(url)
             raise ErroRede("ROBOTS_RESTRINGE", url)

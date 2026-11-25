@@ -30,6 +30,9 @@
         rotina completa e multiplataforma: coleta, reverificação, leitura/OCR, classificação, candidato e backup
     python -m observatorio.operacao agendar-windows --dados PASTA [--aplicar]
         mostra (ou, com --aplicar, cria no Windows) as tarefas diárias de 09:04 e 14:04 no Agendador de Tarefas
+    python -m observatorio.operacao prova-coleta --dados PASTA --saida prova-p0-1.json [--data AAAA-MM-DD]
+        P0-1 num só comando: sonda, coleta do dia, leitura/classificação, cobertura e reexecução (idempotência);
+        relatório sem dados pessoais. 0 = aprovado; 3 = com pendências; 4 = fonte inacessível; 1 = reprovado
 
 Aquisição dos PDFs oficiais (Etapa 05):
     python -m observatorio.operacao sonda --fonte auniao [--saida sonda.json]
@@ -69,7 +72,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="observatorio.operacao", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("comando", choices=["executar", "demonstracao", "publicar-snapshot-publico", "gerar-candidato-snapshot",
                                         "promover-snapshot-publico", "revogar-snapshot-publico", "backup", "restaurar",
-                                        "rotina-diaria", "agendar-windows", "validar-real", "ouro", "corpus",
+                                        "rotina-diaria", "agendar-windows", "prova-coleta", "validar-real", "ouro", "corpus",
                                         "sonda", "coletar-dia", "coletar-intervalo", "cobertura", "reabrir", "liberar-fonte"])
     ap.add_argument("origem", nargs="?")
     ap.add_argument("--dados", default="dados")
@@ -185,6 +188,11 @@ def main(argv=None) -> int:
         from . import demonstracao
         print(json.dumps(demonstracao.criar(a.dados), ensure_ascii=False, indent=2))
         return saida.SUCESSO
+    if a.comando == "prova-coleta":
+        from . import prova
+        rel = prova.executar(a.dados, fonte=(a.fonte or ["auniao"])[0], data=a.data)
+        prova.gravar(rel, a.saida)
+        return rel["codigo_de_saida"]
     if a.comando in ("rotina-diaria", "agendar-windows"):
         from . import rotina
         if a.comando == "rotina-diaria":

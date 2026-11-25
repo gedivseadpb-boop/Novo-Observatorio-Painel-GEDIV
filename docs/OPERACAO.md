@@ -87,3 +87,10 @@ python -m observatorio.operacao agendar-windows --dados C:\GEDIV\dados --aplicar
 - `agendar-windows --aplicar` cria duas tarefas diárias (09:04 e 14:04) no Agendador de Tarefas. Sem `--aplicar`, só mostra o que faria.
 - Requisitos: Python 3.11+ e Tesseract com português (`por`). Os PDFs e o banco ficam só em `C:\GEDIV\dados`, fora do Git.
 - Com o computador desligado no horário, a execução seguinte recupera a janela (a coleta recua 3 dias).
+
+### 9.1 P0-1: provar a coleta real em um único comando
+No computador no Brasil (pasta do repositório clonado, com as dependências instaladas):
+```bat
+python -m observatorio.operacao prova-coleta --dados C:\GEDIV\dados --saida C:\GEDIV\prova-p0-1.json
+```
+O comando roda a sonda, a coleta do dia da edição mais recente, a leitura e a classificação, a cobertura do dia e a reexecução (que não pode trazer arquivo novo). Código 0 = APROVADO; 3 = aprovado com pendências (ex.: páginas sem OCR); 4 = fonte inacessível; 1 = reprovado. O arquivo `prova-p0-1.json` não tem nomes, matrículas nem processos: é ele que volta para a auditoria. PDFs e banco ficam só em `C:\GEDIV\dados`.

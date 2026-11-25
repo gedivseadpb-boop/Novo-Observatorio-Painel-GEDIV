@@ -16,16 +16,16 @@ DOE-PB (A União: /doe e /servicos/doe)
   → snapshot público agregado (promoção e revogação auditadas)
 ```
 
-## Situação (24/11/2026)
+## Situação (25/11/2026)
 | Parte | Situação |
 |---|---|
-| Código, testes e documentação | ✅ 708 testes, 0 falhas; CI em Ubuntu e Windows |
+| Código, testes e documentação | ✅ 735 testes, 0 falhas; CI em Ubuntu e Windows |
 | Leitura e classificação com PDFs oficiais | ✅ conjunto-ouro 5/5 |
 | Painel Unificado (interface aprovada) | ✅ preservado byte a byte; acessibilidade verificada |
 | Achados das auditorias (F-01…F-11, A-10) | ✅ corrigidos, com testes |
 | Backup cifrado e restauração | ✅ |
 | Coleta automática agendada (09h e 14h, todos os dias) | 🟡 ativa, com cobertura oficial independente pela CGE-PB; o download do conteúdo da A União depende de um executor na rede institucional (B-01) |
-| Painel no GitHub Pages | ✅ no ar: https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/ |
+| Site oficial | ✅ no ar: https://paineldoepb.centralgestaopublica.com.br, em "Dados oficiais em validação" (sem dados fictícios; dados reais após a coleta, o piloto e a aprovação da GEDIV) |
 | Produção com dados reais | ⛔ depende da TI da SEAD (B-08) |
 
 Detalhes: [objetivo e critérios](docs/GOAL.md) · [bloqueios](docs/BLOQUEIOS.md) · [conquistas comprovadas](docs/CATALOGO_CONQUISTAS.md) · [checkpoint](docs/CHECKPOINT.md).

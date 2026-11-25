@@ -13,7 +13,7 @@
 
 ## Próximos passos, em ordem de valor
 1. **Concluído (P0-1):** num computador no Brasil, `python -m observatorio.operacao prova-coleta --dados PASTA --saida prova-p0-1.json` (`docs/OPERACAO.md` §9). O relatório sem dados pessoais volta para a auditoria.
-2. **P0-2, executor permanente no Brasil:** máquina gratuita (Oracle São Paulo) ou da SEAD, com o timer `systemd` de `deploy_autonomo/` (sem runner no repositório público).
+2. **P0-2 (provisório em andamento, D-11):** agendamento no computador da responsável (09h04 e 14h04) autorizado em 25/11/2026, **a ser trocado em alguns dias** pelo executor permanente no Brasil: máquina gratuita (Oracle São Paulo) ou da SEAD, com o timer `systemd` de `deploy_autonomo/` (sem runner no repositório público).
 3. Piloto de 7 dias com dois disparos diários; registrar cada execução.
 4. Decisões normativas da GEDIV (B-02) e reclassificação de uma **cópia** das bases históricas.
 5. Aprovação da exclusão dos repositórios antigos (B-06); backups já completos no Drive.

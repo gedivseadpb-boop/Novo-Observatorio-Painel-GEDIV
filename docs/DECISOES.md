@@ -2,6 +2,12 @@
 
 Formato curto: contexto → decisão → consequência. Decisões novas entram no topo.
 
+## D-11 · Executor PROVISÓRIO da coleta: computador da responsável, pelo Agendador do Windows (25/11/2026)
+- **Contexto:** P0-1 comprovado no computador da responsável, no Brasil (C-26). A fonte só aceita acessos do Brasil e ainda não há máquina permanente.
+- **Decisão da responsável (25/11/2026):** autorizada **por enquanto** a opção A. O comando `operacao agendar-windows --dados C:\GEDIV\dados --aplicar` cria as tarefas `ObservatorioGEDIV-Coleta-0904` e `-1404`, que rodam `rotina-diaria` às 09h04 e 14h04. Dados e PDFs ficam só em `C:\GEDIV\dados`, fora do Git. Custo: R$ 0.
+- **Provisório:** a responsável informou que **a opção será trocada em alguns dias**. Destino previsto: máquina gratuita da Oracle em São Paulo ou máquina da SEAD, com o timer `systemd` de `deploy_autonomo/` (D-05), sem ligar runner ao repositório público. Na troca: copiar `C:\GEDIV\dados` por backup cifrado, restaurar no novo executor, conferir as métricas e só então apagar as tarefas do Windows.
+- **Consequência:** a coleta depende do PC ligado nos horários. Com o PC desligado, a execução seguinte recupera os 3 dias anteriores. O piloto de 7 dias pode começar no PC, mas a operação autônoma só será declarada no executor permanente.
+
 ## D-10 · Versão das regras `gediv-2026.11.24-1` (24/11/2026)
 - **Contexto:** a Fase III pediu um bump único, cobrindo exclusão de normativos, Abono, OCR `OFI` e o enquadramento `AST`. No repositório antigo, o bump reclassificaria bases históricas.
 - **Decisão:** no repositório-mãe a base canônica nasce nova, sem dados históricos. A versão foi elevada uma única vez. Quando houver equivalência homologada, a versão recebe um sufixo automático (ex.: `+AST`).

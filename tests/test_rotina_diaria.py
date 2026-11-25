@@ -50,7 +50,7 @@ class TesteRotina(unittest.TestCase):
 
     def test_trava_impede_execucao_simultanea(self):
         self.dados.mkdir(parents=True)
-        (self.dados / ".rotina.lock").write_text("123")
+        (self.dados / ".rotina.lock").write_text(str(__import__("os").getpid()))   # execução viva
         with self.simular({}), self.assertRaises(rotina.RotinaEmAndamento):
             rotina.executar(self.dados, hoje=date(2026, 11, 25))
 
@@ -58,6 +58,23 @@ class TesteRotina(unittest.TestCase):
         with self.simular({}), mock.patch.dict("os.environ", {"GEDIV_BACKUP_CHAVE": "frase-senha-de-teste-longa-2026"}):
             rotina.executar(self.dados, hoje=date(2026, 11, 25))
         self.assertTrue(any(c[0] == "backup" for c in self.chamadas))
+
+
+class TesteTravaOrfa(unittest.TestCase):
+    """Achado de 25/11/2026: a execução encerrada à força deixou .rotina.lock e a seguinte saiu EM_ANDAMENTO."""
+
+    def test_trava_de_processo_encerrado_e_recuperada(self):
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / ".rotina.lock").write_text("999999999", encoding="utf-8")   # PID inexistente
+            trava = rotina._trava(Path(t))
+            self.assertEqual(trava.read_text(encoding="utf-8"), str(__import__("os").getpid()))
+            trava.unlink()
+
+    def test_trava_de_processo_vivo_e_respeitada(self):
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / ".rotina.lock").write_text(str(__import__("os").getpid()), encoding="utf-8")
+            with self.assertRaises(rotina.RotinaEmAndamento):
+                rotina._trava(Path(t))
 
 
 class TesteAgendamentoWindows(unittest.TestCase):

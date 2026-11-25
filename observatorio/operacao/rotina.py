@@ -32,11 +32,46 @@ class RotinaEmAndamento(RuntimeError):
     pass
 
 
+def _processo_vivo(pid: int) -> bool:
+    """True se o processo existe. Em dúvida, considera vivo (não remove trava alheia)."""
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+        kernel32 = ctypes.windll.kernel32
+        h = kernel32.OpenProcess(0x1000, False, pid)          # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return False
+        try:
+            codigo = ctypes.c_ulong()
+            return bool(kernel32.GetExitCodeProcess(h, ctypes.byref(codigo))) and codigo.value == 259   # STILL_ACTIVE
+        finally:
+            kernel32.CloseHandle(h)
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except OSError:
+        return True
+    return True
+
+
+def _trava_orfa(caminho: Path) -> bool:
+    """Órfã: a execução que a criou não existe mais (ex.: janela fechada no meio, achado de 25/11/2026) ou tem > 6 h."""
+    try:
+        if (datetime.now().timestamp() - caminho.stat().st_mtime) > 6 * 3600:
+            return True
+        pid = int(caminho.read_text(encoding="utf-8").strip() or 0)
+    except (OSError, ValueError):
+        return False
+    return not _processo_vivo(pid)
+
+
 def _trava(pasta: Path):
-    """Trava simples e portável: criação exclusiva de arquivo. Trava órfã com mais de 6 h é recuperada."""
+    """Trava simples e portável: criação exclusiva de arquivo. Trava órfã (processo encerrado ou > 6 h) é recuperada."""
     caminho = pasta / ".rotina.lock"
     try:
-        if caminho.exists() and (datetime.now().timestamp() - caminho.stat().st_mtime) > 6 * 3600:
+        if caminho.exists() and _trava_orfa(caminho):
             caminho.unlink()
         fd = os.open(caminho, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         os.write(fd, str(os.getpid()).encode())

@@ -34,3 +34,12 @@ Registro do que **não depende de código** e impede declarar alguma parte como 
 - **310 registros:** vieram de um **catálogo anterior** já existente, importado por `src/importar_historico.py` (todos rebaixados a pendentes), e não de coleta.
 - **18 registros:** vieram de **texto indexado** das edições oficiais, lido pela ferramenta de busca do ChatGPT e não pelo PDF original. Foram processados por `src/extrair_texto.py` e entregues manualmente ao painel privado ("START manual", `docs/CONEXAO_MANUAL.md`). Não têm SHA-256 do PDF nem garantia de página inteira, e o próprio repositório diz que isso "não é um robô autônomo diário".
 - **Consequência para o repositório-mãe:** esse método não atende ao padrão de evidência adotado (PDF oficial íntegro, SHA-256, todas as páginas, OCR). Ele não foi reproduzido, e os dados dele não foram trazidos.
+
+## O que deu certo em todos os repositórios e documentos (25/11/2026)
+
+| Data | Onde rodou | Resultado | Registro |
+|---|---|---|---|
+| 14/11/2026 | Nuvem do Claude Code (antes do bloqueio geográfico da fonte) | Edição de 07/11 baixada, com SHA-256 idêntico ao oficial | `docs/historico/11-etapa05-1-integracao.md` |
+| **18/11/2026** | **Computador da responsável, na rede brasileira (sessão Claude Cowork), e ChatGPT para jan–fev** | **184 PDFs de mar–nov baixados direto da A União, mais jan–fev; estrutura e SHA-256 validados**; base extraída em CSV (`resenhas.csv`, `decisoes.csv`, `eventos_alteracao.csv`, `cobertura_pdfs.csv`, `INDICE_GEDIV_por_edicao_2026.csv`) por `extrator.py` e `montar_base.py` | Drive: "Acervo DOE-PB — 2026 — coleta oficial 18-11-2026" (`RELATORIO_COLETA_DOE-PB_2026-03_a_11.md`, manifestos mensais) |
+
+**Conclusão:** a coleta funcionou quando rodou **a partir do Brasil**. Para automatizá-la sem contornar a regra da fonte, o coletor do repositório-mãe deve ser agendado no mesmo tipo de lugar que funcionou em 18/11: o computador da responsável (tarefa agendada ou runner do GitHub) ou uma máquina da rede da SEAD. A ideia do histórico em CSV, vinda do projeto do Kaio, é compatível com o repositório-mãe: o índice por edição não tem dados pessoais e pode ser versionado; resenhas e decisões têm nomes e ficam só na base privada.

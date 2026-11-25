@@ -14,3 +14,16 @@ Registro do que **não depende de código** e impede declarar alguma parte como 
 | B-06 | Exclusão dos repositórios antigos | Backups verificados por `git bundle verify` (`docs/migracao/inventario-repositorios-antigos.json`); **7 de 7 no Drive** (pasta restrita "Backup repositórios antigos GEDIV — 2026-11-24"). O de `Observat-rio-GEDIV-CLAUDE` foi dividido em 3 partes; a remontagem foi conferida (SHA-256 `4ea11079…` idêntico e `git bundle verify` OK) e o passo a passo está no arquivo LEIA-ME da pasta | Nenhum repositório foi excluído | A usuária: aprovar a exclusão de cada repositório | **AGUARDA APROVAÇÃO** |
 | B-07 | Nome da branch principal | A branch padrão do repositório é `claude/loving-goldberg-j5zhoj` (a primeira enviada); os agendamentos já disparam nela | Nenhuma perda funcional. Por clareza institucional, recomenda-se renomeá-la para `main` | A usuária: Settings > Branches > renomear a branch padrão para `main` (o GitHub redireciona os links) | **RECOMENDAÇÃO** |
 | B-08 | Hospedagem do backend com dados reais, login institucional, TLS e custódia da frase-senha do backup | `deploy_autonomo/GUIA_IMPLANTACAO_AUTONOMA.md` e `docs/OPERACAO.md` | O painel gerencial com dados reais roda localmente, mas não está publicado em servidor institucional | TI da SEAD | **ABERTO** |
+
+## Linha do tempo da aquisição direta (análise dos repositórios em 25/11/2026)
+
+| Data/hora (UTC) | Ambiente | Resultado | Registro |
+|---|---|---|---|
+| 09/11/2026 | V2: sandbox e GitHub | Falhou (DNS, ConnectTimeout; CGE com timeout) | `robo-gediv-V2`, `RESULTADO_BUSCA_FONTES_OFICIAIS_2026-11-09.md` e `RESULTADO_CGE_E_OPERACAO_MANUAL_2026-11-09.md` |
+| 10–11/11/2026 | 3 executores do GitHub | Falhou (TCP/443) | `docs/evidencias/sonda-github-*.json` |
+| 14/11/2026 ~15h44 | Nuvem do Claude Code, sem liberação de rede | Bloqueado pelo proxy da própria sessão | `docs/historico/RELATORIO_ETAPA05.md` |
+| **14/11/2026 ~17h** | **Nuvem do Claude Code, ambiente com a A União liberada** | **Sucesso**: sonda `DOWNLOAD_INTEGRO` (14/11, 40 páginas); `coletar-dia 07/11` com SHA-256 `8bac8dad…`, idêntico à referência oficial | `docs/historico/11-etapa05-1-integracao.md` |
+| 24/11/2026 | Mesma nuvem e mesmo ambiente | Conexão encerrada no TLS (A União); PDFs da CGE com senha | `docs/evidencias/aquisicao-2026-11-24/` |
+| **25/11/2026** | Mesma nuvem e mesmo ambiente | **A União: HTTP 403 "Acesso permitido somente a partir do Brasil ou da rede interna"** | `docs/evidencias/aquisicao-2026-11-25/` |
+
+**Conclusão:** o coletor e o ambiente de rede são os mesmos do dia em que funcionou. Mudou a política de acesso da fonte: entre 14/11 e 24/11, a A União passou a aceitar só acessos do Brasil ou da rede interna, e a CGE passou a usar WAF ("Baluarte", citado no próprio `robots.txt`) e a entregar PDFs com senha. Para retomar a coleta automática do conteúdo, o coletor precisa rodar no Brasil ou na rede institucional (runner `gediv-br` ou VM com o timer `systemd`). O código já está pronto e agendado, e não é preciso nenhuma alteração.

@@ -4,7 +4,13 @@ name: Painel no GitHub Pages
 # em https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/ (Pages servido pela branch gh-pages).
 # O pacote é gerado a partir do próprio código do repositório e validado (sem PII, sem credenciais,
 # paleta de 240 cores) antes de qualquer envio. Dados reais nunca são publicados por este workflow.
+#
+# Domínio próprio (decisão de 25/11/2026): paineldoepb.centralgestaopublica.com.br. O arquivo CNAME só entra no
+# pacote quando o DNS do subdomínio já aponta para o GitHub; antes disso o site continua no endereço github.io,
+# sem ficar fora do ar. A execução diária ativa o domínio sozinha assim que o registro de DNS for criado.
 on:
+  schedule:
+    - cron: "17 10 * * *"   # 07h17 em Brasília: ativa o domínio assim que o DNS estiver pronto
   push:
     branches: [main, "claude/**"]
     paths:
@@ -18,6 +24,9 @@ permissions:
   contents: write     # publica o pacote validado na branch gh-pages
   pages: write
 
+env:
+  DOMINIO: paineldoepb.centralgestaopublica.com.br
+
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -25,6 +34,9 @@ concurrency:
 jobs:
   construir:
     runs-on: ubuntu-24.04
+    outputs:
+      sha: ${{ steps.pacote.outputs.sha }}
+      dominio: ${{ steps.dns.outputs.dominio }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -33,11 +45,25 @@ jobs:
         with:
           python-version: "3.13"
       - name: Gerar e validar o pacote sintético (falha fechada)
+        id: pacote
         run: |
           python -m pip install -q -r requirements-dev.txt
           python scripts/preparar_previa_github_pages.py --saida _site
           touch _site/.nojekyll
           sha256sum _site/index.html | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "sha=$(sha256sum _site/index.html | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+      - name: Ativar o domínio próprio somente se o DNS já aponta para o GitHub
+        id: dns
+        run: |
+          alvo="${GITHUB_REPOSITORY_OWNER,,}.github.io."
+          achado="$(dig +short CNAME "$DOMINIO" @1.1.1.1 | tr 'A-Z' 'a-z' | head -1)"
+          if [ "$achado" = "$alvo" ]; then
+            echo "$DOMINIO" > _site/CNAME
+            echo "dominio=$DOMINIO" >> "$GITHUB_OUTPUT"
+            echo "DNS OK: $DOMINIO -> $achado. Domínio próprio ativado." | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "DNS de $DOMINIO ainda não aponta para $alvo (encontrado: '${achado:-nada}'). Site segue no github.io." | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Publicar o pacote validado na branch gh-pages (fonte padrão do GitHub Pages)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -51,22 +77,38 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" --silent || echo "Build será disparado pelo próprio push."
+      - name: Exigir HTTPS no domínio próprio (quando o certificado já existir)
+        if: steps.dns.outputs.dominio != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -f cname="$DOMINIO" -F https_enforced=true --silent \
+            && echo "HTTPS obrigatório ativado." | tee -a "$GITHUB_STEP_SUMMARY" \
+            || echo "HTTPS ainda não pôde ser exigido (certificado em emissão ou permissão do token); nova tentativa na próxima execução." | tee -a "$GITHUB_STEP_SUMMARY"
   verificar:
     needs: construir
     runs-on: ubuntu-24.04
     steps:
       - name: Aguardar o build do Pages
         run: sleep 60
-      - name: Conferir o site publicado (aguarda até 10 min) e a identidade do painel aprovado
+      - name: Conferir o site publicado (aguarda até 10 min) contra o pacote gerado
+        env:
+          ESPERADO: ${{ needs.construir.outputs.sha }}
+          DOMINIO_ATIVO: ${{ needs.construir.outputs.dominio }}
         run: |
-          url="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
+          urls="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
+          [ -n "$DOMINIO_ATIVO" ] && urls="https://$DOMINIO_ATIVO/ http://$DOMINIO_ATIVO/"
           for i in $(seq 1 40); do
-            if curl -fsS -m 20 "$url" -o index.html; then
-              sha=$(sha256sum index.html | cut -d' ' -f1)
-              echo "Publicado: $url · index.html sha256=$sha" | tee -a "$GITHUB_STEP_SUMMARY"
-              [ "$sha" = "d19296173dcbe3ba5a71915e5a0674b8fc453b5109c3a5ec6c8ba019ccfae809" ] && echo "Identico ao painel aprovado." | tee -a "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
+            for url in $urls; do
+              if curl -fsSL -m 20 "$url" -o index.html; then
+                sha=$(sha256sum index.html | cut -d' ' -f1)
+                echo "Publicado: $url · index.html sha256=$sha" | tee -a "$GITHUB_STEP_SUMMARY"
+                if [ "$sha" = "$ESPERADO" ]; then
+                  grep -q 'id="avisoDemonstracao"' index.html && echo "Idêntico ao pacote validado, com a faixa de dados fictícios." | tee -a "$GITHUB_STEP_SUMMARY"
+                  exit 0
+                fi
+              fi
+            done
             sleep 15
           done
-          echo "Site ainda não respondeu em $url" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1
+          echo "O site não respondeu com o pacote esperado em: $urls" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1

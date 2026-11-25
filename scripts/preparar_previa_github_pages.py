@@ -117,6 +117,14 @@ def gerar_dados_sinteticos_publicos() -> dict:
             banco.fechar()
 
 
+AVISO_DEMONSTRACAO = (
+    '<div id="avisoDemonstracao" role="note" style="background:var(--navy);color:var(--white);'
+    'border-bottom:4px solid var(--orange);padding:10px max(16px,4vw);font:600 15px/1.45 system-ui,sans-serif;'
+    'text-align:center">Demonstração com dados fictícios. Nomes, processos e números desta página não são reais. '
+    'Os dados oficiais do Diário Oficial da Paraíba entram quando a coleta automática for ativada.</div>'
+)
+
+
 def adaptar_html_estatico(html_orig: str) -> str:
     """Adapta `observatorio/web/unificado/index.html` para operar estaticamente no GitHub Pages.
 
@@ -295,6 +303,11 @@ window.GEDIV_READY=(async()=>{
         1,
     )
 
+    # 9b. Faixa de aviso no topo (decisão da responsável, 25/11/2026): a publicação em domínio próprio não pode
+    #     deixar visitantes tomarem nomes, processos e números fictícios como reais. Só usa variáveis da paleta.
+    assert html.count("<body>") == 1, "Tag <body> esperada não encontrada"
+    html = html.replace("<body>", "<body>\n" + AVISO_DEMONSTRACAO, 1)
+
     # 10. Garantir preservação estrita da paleta (240 cores HEX, 0 cores novas)
     orig_colors = {c.lower() for c in json.loads(PALETA_JSON.read_text(encoding="utf-8"))["cores_hex"]}
     hex_re = re.compile(r"#[0-9a-fA-F]{3,8}\b")
@@ -334,6 +347,7 @@ def validar_pacote_estatico(pasta: Path) -> None:
     assert html.count("\r\n") == 0, "CRLF detectado em index.html"
     assert "./dados-sinteticos-publicos.json" in html
     assert "openStaticBackendNotice" in html
+    assert html.count('id="avisoDemonstracao"') == 1, "Faixa de aviso de dados fictícios ausente"
 
     # Garantir reconciliação matemática exata das 5 situações de Progressão Vertical A–F
     res_nv = (dados.get("backend") or {}).get("series", {}).get("resumo_nivel_vertical") or {}

@@ -31,5 +31,15 @@ class TesteGeobloqueio(unittest.TestCase):
         self.assertNotIn("GEOBLOQUEIO", str(erro.exception))
 
 
+
+class TesteFonteBloqueadaPorRecusa(unittest.TestCase):
+    def test_recusa_ou_suspensao_conta_como_fonte_inacessivel(self):
+        from observatorio.operacao import aquisicao
+        for situacao in ("RECUSADO", "RESTRINGE_A_COLETA", "FONTE_SUSPENSA"):
+            with self.subTest(situacao=situacao):
+                self.assertTrue(aquisicao.fonte_bloqueada({"robots": situacao, "varreduras": [], "recentes": None}))
+        self.assertFalse(aquisicao.fonte_bloqueada({"robots": "LIDO", "varreduras": [{"listadas": 3}], "recentes": {}}))
+
+
 if __name__ == "__main__":
     unittest.main()

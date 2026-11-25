@@ -26,6 +26,10 @@
         backup CIFRADO (AES-256-GCM; frase-senha em GEDIV_BACKUP_CHAVE ou GEDIV_BACKUP_CHAVE_ARQUIVO) de banco, contas e acervo
     python -m observatorio.operacao restaurar --arquivo X.gedivbak --destino PASTA_NOVA
         restaura só em pasta nova, confere manifesto/SHA-256/integrity_check e encerra as sessões
+    python -m observatorio.operacao rotina-diaria --dados PASTA
+        rotina completa e multiplataforma: coleta, reverificação, leitura/OCR, classificação, candidato e backup
+    python -m observatorio.operacao agendar-windows --dados PASTA [--aplicar]
+        mostra (ou, com --aplicar, cria no Windows) as tarefas diárias de 09:04 e 14:04 no Agendador de Tarefas
 
 Aquisição dos PDFs oficiais (Etapa 05):
     python -m observatorio.operacao sonda --fonte auniao [--saida sonda.json]
@@ -64,7 +68,8 @@ from . import fluxo, saida
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="observatorio.operacao", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("comando", choices=["executar", "demonstracao", "publicar-snapshot-publico", "gerar-candidato-snapshot",
-                                        "promover-snapshot-publico", "revogar-snapshot-publico", "backup", "restaurar", "validar-real", "ouro", "corpus",
+                                        "promover-snapshot-publico", "revogar-snapshot-publico", "backup", "restaurar",
+                                        "rotina-diaria", "agendar-windows", "validar-real", "ouro", "corpus",
                                         "sonda", "coletar-dia", "coletar-intervalo", "cobertura", "reabrir", "liberar-fonte"])
     ap.add_argument("origem", nargs="?")
     ap.add_argument("--dados", default="dados")
@@ -88,6 +93,7 @@ def main(argv=None) -> int:
     ap.add_argument("--reverificar", action="store_true", help="aquisição: consulta de novo publicações já baixadas")
     ap.add_argument("--contingencia", help="aquisição: manifesto JSON de arquivos obtidos por outro meio")
     ap.add_argument("--permitir-longo", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--aplicar", action="store_true", help="agendar-windows: cria as tarefas (somente no Windows)")
     ap.add_argument("--arquivo", help="restaurar: arquivo .gedivbak")
     ap.add_argument("--destino", help="restaurar: pasta NOVA de destino")
     ap.add_argument("--gerar", action="store_true", help="promover-snapshot-publico: gera o candidato antes de promover")
@@ -178,6 +184,34 @@ def main(argv=None) -> int:
     if a.comando == "demonstracao":
         from . import demonstracao
         print(json.dumps(demonstracao.criar(a.dados), ensure_ascii=False, indent=2))
+        return saida.SUCESSO
+    if a.comando in ("rotina-diaria", "agendar-windows"):
+        from . import rotina
+        if a.comando == "rotina-diaria":
+            try:
+                r = rotina.executar(a.dados, fontes=tuple(a.fonte or ("auniao",)))
+            except rotina.RotinaEmAndamento as erro:
+                print(json.dumps({"resultado": "EM_ANDAMENTO", "erro": str(erro)}, ensure_ascii=False))
+                return saida.NAO_EXECUTADO
+            print(json.dumps(r, ensure_ascii=False, indent=2))
+            return r["codigo_de_saida"]
+        from pathlib import Path as _Path
+        script = _Path(a.dados).resolve() / "gediv-rotina.cmd"
+        conteudo = rotina.script_windows(_Path(a.dados).resolve())
+        comandos = rotina.comandos_agendamento_windows(script)
+        if a.aplicar:
+            (script.parent / "rotina").mkdir(parents=True, exist_ok=True)
+            script.write_text(conteudo, encoding="utf-8", newline="")
+            import os as _os
+            import subprocess
+            if _os.name != "nt":
+                print(json.dumps({"resultado": "RECUSADO", "erro": "--aplicar só funciona no Windows"}, ensure_ascii=False))
+                return saida.USO_INCORRETO
+            for c in comandos:
+                subprocess.run(c, check=True)
+        print(json.dumps({"resultado": "TAREFAS_CRIADAS" if a.aplicar else "SIMULACAO", "script": str(script),
+                          "conteudo_script": conteudo, "comandos": comandos},
+                         ensure_ascii=False, indent=2))
         return saida.SUCESSO
     if a.comando in ("backup", "restaurar"):
         from . import backup

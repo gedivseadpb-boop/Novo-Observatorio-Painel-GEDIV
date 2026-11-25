@@ -142,7 +142,10 @@ def coletar(dados: str, siglas: list[str], inicio: date, fim: date, limite: int 
 
 
 def fonte_bloqueada(parte: dict) -> bool:
-    """Nenhuma listagem da fonte pôde ser lida (recentes e meses): a coleta não alcançou a fonte."""
+    """Nenhuma listagem da fonte pôde ser lida (recentes e meses): a coleta não alcançou a fonte.
+    Recusa ou proibição do robots.txt e suspensão vigente também contam: nada foi (nem podia ser) consultado."""
+    if parte.get("robots") in ("RECUSADO", "RESTRINGE_A_COLETA", "FONTE_SUSPENSA"):
+        return True
     recentes_falhou = bool((parte.get("recentes") or {}).get("erro"))
     meses_falharam = bool(parte["varreduras"]) and all("erro" in v for v in parte["varreduras"])
     return parte.get("robots") == "INACESSIVEL" and recentes_falhou and meses_falharam

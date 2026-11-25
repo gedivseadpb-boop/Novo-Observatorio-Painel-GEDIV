@@ -71,3 +71,17 @@ GEDIV_PDFS_OURO=/caminho/pdfs .venv/bin/python -m unittest tests.test_leitura_co
 
 ## 8. Nova versão (release)
 Crie `docs/releases/vN.N.N.md` com as notas e envie para a branch padrão. O workflow "Release" roda a suíte completa e, se tudo passar, cria a tag e a release no GitHub, com o pacote sintético do painel e o `.sha256` anexados. Versões já publicadas são ignoradas.
+
+## 9. Coleta automática no computador da responsável (Windows) — o caminho que já funcionou em 18/11
+A A União só aceita acessos do Brasil ou da rede interna. Em 18/11/2026 a coleta completa funcionou a partir do computador da responsável. Para automatizar isso:
+```bat
+git clone https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV.git C:\GEDIV\repo
+cd C:\GEDIV\repo
+python -m pip install -r requirements.txt
+python -m observatorio.operacao rotina-diaria --dados C:\GEDIV\dados
+python -m observatorio.operacao agendar-windows --dados C:\GEDIV\dados --aplicar
+```
+- `rotina-diaria` faz coleta, reverificação, leitura/OCR, classificação, candidato do painel e backup (se configurado), com registro em `C:\GEDIV\dados\rotina\`.
+- `agendar-windows --aplicar` cria duas tarefas diárias (09:04 e 14:04) no Agendador de Tarefas. Sem `--aplicar`, só mostra o que faria.
+- Requisitos: Python 3.11+ e Tesseract com português (`por`). Os PDFs e o banco ficam só em `C:\GEDIV\dados`, fora do Git.
+- Com o computador desligado no horário, a execução seguinte recupera a janela (a coleta recua 3 dias).

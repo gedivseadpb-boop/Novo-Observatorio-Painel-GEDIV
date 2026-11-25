@@ -7,12 +7,12 @@
 - Conjunto-ouro com PDFs oficiais: 5/5 (evidência de 12/11; não reexecutado depois, sem mudança no código de leitura e classificação).
 - **Site oficial no ar: https://paineldoepb.centralgestaopublica.com.br** (HTTPS), publicado em 25/11/2026 pela execução [45683094708](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/actions/runs/45683094708). Estado **"Dados oficiais em validação"**: interface aprovada e 7 abas; indicadores, gráficos e tabelas indisponíveis; 0 registros; nenhum dado fictício. Publicação só por disparo manual autorizado.
 - Pendente da responsável: marcar **Enforce HTTPS** em Settings > Pages (a automação não tem permissão; erro 403).
-- Coleta real: **bloqueada fora do Brasil** (A União responde 403 geográfico; sonda de 25/11 17h42 UTC). P0-1 pronto em um comando: `prova-coleta` (`docs/OPERACAO.md` §9).
+- **P0-1 comprovado em 25/11/2026 22h40 UTC** no computador da responsável (Brasil): edição de 25/11 baixada íntegra (52 páginas, SHA-256 `b257d277…`), lida (OCR em 10 páginas), 2 atos GEDIV e 12 decisões pendentes de conferência, reexecução sem duplicidade (`docs/evidencias/aquisicao-2026-11-25/prova-p0-1-pc-responsavel.json`). Fora do Brasil a fonte continua respondendo 403.
 - Cobertura oficial independente pela CGE-PB: listagem diária funcionando; os PDFs da CGE exigem senha.
 - Backups dos repositórios antigos: 7/7 verificados no Drive (B-06); exclusão aguarda aprovação.
 
 ## Próximos passos, em ordem de valor
-1. **P0-1, destravar a coleta real (B-01):** num computador no Brasil, `python -m observatorio.operacao prova-coleta --dados PASTA --saida prova-p0-1.json` (`docs/OPERACAO.md` §9). O relatório sem dados pessoais volta para a auditoria.
+1. **Concluído (P0-1):** num computador no Brasil, `python -m observatorio.operacao prova-coleta --dados PASTA --saida prova-p0-1.json` (`docs/OPERACAO.md` §9). O relatório sem dados pessoais volta para a auditoria.
 2. **P0-2, executor permanente no Brasil:** máquina gratuita (Oracle São Paulo) ou da SEAD, com o timer `systemd` de `deploy_autonomo/` (sem runner no repositório público).
 3. Piloto de 7 dias com dois disparos diários; registrar cada execução.
 4. Decisões normativas da GEDIV (B-02) e reclassificação de uma **cópia** das bases históricas.

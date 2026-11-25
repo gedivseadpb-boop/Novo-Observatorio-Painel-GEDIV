@@ -1,0 +1,95 @@
+{
+  "o_que_e": "P0-1: prova de coleta real a partir do Brasil (computador da responsável, Windows), com operacao prova-coleta. Transcrição do relatório colado pela responsável na conversa; o trecho final (critérios restantes e resultado) não veio na colagem. Sem dados pessoais.",
+  "versao_prova": "prova-p0-1-2026.11.25",
+  "inicio_utc": "2026-11-25T22:40:56+00:00",
+  "ambiente": {
+    "sistema": "Windows",
+    "versao_sistema": "10",
+    "python": "3.12.10",
+    "ci": null,
+    "executor_os": null
+  },
+  "fonte": "auniao",
+  "etapas": {
+    "sonda": {
+      "situacao": "DOWNLOAD_INTEGRO",
+      "edicao": {
+        "url_oficial": "https://auniao.pb.gov.br/servicos/doe/2026/novembro/diario-oficial-25-11-2026-portal.pdf",
+        "data": "2026-11-25",
+        "tipo": "normal",
+        "ordem": 0,
+        "sha256": "b257d277f129f75608222b8f9971f36a088455200efc76de29ed20472627a3c4",
+        "bytes": 3245107,
+        "paginas": 52,
+        "gravado_e_reconferido": true,
+        "hash_historico": "SEM_HISTORICO"
+      },
+      "listagem": {
+        "url": "https://auniao.pb.gov.br/doe/edicoes-recentes",
+        "status": 200,
+        "itens": 12,
+        "erro": null,
+        "detalhe": null
+      }
+    },
+    "coleta": {
+      "pendencias": false,
+      "novos": {
+        "arquivos": 0,
+        "publicacoes": 0
+      },
+      "desempenho": {
+        "segundos": 6.88,
+        "pico_memoria_python_mb": 2.0
+      },
+      "observacao": "0 novos porque uma execução anterior na mesma pasta, minutos antes, já havia coletado o dia"
+    },
+    "leitura_e_classificacao": {
+      "codigo": 0
+    },
+    "cobertura": {
+      "situacao": "BAIXADO_SEM_VARREDURA_COMPLETA",
+      "motivo": "VARREDURA_ANTERIOR_AO_DIA",
+      "listadas": 1,
+      "baixadas": 1,
+      "arquivos_distintos": 1
+    },
+    "reexecucao": {
+      "pendencias": false,
+      "novos": {
+        "arquivos": 0,
+        "publicacoes": 0
+      }
+    },
+    "dia": {
+      "leituras": [
+        {
+          "situacao": "LIDA",
+          "paginas": 52,
+          "paginas_sem_texto": 10,
+          "paginas_com_pendencia": 0
+        }
+      ],
+      "paginas_por_metodo": {
+        "OCR": 3,
+        "TEXTO": 42,
+        "TEXTO+OCR": 7
+      },
+      "atos_gediv": 2,
+      "atos_por_eixo": {
+        "PROGRESSAO": 2
+      },
+      "decisoes_por_resultado": {
+        "INDEFERIDO": 12
+      },
+      "decisoes_por_validacao": {
+        "PENDENTE": 12
+      }
+    }
+  },
+  "criterios_recebidos": {
+    "download_integro": true,
+    "original_no_acervo": true
+  },
+  "leitura_da_auditoria": "Download real íntegro a partir do Brasil, original no acervo, leitura completa (52 páginas, OCR em 10), 2 atos GEDIV e 12 decisões pendentes de conferência, reexecução sem duplicidade. Cobertura do dia ainda não certificável (janela de suplementos de 3 dias): pendência de prazo, não falha."
+}

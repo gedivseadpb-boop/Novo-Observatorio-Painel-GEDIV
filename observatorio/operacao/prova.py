@@ -12,7 +12,9 @@ Sequência, cada etapa com evidência:
 
 O relatório (--saida) traz só contagens, situações, URLs oficiais e SHA-256: NENHUM nome, matrícula ou processo.
 É esse arquivo que volta para a auditoria. PDFs e banco ficam só em --dados.
-Código de saída: 0 = aprovado; 3 = concluído com pendências; 4 = fonte inacessível; 1 = reprovado.
+Código de saída: 0 = aprovado; 3 = concluído com pendências (ex.: dia ainda na janela de suplementos de 3 dias,
+que só fica COMPLETO depois; use --data com um dia de pelo menos 3 dias atrás para a prova completa);
+4 = fonte inacessível; 1 = reprovado.
 """
 from __future__ import annotations
 
@@ -115,16 +117,21 @@ def executar(dados: str | Path, *, fonte: str = "auniao", data: date | None = No
     C["original_no_acervo"] = bool(shas_dia) and all(acervo.conferir(sha) for sha in shas_dia)   # SHA-256 recalculado
     C["mesmo_sha_da_sonda"] = (sha_sonda in shas_dia) if (data is None and sha_sonda) else None
     C["cobertura_completa"] = E["cobertura"].get("situacao") in ("COMPLETO", "SEM_PUBLICACAO_LISTADA")
+    # Um dia só é certificado depois da janela de suplementos (3 dias): para a edição mais recente, "completo" ainda
+    # não é possível. Isso é pendência de prazo, não falha: baixado e íntegro, aguardando a varredura posterior.
+    C["cobertura_aguardando_janela"] = (E["cobertura"].get("situacao") == "BAIXADO_SEM_VARREDURA_COMPLETA"
+                                        and E["cobertura"].get("motivo") in ("VARREDURA_ANTERIOR_AO_DIA",
+                                                                              "AGUARDANDO_JANELA_DE_SUPLEMENTOS"))
     C["reexecucao_sem_duplicidade"] = all(v == 0 for v in E["reexecucao"]["novos"].values())
     leituras = dia_resumo.get("leituras", [])
     C["leitura_sem_erro"] = bool(leituras) and all(l["situacao"] != "ERRO" for l in leituras)
     C["leitura_completa"] = bool(leituras) and all(l["situacao"] == "LIDA" for l in leituras)
 
-    obrigatorios = ("download_integro", "original_no_acervo", "cobertura_completa", "reexecucao_sem_duplicidade",
-                    "leitura_sem_erro")
-    if C["mesmo_sha_da_sonda"] is False or not all(C[k] for k in obrigatorios):
+    obrigatorios = ("download_integro", "original_no_acervo", "reexecucao_sem_duplicidade", "leitura_sem_erro")
+    cobertura_ok = C["cobertura_completa"] or C["cobertura_aguardando_janela"]
+    if C["mesmo_sha_da_sonda"] is False or not cobertura_ok or not all(C[k] for k in obrigatorios):
         rel["resultado"], rel["codigo_de_saida"] = "REPROVADO", saida.FALHA
-    elif not C["leitura_completa"] or E["coleta"]["pendencias"]:
+    elif not C["cobertura_completa"] or not C["leitura_completa"] or E["coleta"]["pendencias"]:
         rel["resultado"], rel["codigo_de_saida"] = "APROVADO_COM_PENDENCIAS", saida.CONCLUIDO_COM_PENDENCIAS
     else:
         rel["resultado"], rel["codigo_de_saida"] = "APROVADO", saida.SUCESSO

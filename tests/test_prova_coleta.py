@@ -91,6 +91,21 @@ class TesteProvaColeta(unittest.TestCase):
         self.assertIsNone(rel["criterios"]["mesmo_sha_da_sonda"])
         self.assertTrue(rel["criterios"]["reexecucao_sem_duplicidade"])
 
+    def test_edicao_do_dia_na_janela_de_suplementos_e_pendencia_nao_falha(self):
+        """Achado real de 25/11/2026: a edição do próprio dia sai BAIXADO_SEM_VARREDURA_COMPLETA (janela de 3 dias)."""
+        def cobertura_do_dia(dados, siglas, inicio, fim):
+            return {"dias": [{"data": inicio.isoformat(), "situacao": "BAIXADO_SEM_VARREDURA_COMPLETA",
+                              "motivo": "VARREDURA_ANTERIOR_AO_DIA", "listadas": 1, "baixadas": 1, "arquivos_distintos": 1}]}
+        rel = prova.executar(self.dados, sonda=self._sonda, coletar=self._coletar, ler=self._ler, cobertura=cobertura_do_dia)
+        self.assertTrue(rel["criterios"]["cobertura_aguardando_janela"])
+        self.assertEqual((rel["resultado"], rel["codigo_de_saida"]), ("APROVADO_COM_PENDENCIAS", 3))
+
+    def test_cobertura_com_lacuna_reprova(self):
+        def cobertura_pendente(dados, siglas, inicio, fim):
+            return {"dias": [{"data": inicio.isoformat(), "situacao": "PENDENTE", "motivo": None}]}
+        rel = prova.executar(self.dados, sonda=self._sonda, coletar=self._coletar, ler=self._ler, cobertura=cobertura_pendente)
+        self.assertEqual((rel["resultado"], rel["codigo_de_saida"]), ("REPROVADO", 1))
+
     def test_comando_registrado_na_cli(self):
         from observatorio.operacao import __main__ as cli
         self.assertIn("prova-coleta", cli.__doc__)

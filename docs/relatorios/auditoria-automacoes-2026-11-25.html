@@ -1,0 +1,194 @@
+<title>Auditoria das automações GEDIV</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: relatório de auditoria para a responsável pelo projeto
+   IDEA página de dados de jornal: a conclusão é a manchete, a grade de tentativas é a prova
+   PICTURE matriz tentativa × data, cada célula colorida pelo resultado
+   COLOUR rosa-claro de jornal, tinta quase preta, verde-azulado = funcionou, vinho = falhou, âmbar = parcial, cinza = não rodou
+   TYPE Libre Franklin 800 nos títulos + Libre Franklin no texto
+   LAYOUT laptop: manchete e números em cima, matriz larga embaixo; celular: empilhado, matriz com rolagem lateral própria */
+:root{color-scheme:light dark;--bg:light-dark(#fff1ec,#1c1512);--card:light-dark(#fff8f5,#251c18);--ink:light-dark(#1a1817,#f3ebe7);--mute:light-dark(#5d544f,#b9aca5);--line:light-dark(#e6d2ca,#3d302a);--ok:light-dark(#0d7680,#4fb7c0);--bad:light-dark(#990f3d,#ff7a9e);--warn:light-dark(#b07000,#f0b84a);--off:light-dark(#cbbdb6,#544640)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Libre Franklin",system-ui,sans-serif;overflow-x:clip}
+.band{padding-block:clamp(22px,3.5vw,48px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-weight:800;font-size:clamp(30px,4.2vw,48px);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px;max-width:24ch}
+h2{font-weight:800;font-size:22px;line-height:1.2;margin:0 0 6px}
+h3{font-weight:800;font-size:17px;margin:0 0 4px}
+p{margin:0 0 12px}
+.lead{font-size:17px;color:var(--mute);max-width:70ch}
+.sub{color:var(--mute);font-size:14px;margin-bottom:14px;max-width:80ch}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:10px;margin-top:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.kpi b{display:block;font-size:clamp(26px,3vw,34px);font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--mute)}
+.kpi.ok b{color:var(--ok)}.kpi.bad b{color:var(--bad)}
+.scroll{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:8px}
+.mx{border-collapse:collapse;font-size:13px;width:100%;min-width:900px}
+.mx th,.mx td{padding:6px 5px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+.mx th{font-weight:600;color:var(--mute);font-size:12px}
+.mx td.l,.mx th.l{text-align:left;white-space:normal;position:sticky;left:0;background:var(--card);min-width:15em;max-width:19em;z-index:1}
+.mx td.l small{display:block;color:var(--mute);font-size:12px}
+.c{display:inline-block;width:26px;height:22px;border-radius:4px;line-height:22px;font-weight:800;color:#fff;font-size:12px}
+.c.ok{background:var(--ok)}.c.bad{background:var(--bad)}.c.part{background:var(--warn)}.c.skip{background:var(--off);color:var(--ink)}.c.prep{background:transparent;border:2px dashed var(--warn);color:var(--warn);line-height:18px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--mute);margin-top:10px}
+.legend .c{width:18px;height:16px;line-height:16px;font-size:10px;vertical-align:-3px;margin-right:6px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr))}
+.repo{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.repo .hd{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.repo .nm{font-weight:800;font-size:16px;overflow-wrap:anywhere}
+.pill{font-size:12px;font-weight:600;border-radius:99px;padding:2px 9px;white-space:nowrap;color:#fff}
+.p-ok{background:var(--ok)}.p-bad{background:var(--bad)}.p-warn{background:var(--warn)}.p-off{background:var(--off);color:var(--ink)}
+.repo .papel{font-size:13px;color:var(--mute)}
+.repo ul{margin:0;padding:0;list-style:none}
+.repo li{display:grid;grid-template-columns:1.4em minmax(0,1fr);gap:6px;font-size:14px;padding:3px 0}
+.m{font-weight:800;text-align:center}
+.m.ok{color:var(--ok)}.m.bad{color:var(--bad)}.m.warn{color:var(--warn)}.m.off{color:var(--mute)}
+.cols{display:grid;gap:clamp(16px,3vw,32px);grid-template-columns:minmax(0,1fr)}
+@media(min-width:820px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:grid;grid-template-columns:1.6em minmax(0,1fr);gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.list small{display:block;color:var(--mute);font-size:13px}
+.verdict{background:var(--card);border-left:6px solid var(--ok);border-radius:4px;padding:16px 18px}
+table.op{border-collapse:collapse;width:100%;font-size:14px}
+table.op th,table.op td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.op th{font-weight:600;color:var(--mute);font-size:13px}
+table.op tr.rec td{background:color-mix(in srgb,var(--ok) 12%,transparent)}
+table.op tr.no td{background:color-mix(in srgb,var(--bad) 9%,transparent)}
+.note{font-size:13px;color:var(--mute)}
+a{color:var(--ok)}
+@media(max-width:600px){table.op{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:8px}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:4px 2px}.stack td::before{content:attr(data-l);color:var(--mute);font-size:12px;flex:none}}
+</style>
+
+<section class="band"><div class="wrap">
+  <h1>O coletor nunca precisou de um computador. Precisa de um endereço no Brasil.</h1>
+  <p class="lead">Auditei os 10 repositórios da conta, 31 workflows (52 versões espalhadas pelas branches), as execuções registradas, as sessões do Claude, os plugins e as skills. Só dois episódios baixaram o Diário Oficial de verdade: a nuvem do Claude Code em 14/11, antes da mudança na fonte, e o computador da responsável em 18/11. Desde 24/11, a A União só aceita acessos vindos do Brasil.</p>
+  <div class="kpis">
+    <div class="kpi"><b>10</b><span>repositórios auditados</span></div>
+    <div class="kpi"><b>31</b><span>workflows (52 versões nas branches)</span></div>
+    <div class="kpi bad"><b>0</b><span>downloads feitos por servidores do GitHub</span></div>
+    <div class="kpi ok"><b>2</b><span>episódios de coleta real (14/11 e 18/11)</span></div>
+    <div class="kpi"><b>0</b><span>tarefas agendadas no Claude</span></div>
+  </div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <h2>Todas as tentativas de baixar o Diário Oficial, por data</h2>
+  <p class="sub">Uma linha por automação ou ambiente. Cada célula mostra o resultado no dia. Role para o lado no celular.</p>
+  <div class="scroll"><table class="mx" id="mx"></table></div>
+  <div class="legend">
+    <span><i class="c ok">✓</i>baixou o PDF oficial</span>
+    <span><i class="c part">½</i>rodou, mas não chegou ao conteúdo</span>
+    <span><i class="c bad">✕</i>falhou na conexão com a fonte</span>
+    <span><i class="c skip">–</i>agendada, mas não executou a coleta</span>
+    <span><i class="c prep">…</i>preparada, sem execução registrada</span>
+  </div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <h2>Repositório por repositório</h2>
+  <p class="sub">O que cada um tem de automação, o que funcionou, o que parou e o destino recomendado.</p>
+  <div class="grid" id="repos"></div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap cols">
+  <div>
+    <h2>Plugins, skills e agendamentos</h2>
+    <ul class="list" id="plug"></ul>
+  </div>
+  <div>
+    <h2>Por que cada caminho parou</h2>
+    <ul class="list" id="porque"></ul>
+  </div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <h2>Como rodar sem computador nenhum</h2>
+  <p class="sub">O código do repositório-mãe já roda sozinho num servidor. Falta só um servidor com endereço brasileiro. Opções, da mais recomendada para a menos:</p>
+  <div class="scroll" style="background:transparent;border:0"><table class="op stack"><thead><tr><th>Opção</th><th>Custo</th><th>O que exige</th><th>Situação</th></tr></thead><tbody id="ops"></tbody></table></div>
+  <div class="verdict" style="margin-top:16px">
+    <h3>Recomendação</h3>
+    <p style="margin:0">Uma máquina virtual gratuita na região São Paulo (Oracle Cloud, plano "Always Free"), registrada como executor do GitHub com o rótulo <b>gediv-br</b>. O workflow de coleta já agendado (09h04 e 14h04) passa a rodar nela, sem computador ligado e sem mudar o código. Antes de qualquer cadastro, eu testo a sonda de acesso nessa máquina e mostro o resultado. O cadastro na Oracle pede um cartão de crédito só para verificação. Por isso, depende da sua autorização.</p>
+  </div>
+  <p class="note" style="margin-top:14px">Situação em 25/11/2026. Fontes: histórico de execuções do GitHub (repositório-mãe, robo-gediv-pb, gediv-conferencia-privada, GPT-NOVO-REPOSITORIO e GEDIV---Click consultados pela API; demais pelos relatórios versionados nos próprios repositórios), espelhos completos de todas as branches e a lista de sessões do Claude. O histórico de execuções de Observat-rio-GEDIV-CLAUDE, robo-gediv-V2 e robo-gediv-gemini não pôde ser lido pela API nesta sessão; para eles, valem os registros escritos nos repositórios.</p>
+</div></section>
+
+<script>
+{
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dias=["29/10","30/10","31/10","01/11","02–03/11","04–08/11","09/11","10/11","11/11","14/11","18/11","23/11","24/11","25/11"];
+const S={ok:["ok","✓"],part:["part","½"],bad:["bad","✕"],skip:["skip","–"],prep:["prep","…"]};
+const linhas=[
+ ["robo-gediv-pb · coleta diária","servidor do GitHub (EUA)",{"29/10":"skip","30/10":"skip","31/10":"skip","01/11":"bad","02–03/11":"bad","04–08/11":"skip"}],
+ ["robo-gediv-pb · piloto privado","servidor do GitHub; 3 execuções",{"31/10":"bad"}],
+ ["robo-gediv-V2 · teste no GitHub","2 execuções, tempo esgotado",{"09/11":"bad"}],
+ ["robo-gediv-V2 · runner Windows","\"gediv-acervo\" no computador",{"09/11":"prep"}],
+ ["robo-gediv-V2 · Cloudflare Worker","sem custo, sem implantação",{"09/11":"prep"}],
+ ["Observat-rio-GEDIV-CLAUDE · sonda","3 servidores do GitHub",{"10/11":"bad","11/11":"bad"}],
+ ["Sessão do Claude Code na nuvem","sem computador",{"14/11":"ok","24/11":"bad","25/11":"bad"}],
+ ["Claude Cowork no computador","rede brasileira; 184 PDFs mar–nov",{"18/11":"ok"}],
+ ["ChatGPT · jan–fev e texto indexado","entrega manual ao painel privado",{"18/11":"part"}],
+ ["Codex · leitura por intermediário","r.jina.ai; resultado não registrado",{"23/11":"prep"}],
+ ["GPT-NOVO-REPOSITORIO · novembro","bloqueado no proxy; 0 PDFs",{"24/11":"bad"}],
+ ["Repositório-mãe · coleta diária","servidor do GitHub; 4 execuções",{"24/11":"bad","25/11":"bad"}],
+ ["Repositório-mãe · cobertura CGE-PB","218 edições, todas com senha",{"24/11":"part","25/11":"part"}]
+];
+document.getElementById('mx').innerHTML='<thead><tr><th class="l">Automação / ambiente</th>'+dias.map(d=>`<th>${esc(d)}</th>`).join('')+'</tr></thead><tbody>'+
+ linhas.map(([n,o,c])=>`<tr><td class="l">${esc(n)}<small>${esc(o)}</small></td>`+dias.map(d=>{const s=S[c[d]];return `<td>${s?`<span class="c ${s[0]}" title="${esc(d)}">${s[1]}</span>`:''}</td>`}).join('')+'</tr>').join('')+'</tbody>';
+
+const repos=[
+ ["Novo-Observatorio-Painel-GEDIV","p-ok","ativo · repositório-mãe","Público. Reúne o que deu certo nos demais.",[
+  ["ok","Testes: 22 execuções, as 10 mais recentes verdes (Ubuntu e Windows)"],["ok","Painel no GitHub Pages publicado e conferido byte a byte"],["ok","Release v1.0.0 gerada automaticamente"],["ok","Cobertura diária pela CGE-PB: lista as edições do dia"],["bad","Coleta diária da A União: 4 falhas; a fonte recusa servidores fora do Brasil"],["warn","Coleta agendada 2×/dia segue ativa, aguardando executor no Brasil"]]],
+ ["Observat-rio-GEDIV-CLAUDE","p-warn","inativo · migrado","42 branches, 150 commits. Base do código atual.",[
+  ["ok","14/11: coleta real na nuvem do Claude (edição de 07/11, SHA-256 idêntico)"],["ok","Testes e painel com execuções verdes até 18/11"],["bad","Sonda no GitHub falhou em 10 e 11/11"],["off","Código e skills migrados; backup verificado no Drive"]]],
+ ["robo-gediv-V2","p-off","arquivado","11 branches, 135 commits.",[
+  ["bad","Teste em servidor do GitHub: tempo esgotado, 2 de 2"],["warn","Runner Windows no computador: preparado, sem execução registrada"],["warn","Cloudflare Worker: código pronto, nunca executado"],["bad","CGE-PB: tempo esgotado em 09/11"]]],
+ ["robo-gediv-pb","p-off","arquivado","Robô do Gemini e do Codex. 20 execuções.",[
+  ["bad","0 PDFs baixados: 3 falhas por tempo esgotado, 12 coletas puladas"],["ok","Testes do piloto: 5 de 5 verdes"],["warn","310 registros vieram de catálogo antigo e 18 de texto indexado, entregues à mão"],["off","Agendamento diário (13h37) parou com o arquivamento"]]],
+ ["robo-gediv-gemini","p-off","arquivado","Mesmo código e workflows do robo-gediv-pb.",[
+  ["bad","Nenhum download comprovado"],["off","Agendamento diário parado"]]],
+ ["gediv-conferencia-privada","p-warn","privado · parado em 20/11","Painel estático de conferência (index.html).",[
+  ["ok","7 publicações no GitHub Pages, todas verdes (19 e 20/11)"],["warn","Dados chegaram por entrega manual, não por coleta"]]],
+ ["gediv-painel-unificado-previa","p-off","parado em 23/11","Prévia pública com dados sintéticos.",[
+  ["ok","Publicação automática da prévia funcionou"],["off","Substituído pelo Pages do repositório-mãe"]]],
+ ["gediv-painel-redesign-preview","p-off","parado em 18/11","Prévias visuais do redesenho. 6 branches.",[
+  ["off","Sem automação"],["off","Interface aprovada já preservada no mãe"]]],
+ ["GPT-NOVO-REPOSITORIO","p-bad","privado · paralelo","Criado em 24/11 por outra IA, com cópia do mesmo código.",[
+  ["ok","1 execução de testes, verde"],["bad","Carga de novembro: 0 PDFs, bloqueio no proxy"],["warn","Duplica o repositório-mãe; candidato a arquivar"]]],
+ ["GEDIV---Click","p-off","arquivado · 02/10","App de tarefas (React e Firebase).",[
+  ["off","Sem automação e sem relação com a coleta"]]]
+];
+document.getElementById('repos').innerHTML=repos.map(([n,p,s,papel,it])=>`<div class="repo"><div class="hd"><span class="nm">${esc(n)}</span><span class="pill ${p}">${esc(s)}</span></div><div class="papel">${esc(papel)}</div><ul>${it.map(([k,t])=>`<li><span class="m ${k}">${k==='ok'?'✓':k==='bad'?'✕':k==='warn'?'!':'·'}</span><span>${esc(t)}</span></li>`).join('')}</ul></div>`).join('');
+
+const plug=[
+ ["ok","Skills de interface","gediv-ux-arquiteto-senior e gediv-webdesigner-senior: migradas e ativas no repositório-mãe"],
+ ["warn","Skill gediv-entrega-completa","Existe só numa branch do repositório antigo; não está em uso"],
+ ["warn","Plugin do ChatGPT (gediv_receber_lote, gediv_status)","Recebia lotes à mão num site privado; não coleta nada sozinho"],
+ ["ok","Agendamento do GitHub no repositório-mãe","Coleta às 09h04 e 14h04, ativo; falha enquanto rodar fora do Brasil"],
+ ["off","Agendamentos dos robôs antigos","Parados: o GitHub desliga agendamentos de repositórios arquivados"],
+ ["off","Tarefas agendadas do Claude","Nenhuma cadastrada"],
+ ["warn","Sessões do Claude","7 sessões; uma, no computador, aguarda autorizar o PR #22 (o conteúdo já foi migrado). A sessão do Cowork de 18/11 não aparece na lista"],
+ ["warn","Agendador do Windows e timer Linux","Prontos no repositório-mãe, ainda não instalados"]];
+document.getElementById('plug').innerHTML=plug.map(([k,t,d])=>`<li><span class="m ${k}">${k==='ok'?'✓':k==='bad'?'✕':k==='warn'?'!':'·'}</span><div>${esc(t)}<small>${esc(d)}</small></div></li>`).join('');
+
+const porque=[
+ ["bad","Servidores do GitHub (29/10 a 25/11)","Ficam nos EUA. A A União nunca respondeu a eles: tempo esgotado ou conexão recusada"],
+ ["ok","Nuvem do Claude em 14/11","Funcionou porque a fonte ainda não restringia por país"],
+ ["bad","Nuvem do Claude em 24 e 25/11","Mesmo código e mesma rede. A fonte passou a responder: \"Acesso permitido somente a partir do Brasil ou da rede interna\""],
+ ["ok","Computador da responsável em 18/11","Funcionou por estar no Brasil, não por ser um computador"],
+ ["warn","CGE-PB","Alcançável de qualquer lugar, mas todos os PDFs exigem senha; a proteção não é contornada"],
+ ["bad","Intermediários e VPN","Mascaram a origem para driblar a regra da fonte; não adotados"]];
+document.getElementById('porque').innerHTML=porque.map(([k,t,d])=>`<li><span class="m ${k}">${k==='ok'?'✓':k==='bad'?'✕':'!'}</span><div>${esc(t)}<small>${esc(d)}</small></div></li>`).join('');
+
+const ops=[
+ ["rec","VM gratuita na Oracle Cloud, região São Paulo, com runner do GitHub","R$ 0 (Always Free)","Cadastro com cartão para verificação; eu configuro o resto","Recomendada; ainda não testada"],
+ ["","Servidor ou VM da rede da SEAD","R$ 0 para o projeto","Pedido à TI da SEAD; caminho institucional","Depende da TI"],
+ ["","VM paga em São Paulo (AWS, Google Cloud ou nuvem brasileira)","mensalidade baixa, a cotar","Conta com cobrança ativa","Só com sua autorização"],
+ ["no","Servidores do GitHub ou nuvem do Claude","R$ 0","Nada","Bloqueados pela fonte desde 24/11"],
+ ["no","Proxy, VPN ou leitor intermediário","variável","Disfarçar a origem","Descartado: contorna a regra da fonte"]];
+document.getElementById('ops').innerHTML=ops.map(([c,a,b,d,e])=>`<tr class="${c}"><td data-l="Opção"><b>${esc(a)}</b></td><td data-l="Custo">${esc(b)}</td><td data-l="Exige">${esc(d)}</td><td data-l="Situação">${esc(e)}</td></tr>`).join('');
+}
+</script>

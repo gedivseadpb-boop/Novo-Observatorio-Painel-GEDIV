@@ -1,0 +1,23 @@
+{
+ "o_que_e": "Refação, no repositório-mãe e do zero (pasta de dados vazia, sem nenhum dado dos repositórios antigos nem do Drive), da aquisição que funcionou em 14/11/2026.",
+ "data": "2026-11-25",
+ "commit": "67b6182",
+ "comandos": [
+  "python -m observatorio.operacao sonda --fonte auniao",
+  "python -m observatorio.operacao coletar-dia --data 2026-11-07 --fonte auniao"
+ ],
+ "sonda": {
+  "situacao": "LISTAGEM_INACESSIVEL",
+  "listagem": {
+   "url": "https://auniao.pb.gov.br/doe/edicoes-recentes",
+   "erro": "ROBOTS_RECUSADO",
+   "detalhe": "ROBOTS_RECUSADO: https://auniao.pb.gov.br/doe/edicoes-recentes"
+  }
+ },
+ "coletar_dia": {
+  "robots": "RECUSADO",
+  "suspensa": "ROBOTS_RECUSADO (suspensa até 2026-11-26T11:31:42+00:00)",
+  "downloads": {}
+ },
+ "conclusao": "A fonte recusou na consulta ao robots.txt (403 com bloqueio geográfico: 'Acesso permitido somente a partir do Brasil ou da rede interna'). O coletor respeitou a recusa e suspendeu a fonte por 24 h, com auditoria. Em 14/11 os mesmos comandos funcionaram; a mudança foi na política de acesso da fonte."
+}

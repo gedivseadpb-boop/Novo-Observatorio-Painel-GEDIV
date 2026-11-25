@@ -6,7 +6,7 @@
 - Suíte Python: **735 testes, 0 falhas** (7 pulados por dados privados). Interface (jsdom): 5/5. Teste no navegador do pacote oficial (computador e celular): aprovado.
 - Conjunto-ouro com PDFs oficiais: 5/5 (evidência de 12/11; não reexecutado depois, sem mudança no código de leitura e classificação).
 - **Site oficial no ar: https://paineldoepb.centralgestaopublica.com.br** (HTTPS), publicado em 25/11/2026 pela execução [45683094708](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/actions/runs/45683094708). Estado **"Dados oficiais em validação"**: interface aprovada e 7 abas; indicadores, gráficos e tabelas indisponíveis; 0 registros; nenhum dado fictício. Publicação só por disparo manual autorizado.
-- Pendente da responsável: marcar **Enforce HTTPS** em Settings > Pages (a automação não tem permissão; erro 403).
+- HTTPS obrigatório ativo (Enforce HTTPS marcado pela responsável em 25/11/2026; `http://` passa a `https://`).
 - **P0-1 comprovado em 25/11/2026 22h40 UTC** no computador da responsável (Brasil): edição de 25/11 baixada íntegra (52 páginas, SHA-256 `b257d277…`), lida (OCR em 10 páginas), 2 atos GEDIV e 12 decisões pendentes de conferência, reexecução sem duplicidade (`docs/evidencias/aquisicao-2026-11-25/prova-p0-1-pc-responsavel.json`). Fora do Brasil a fonte continua respondendo 403.
 - Cobertura oficial independente pela CGE-PB: listagem diária funcionando; os PDFs da CGE exigem senha.
 - Backups dos repositórios antigos: 7/7 verificados no Drive (B-06); exclusão aguarda aprovação.

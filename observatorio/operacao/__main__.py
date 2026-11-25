@@ -217,7 +217,12 @@ def main(argv=None) -> int:
                 print(json.dumps({"resultado": "RECUSADO", "erro": "--aplicar só funciona no Windows"}, ensure_ascii=False))
                 return saida.USO_INCORRETO
             for c in comandos:
-                subprocess.run(c, check=True)
+                if subprocess.run(c).returncode != 0:
+                    print(json.dumps({"resultado": "FALHA_AO_CRIAR_TAREFA", "tarefa": c[c.index("/TN") + 1],
+                                      "orientacao": "Se apareceu 'Acesso negado': abra o PowerShell com o botão direito > "
+                                                    "'Executar como administrador' e rode o comando de novo."},
+                                     ensure_ascii=False, indent=2))
+                    return saida.FALHA
         print(json.dumps({"resultado": "TAREFAS_CRIADAS" if a.aplicar else "SIMULACAO", "acao_sem_janela": acao,
                           "script_manual": str(script), "comandos": comandos},
                          ensure_ascii=False, indent=2))

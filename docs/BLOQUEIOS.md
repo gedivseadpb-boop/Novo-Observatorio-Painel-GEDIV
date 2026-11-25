@@ -27,3 +27,10 @@ Registro do que **não depende de código** e impede declarar alguma parte como 
 | **25/11/2026** | Mesma nuvem e mesmo ambiente | **A União: HTTP 403 "Acesso permitido somente a partir do Brasil ou da rede interna"** | `docs/evidencias/aquisicao-2026-11-25/` |
 
 **Conclusão:** o coletor e o ambiente de rede são os mesmos do dia em que funcionou. Mudou a política de acesso da fonte: entre 14/11 e 24/11, a A União passou a aceitar só acessos do Brasil ou da rede interna, e a CGE passou a usar WAF ("Baluarte", citado no próprio `robots.txt`) e a entregar PDFs com senha. Para retomar a coleta automática do conteúdo, o coletor precisa rodar no Brasil ou na rede institucional (runner `gediv-br` ou VM com o timer `systemd`). O código já está pronto e agendado, e não é preciso nenhuma alteração.
+
+## Como o painel do Gemini tinha dados (análise de `robo-gediv-gemini` e `robo-gediv-pb`, 25/11/2026)
+
+- **Download direto: nunca funcionou.** O robô (`src/robo.py`, `requests` num runner Ubuntu do GitHub) tentou baixar da A União e da CGE em 31/10. As duas execuções terminaram por tempo esgotado ([41233068223](https://github.com/gedivseadpb-boop/robo-gediv-pb/actions/runs/41233068223), [41233491203](https://github.com/gedivseadpb-boop/robo-gediv-pb/actions/runs/41233491203)). O próprio repositório registra: "A obtenção direta dos PDFs continua sem sucesso comprovado".
+- **310 registros:** vieram de um **catálogo anterior** já existente, importado por `src/importar_historico.py` (todos rebaixados a pendentes), e não de coleta.
+- **18 registros:** vieram de **texto indexado** das edições oficiais, lido pela ferramenta de busca do ChatGPT e não pelo PDF original. Foram processados por `src/extrair_texto.py` e entregues manualmente ao painel privado ("START manual", `docs/CONEXAO_MANUAL.md`). Não têm SHA-256 do PDF nem garantia de página inteira, e o próprio repositório diz que isso "não é um robô autônomo diário".
+- **Consequência para o repositório-mãe:** esse método não atende ao padrão de evidência adotado (PDF oficial íntegro, SHA-256, todas as páginas, OCR). Ele não foi reproduzido, e os dados dele não foram trazidos.

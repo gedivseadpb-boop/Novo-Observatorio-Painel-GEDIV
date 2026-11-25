@@ -37,7 +37,8 @@ Código 0 = download íntegro (com SHA-256 e páginas). Código 4 = fonte inaces
 ## 3. Painel
 - Local: `.venv/bin/python -m observatorio.web --dados /var/lib/gediv/dados` e abrir `http://127.0.0.1:8000/painel/`.
 - Contas: `.venv/bin/python -m observatorio.web.usuarios --dados DADOS criar LOGIN --nome "Nome" --papel gerencia|admin`.
-- GitHub Pages (prévia com dados sintéticos): ativar **uma vez** em Settings > Pages > Source: **GitHub Actions**. Depois disso, o workflow "Painel no GitHub Pages" publica sozinho.
+- GitHub Pages (prévia com dados sintéticos): ativo, publicado pela branch `gh-pages`. O workflow "Painel no GitHub Pages" publica sozinho e põe no topo a faixa "Demonstração com dados fictícios" (decisão de 25/11/2026).
+- Domínio próprio `paineldoepb.centralgestaopublica.com.br`: no painel de DNS do domínio `centralgestaopublica.com.br`, criar **um** registro do tipo `CNAME`, nome `paineldoepb`, valor `gedivseadpb-boop.github.io` (sem proxy, se o DNS for da Cloudflare). O workflow confere o DNS todos os dias às 07h17 e, quando o registro aparece, ativa o domínio e o HTTPS sozinho. Enquanto o registro não existir, o painel continua no endereço `github.io`. Para desfazer, basta apagar o registro: o workflow volta ao `github.io` na execução seguinte.
 
 ## 4. Divulgação pública (snapshot)
 ```bash

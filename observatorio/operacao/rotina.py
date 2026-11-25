@@ -112,8 +112,24 @@ def script_windows(dados: str | Path, python: str | None = None, repositorio: st
             f'"{python}" -m observatorio.operacao rotina-diaria --dados "{dados}" >> "{Path(dados) / "rotina" / "agendador.log"}" 2>&1\r\n')
 
 
+def acao_oculta_windows(dados: str | Path, python: str | None = None, repositorio: str | Path | None = None) -> str:
+    """Ação da tarefa agendada SEM janela de console: pythonw.exe + scripts/gediv_rotina_windows.pyw.
+
+    Achado de 25/11/2026: com o .cmd, a tarefa abre uma janela preta; fechá-la encerra a coleta no meio
+    (código 0xC000013A, "Último resultado" -1073741510). Com pythonw não há janela para fechar.
+    """
+    import ntpath                               # regras de caminho do Windows, também nos testes em Linux
+    python = str(python or sys.executable)
+    pythonw = (ntpath.join(ntpath.dirname(python), "pythonw.exe")
+               if ntpath.basename(python).lower() == "python.exe" else python)
+    repositorio = str(repositorio or Path(__file__).resolve().parents[2])
+    lancador = ntpath.join(repositorio, "scripts", "gediv_rotina_windows.pyw")
+    return f'"{pythonw}" "{lancador}" --dados "{dados}"'
+
+
 def comandos_agendamento_windows(script: str | Path, horarios=HORARIOS_PADRAO) -> list[list[str]]:
     """Uma tarefa diária por horário, com o usuário atual. Computador desligado no horário: a próxima execução recupera a
     janela, porque a coleta sempre recua alguns dias."""
+    acao = str(script) if str(script).startswith('"') else f'"{script}"'    # aceita um caminho ou uma ação já pronta
     return [["schtasks", "/Create", "/F", "/SC", "DAILY", "/ST", h, "/TN", f"{NOME_TAREFA}-{h.replace(':', '')}",
-             "/TR", f'"{script}"'] for h in horarios]
+             "/TR", acao] for h in horarios]

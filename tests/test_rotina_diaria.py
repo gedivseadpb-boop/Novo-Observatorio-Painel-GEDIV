@@ -72,6 +72,30 @@ class TesteAgendamentoWindows(unittest.TestCase):
         self.assertIn("rotina-diaria", conteudo)
         self.assertIn("\r\n", conteudo)
 
+    def test_tarefa_sem_janela_de_console(self):
+        """Achado de 25/11/2026: fechar a janela do .cmd encerrava a coleta (0xC000013A). A tarefa usa pythonw + .pyw."""
+        acao = rotina.acao_oculta_windows(r"C:\GEDIV\dados", python=r"C:\Py\python.exe", repositorio=r"C:\GEDIV\repo")
+        self.assertIn("pythonw.exe", acao)
+        self.assertIn("gediv_rotina_windows.pyw", acao)
+        self.assertIn('--dados "C:\\GEDIV\\dados"'.replace("\\\\", "\\"), acao)
+        for c in rotina.comandos_agendamento_windows(acao):
+            tr = c[c.index("/TR") + 1]
+            self.assertEqual(tr, acao)
+            self.assertLessEqual(len(tr), 261)
+        self.assertTrue((Path(rotina.__file__).resolve().parents[2] / "scripts" / "gediv_rotina_windows.pyw").is_file())
+
+    def test_lancador_grava_registro_e_codigo(self):
+        import importlib.util
+        caminho = Path(rotina.__file__).resolve().parents[2] / "scripts" / "gediv_rotina_windows.pyw"
+        from importlib.machinery import SourceFileLoader
+        mod = SourceFileLoader("gediv_rotina_windows", str(caminho)).load_module()
+        with tempfile.TemporaryDirectory() as t, mock.patch("observatorio.operacao.__main__.main", return_value=4) as cli:
+            self.assertEqual(mod.main(["--dados", t]), 4)
+            log = (Path(t) / "rotina" / "agendador.log").read_text(encoding="utf-8")
+        cli.assert_called_once()
+        self.assertIn("=== início", log)
+        self.assertIn("código 4", log)
+
     def test_cli_simulacao_e_aplicar_recusado_fora_do_windows(self):
         from observatorio.operacao.__main__ import main
         with tempfile.TemporaryDirectory() as t, mock.patch("sys.stdout") as out:

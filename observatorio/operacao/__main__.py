@@ -206,7 +206,8 @@ def main(argv=None) -> int:
         from pathlib import Path as _Path
         script = _Path(a.dados).resolve() / "gediv-rotina.cmd"
         conteudo = rotina.script_windows(_Path(a.dados).resolve())
-        comandos = rotina.comandos_agendamento_windows(script)
+        acao = rotina.acao_oculta_windows(_Path(a.dados).resolve())
+        comandos = rotina.comandos_agendamento_windows(acao)
         if a.aplicar:
             (script.parent / "rotina").mkdir(parents=True, exist_ok=True)
             script.write_text(conteudo, encoding="utf-8", newline="")
@@ -217,8 +218,8 @@ def main(argv=None) -> int:
                 return saida.USO_INCORRETO
             for c in comandos:
                 subprocess.run(c, check=True)
-        print(json.dumps({"resultado": "TAREFAS_CRIADAS" if a.aplicar else "SIMULACAO", "script": str(script),
-                          "conteudo_script": conteudo, "comandos": comandos},
+        print(json.dumps({"resultado": "TAREFAS_CRIADAS" if a.aplicar else "SIMULACAO", "acao_sem_janela": acao,
+                          "script_manual": str(script), "comandos": comandos},
                          ensure_ascii=False, indent=2))
         return saida.SUCESSO
     if a.comando in ("backup", "restaurar"):

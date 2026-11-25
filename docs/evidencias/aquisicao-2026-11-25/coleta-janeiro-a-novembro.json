@@ -1,0 +1,27 @@
+{
+ "o_que_e": "Coleta de janeiro a outubro/2026 (somada a novembro), do zero, com o coletor do repositório-mãe. Só agregados, sem dados pessoais.",
+ "data_execucao": "2026-11-25",
+ "a_uniao": "não consultada: fonte suspensa até 2026-11-26T11:34Z após a recusa geográfica de 25/11 (política de não insistir)",
+ "cge_pb": {
+  "edicoes_por_mes": {
+   "2026-01": 22,
+   "2026-02": 18,
+   "2026-03": 22,
+   "2026-04": 19,
+   "2026-05": 22,
+   "2026-06": 16,
+   "2026-07": 23,
+   "2026-08": 24,
+   "2026-09": 17,
+   "2026-10": 20,
+   "2026-11": 15
+  },
+  "total_edicoes": 218,
+  "bytes_totais": 628563923,
+  "observacao": "todas baixadas completas (tamanho conferido, SHA-256 registrado) e retidas como PDF_PROTEGIDO_POR_SENHA; 1 edição de junho falhou por instabilidade de conexão e foi obtida na retentativa"
+ },
+ "motivos_registrados": {
+  "CONEXAO: https://cge.pb.gov.br/gati/Uploads/doe/2026/06-Junho/26-Diario%20Oficial%2026-06-2026%20TOTAL.pdf ([Errno 104] Connection reset by peer)": 1,
+  "PDF_PROTEGIDO_POR_SENHA": 218
+ }
+}

@@ -1,27 +1,29 @@
 name: Painel no GitHub Pages
 
-# Publica o Painel Unificado (Delicadeza Visual) como prévia pública estática com dados 100% SINTÉTICOS,
-# em https://gedivseadpb-boop.github.io/Novo-Observatorio-Painel-GEDIV/ (Pages servido pela branch gh-pages).
-# O pacote é gerado a partir do próprio código do repositório e validado (sem PII, sem credenciais,
-# paleta de 240 cores) antes de qualquer envio. Dados reais nunca são publicados por este workflow.
+# Publica o pacote OFICIAL do Painel Unificado (Delicadeza Visual) em paineldoepb.centralgestaopublica.com.br
+# (ou no endereço github.io enquanto o DNS não apontar para o GitHub). Enquanto não houver dados oficiais
+# aprovados, o pacote é o estado "Dados oficiais em validação": navegação preservada, indicadores, gráficos e
+# tabelas indisponíveis, nenhum registro. Dados fictícios, pessoais, PDFs, bancos e credenciais são recusados
+# pela validação fechada de scripts/preparar_pacote_oficial_pages.py.
 #
-# Domínio próprio (decisão de 25/11/2026): paineldoepb.centralgestaopublica.com.br. O arquivo CNAME só entra no
-# pacote quando o DNS do subdomínio já aponta para o GitHub; antes disso o site continua no endereço github.io,
-# sem ficar fora do ar. A execução diária ativa o domínio sozinha assim que o registro de DNS for criado.
+# Publicação SÓ por disparo manual (decisão de 25/11/2026): Actions > "Painel no GitHub Pages" > Run workflow >
+# marcar "publicar". Um push apenas gera e valida o pacote, sem publicar. Não há agendamento.
 on:
-  schedule:
-    - cron: "17 10 * * *"   # 07h17 em Brasília: ativa o domínio assim que o DNS estiver pronto
   push:
     branches: [main, "claude/**"]
     paths:
       - "observatorio/web/unificado/**"
-      - "observatorio/operacao/previa_sintetica.py"
-      - "scripts/preparar_previa_github_pages.py"
+      - "scripts/preparar_pacote_oficial_pages.py"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
+    inputs:
+      publicar:
+        description: "Publicar o pacote oficial validado (somente com autorização da responsável)"
+        type: boolean
+        default: false
 
 permissions:
-  contents: write     # publica o pacote validado na branch gh-pages
+  contents: write     # publica o pacote validado na branch gh-pages (só no disparo manual com publicar)
   pages: write
 
 env:
@@ -29,7 +31,7 @@ env:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   construir:
@@ -44,14 +46,21 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
-      - name: Gerar e validar o pacote sintético (falha fechada)
+      - name: Gerar e validar o pacote oficial (falha fechada, sem dados fictícios)
         id: pacote
         run: |
-          python -m pip install -q -r requirements-dev.txt
-          python scripts/preparar_previa_github_pages.py --saida _site
-          touch _site/.nojekyll
+          python scripts/preparar_pacote_oficial_pages.py --saida _site
           sha256sum _site/index.html | tee -a "$GITHUB_STEP_SUMMARY"
           echo "sha=$(sha256sum _site/index.html | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+      - name: Segunda barreira contra carga fictícia ou privada
+        run: |
+          if grep -rIl -E "FICT[IÍ]CI|SAD-PSE-2099|dados-sinteticos|avisoDemonstracao|GEDIV_STATIC_DEMO" _site; then
+            echo "Carga fictícia encontrada no pacote: publicação recusada." | tee -a "$GITHUB_STEP_SUMMARY"; exit 1
+          fi
+          if find _site -type f \( -iname '*.pdf' -o -iname '*.sqlite*' -o -iname '*.db' -o -iname '*.gedivbak' -o -iname '*.env' -o -iname '*.csv' -o -iname '*.xlsx' \) | grep -q .; then
+            echo "Arquivo privado no pacote: publicação recusada." | tee -a "$GITHUB_STEP_SUMMARY"; exit 1
+          fi
+          echo "Pacote oficial: $(ls -A _site | tr '\n' ' ')· 0 registros · estado: Dados oficiais em validação" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Ativar o domínio próprio somente se o DNS já aponta para o GitHub
         id: dns
         run: |
@@ -60,38 +69,51 @@ jobs:
           if [ "$achado" = "$alvo" ]; then
             echo "$DOMINIO" > _site/CNAME
             echo "dominio=$DOMINIO" >> "$GITHUB_OUTPUT"
-            echo "DNS OK: $DOMINIO -> $achado. Domínio próprio ativado." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "DNS OK: $DOMINIO -> $achado. Domínio próprio entra no pacote." | tee -a "$GITHUB_STEP_SUMMARY"
           else
-            echo "DNS de $DOMINIO ainda não aponta para $alvo (encontrado: '${achado:-nada}'). Site segue no github.io." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "DNS de $DOMINIO ainda não aponta para $alvo (encontrado: '${achado:-nada}'). Pacote sem domínio próprio." | tee -a "$GITHUB_STEP_SUMMARY"
           fi
+          python scripts/preparar_pacote_oficial_pages.py --validar _site
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pacote-oficial-${{ github.run_id }}
+          path: _site
+          include-hidden-files: true
+          retention-days: 14
       - name: Publicar o pacote validado na branch gh-pages (fonte padrão do GitHub Pages)
+        if: github.event_name == 'workflow_dispatch' && inputs.publicar
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           cd _site
           git init -q && git checkout -q -b gh-pages && git add -A
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit -qm "Painel Unificado (sintético) gerado de ${GITHUB_SHA}"
+            commit -qm "Painel Unificado oficial (dados em validação) gerado de ${GITHUB_SHA}"
           git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
       - name: Solicitar o build do Pages a partir da branch gh-pages
+        if: github.event_name == 'workflow_dispatch' && inputs.publicar
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" --silent || echo "Build será disparado pelo próprio push."
       - name: Exigir HTTPS no domínio próprio (quando o certificado já existir)
-        if: steps.dns.outputs.dominio != ''
+        if: github.event_name == 'workflow_dispatch' && inputs.publicar && steps.dns.outputs.dominio != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -f cname="$DOMINIO" -F https_enforced=true --silent \
             && echo "HTTPS obrigatório ativado." | tee -a "$GITHUB_STEP_SUMMARY" \
-            || echo "HTTPS ainda não pôde ser exigido (certificado em emissão ou permissão do token); nova tentativa na próxima execução." | tee -a "$GITHUB_STEP_SUMMARY"
+            || echo "HTTPS ainda não pôde ser exigido (certificado em emissão ou permissão do token); repetir o disparo depois." | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Sem publicação nesta execução
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.publicar) }}
+        run: echo "Pacote gerado e validado, NÃO publicado (publicação só por disparo manual com publicar=true)." | tee -a "$GITHUB_STEP_SUMMARY"
   verificar:
     needs: construir
+    if: github.event_name == 'workflow_dispatch' && inputs.publicar
     runs-on: ubuntu-24.04
     steps:
       - name: Aguardar o build do Pages
         run: sleep 60
-      - name: Conferir o site publicado (aguarda até 10 min) contra o pacote gerado
+      - name: Conferir o site publicado (até 10 min) contra o pacote gerado, por HTTPS
         env:
           ESPERADO: ${{ needs.construir.outputs.sha }}
           DOMINIO_ATIVO: ${{ needs.construir.outputs.dominio }}
@@ -103,8 +125,9 @@ jobs:
               if curl -fsSL -m 20 "$url" -o index.html; then
                 sha=$(sha256sum index.html | cut -d' ' -f1)
                 echo "Publicado: $url · index.html sha256=$sha" | tee -a "$GITHUB_STEP_SUMMARY"
-                if [ "$sha" = "$ESPERADO" ]; then
-                  grep -q 'id="avisoDemonstracao"' index.html && echo "Idêntico ao pacote validado, com a faixa de dados fictícios." | tee -a "$GITHUB_STEP_SUMMARY"
+                if [ "$sha" = "$ESPERADO" ] && grep -q 'id="avisoValidacao"' index.html && ! grep -q -E "FICT[IÍ]CI|avisoDemonstracao" index.html; then
+                  echo "Idêntico ao pacote oficial validado: aviso 'Dados oficiais em validação', sem dados fictícios." | tee -a "$GITHUB_STEP_SUMMARY"
+                  case "$url" in https://*) echo "Servido por HTTPS." | tee -a "$GITHUB_STEP_SUMMARY";; *) echo "Atenção: respondeu só por HTTP (certificado em emissão)." | tee -a "$GITHUB_STEP_SUMMARY";; esac
                   exit 0
                 fi
               fi

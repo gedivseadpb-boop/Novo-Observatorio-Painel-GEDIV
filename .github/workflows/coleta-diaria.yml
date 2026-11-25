@@ -105,3 +105,9 @@ jobs:
           echo "A fonte oficial não foi alcançada a partir deste executor (código ${{ steps.sonda.outputs.codigo }})."
           echo "Sem coleta real nesta execução. Ver docs/BLOQUEIOS.md (B-01) para o executor na rede institucional."
           exit 1
+      - name: Resultado (vermelho = fonte alcançada, mas sem pasta de dados persistente; nada foi guardado)
+        if: steps.sonda.outputs.codigo == '0' && env.GEDIV_DADOS_DIR == ''
+        run: |
+          echo "A fonte oficial respondeu, mas a variável GEDIV_DADOS_DIR não está configurada neste repositório."
+          echo "A rotina completa não rodou: verde aqui significaria coleta, e não houve. Ver docs/OPERACAO.md §2.1."
+          exit 1

@@ -1,0 +1,99 @@
+{
+ "o_que_e": "Coleta de novembro/2026 inteiro (01 a 25/11), do zero, com o coletor do repositório-mãe; dados anteriores apagados antes da execução. Só agregados e hashes, sem dados pessoais.",
+ "data_execucao": "2026-11-25",
+ "comando": "python -m observatorio.operacao coletar-intervalo --fonte auniao --fonte cge --inicio 2026-11-01 --fim 2026-11-25",
+ "a_uniao": {
+  "robots": "RECUSADO (HTTP 403: acesso permitido somente a partir do Brasil ou da rede interna)",
+  "resultado": "fonte suspensa por 24 h com auditoria; nenhuma requisição adicional"
+ },
+ "cge_pb": {
+  "robots": "LIDO",
+  "edicoes_listadas": 15,
+  "downloads_completos": 15,
+  "bytes_totais": 36111064,
+  "resultado": "todos retidos em quarentena: PDF_PROTEGIDO_POR_SENHA",
+  "edicoes": [
+   {
+    "data": "2026-11-04",
+    "bytes": 2208438,
+    "sha256": "ea23b30c0955e6dd2ee0c37e8180aac2e01534d871d878eb084c24906130ea8f"
+   },
+   {
+    "data": "2026-11-05",
+    "bytes": 1609127,
+    "sha256": "756fc556351b73dd92378fbe38ac0e7c12ae65a79e8ed32b82af4a51a514123a"
+   },
+   {
+    "data": "2026-11-06",
+    "bytes": 2892392,
+    "sha256": "ec4c765df3916ba09892ceb6360b47fa8e5e8572d24e0b55be599d3cdf6fd603"
+   },
+   {
+    "data": "2026-11-07",
+    "bytes": 2457636,
+    "sha256": "bedf9330811e82c85884103b18fd0f852b1566168d5dc7488a6f941bfdbd3508"
+   },
+   {
+    "data": "2026-11-10",
+    "bytes": 1909681,
+    "sha256": "f7c8336e1770c7e4b6003b254c07737d129b966dbda9c00ae76e717ddc3fe93e"
+   },
+   {
+    "data": "2026-11-11",
+    "bytes": 3226610,
+    "sha256": "4f237c32b008f37e64e7232d4518b096d51d7ec62aa5f6281dfb3e7eb50f205e"
+   },
+   {
+    "data": "2026-11-12",
+    "bytes": 3882259,
+    "sha256": "977a84c0a02410370d2cee2e952a6c05f5404e0256d0942000204ef50bd17c20"
+   },
+   {
+    "data": "2026-11-13",
+    "bytes": 1673996,
+    "sha256": "1a2604bd9ffeaf9c48392dac0ec60e5eb7ea7fb173e3c457f09913b27071d6c6"
+   },
+   {
+    "data": "2026-11-14",
+    "bytes": 1583534,
+    "sha256": "213ba1377f55e28ce7bedd7fb3f058e51c0dd8aea2845324fffad265ac966167"
+   },
+   {
+    "data": "2026-11-17",
+    "bytes": 3191674,
+    "sha256": "8c90c26f8d21a576294263ddd8192b3767501a5012c4cb980eb0f669df5fd2db"
+   },
+   {
+    "data": "2026-11-18",
+    "bytes": 2168984,
+    "sha256": "adb2bd156e47e2844f65d5f3ef71ce6657d0ad4a254b1166e8d1c56efe14f283"
+   },
+   {
+    "data": "2026-11-19",
+    "bytes": 1656770,
+    "sha256": "f8a791900d9b8ba78777158fe685efe019dcfb424df67d53aaa13baca72474d0"
+   },
+   {
+    "data": "2026-11-20",
+    "bytes": 2785527,
+    "sha256": "30f97239acfb2c55955b6e86f1ee121cea33707c6333e16720fcc2ca35c6c794"
+   },
+   {
+    "data": "2026-11-24",
+    "bytes": 1609950,
+    "sha256": "70f8c336d35ff6cc33fb384ca7f7e66a8d900dc90ac603d53b399d9b2d118a17"
+   },
+   {
+    "data": "2026-11-25",
+    "bytes": 3254486,
+    "sha256": "8874313bdaa0c2cedd67526a1f2e615301d0d032e8b7800b0c105c7353b54d1f"
+   }
+  ]
+ },
+ "totais_cobertura": {
+  "NAO_VERIFICADO": 10,
+  "QUARENTENA": 15,
+  "dias": 25,
+  "divergencias_entre_fontes": 0
+ }
+}

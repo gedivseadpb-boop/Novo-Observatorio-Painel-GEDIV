@@ -33,6 +33,7 @@ from typing import Callable
 
 AGENTE = "ObservatorioGEDIV/0.2 (+https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV)"
 _SEGUROS = "/%@:+,;=~!$&'()*-._"
+_PAT_GEOBLOQUEIO = re.compile(r"somente\s+a\s+partir\s+do\s+Brasil|only\s+from\s+Brazil", re.I)
 
 
 class ErroRede(Exception):
@@ -165,9 +166,20 @@ def _uma_requisicao(url: str, politica: Politica) -> Resposta:
         except urllib.error.HTTPError as e:
             destino = e.headers.get("Location") if e.code in (301, 302, 303, 307, 308) else None
             espera = _retry_after(e.headers.get("Retry-After")) if e.code in (429, 503) else None
+            motivo = ""
+            if e.code == 403:
+                try:
+                    trecho = e.read(8192).decode("utf-8", "replace")
+                except Exception:
+                    trecho = ""
+                if _PAT_GEOBLOQUEIO.search(trecho):
+                    # Política explícita da fonte (ex.: A União, 25/11/2026: "Acesso permitido somente a partir do
+                    # Brasil ou da rede interna"). Continua sendo RECUSA: nada é contornado; a coleta precisa partir
+                    # de um executor no Brasil ou na rede institucional (docs/BLOQUEIOS.md, B-01).
+                    motivo = " [GEOBLOQUEIO: acesso permitido somente a partir do Brasil ou da rede interna]"
             e.close()
             if not destino:
-                raise ErroRede(f"HTTP_{e.code}", atual, retry_after=espera) from None
+                raise ErroRede(f"HTTP_{e.code}", atual + motivo, retry_after=espera) from None
             atual = normalizar(urllib.parse.urljoin(atual, destino))
             redirecionamentos.append(atual)
         except (socket.timeout, TimeoutError):

@@ -1,0 +1,16 @@
+{
+ "data": "2026-11-25",
+ "a_uniao": {
+  "url": "https://auniao.pb.gov.br/robots.txt",
+  "resposta": "HTTP/2 403 · página 'Acesso Negado'",
+  "mensagem_da_fonte": "Acesso permitido somente a partir do Brasil ou da rede interna",
+  "x_request_id": "3d1a0c80dddcd88f52b9524c",
+  "conclusao": "Política de acesso geográfico declarada pela própria fonte. O coletor registra HTTP_403 [GEOBLOQUEIO] como recusa e não insiste. A coleta do conteúdo exige um executor no Brasil ou na rede institucional (B-01)."
+ },
+ "cge_pb": {
+  "robots_txt": "LIDO (User-agent: * Allow: /)",
+  "listagem_novembro_2026": {"edicoes": 15, "ultima": "2026-11-25"},
+  "download_2026_11_25": {"bytes": 3254486, "sha256": "8874313bdaa0c2cedd67526a1f2e615301d0d032e8b7800b0c105c7353b54d1f", "resultado": "QUARENTENA", "motivo": "PDF_PROTEGIDO_POR_SENHA", "tentativas": "1 falha transitória de conexão + 1 download completo"},
+  "conclusao": "Download automático funciona, mas o conteúdo exige senha de usuário (não fornecida pela fonte). Nenhuma tentativa de contornar a proteção."
+ }
+}

@@ -2,6 +2,14 @@
 
 Formato curto: contexto → decisão → consequência. Decisões novas entram no topo.
 
+## D-13 · Revisão pela planilha no Drive, amostragem e treino por grifos (26/11/2026)
+- **Decisões da responsável (pelo chat de dúvidas, encaminhadas e autorizadas por ela):**
+  1. A planilha de revisão pode ir **completa** (com nomes) para o Drive da conta dela, **só** na pasta "02 Base privada - NAO PUBLICAR", sem link público, compartilhada apenas por e-mail. Ela decidiu ciente de que é uma conta pessoal, não institucional.
+  2. Aceita o nível **"conferido por amostragem"** para linhas de baixo risco, identificado no CSV público (coluna `Nivel_Conferencia`: individual, amostragem ou rejeitada). Os parâmetros da amostragem (percentual e limite de erro que devolve o lote à conferência individual) são dela.
+  3. Quer treinar o sistema **grifando 20 edições do DOE**, para reduzir o trabalho humano aos poucos.
+- **Ordem de implementação:** (A) regras de consistência com `Motivo_Alerta` (feito); (B) revisão pela planilha no Drive com trava de versão; (C) leitura dos grifos como gabarito; (D) aprendizado de máquina só para ordenar a fila, depois de cerca de 200 conferências e com critério mínimo de qualidade; (E) medição de qualidade por campo; (F) `Nivel_Conferencia`, `Data_Conferencia`, dicionário de dados e registro diário de mudanças no CSV público.
+- **Limites:** a máquina sugere e ordena; quem valida é a responsável. Regras da GEDIV só por homologação (D-10). Nada é publicado sem a autorização dela (D-08).
+
 ## D-12 · CSV diário derivado do banco: completo (interno) e público (26/11/2026)
 - **Decisão da responsável:** sem orçamento para PDFs na nuvem, o site fica em modo leitura e oferece um CSV organizado, atualizado todo dia. Os PDFs ficam só em `C:\GEDIV\dados`; o SQLite continua sendo a base verdadeira e o CSV é um produto **derivado** dele.
 - **Implementação:** comando `exportar-csv` e etapa `exportacao_csv` da rotina diária (09h04 e 14h04). Saída em `<dados>/exportacao/` (fora do Git): `observatorio-completo.csv` (todas as decisões vigentes, uso interno) e `observatorio-publico.csv` (só decisões **CONFERIDAS** de publicação original, sem nome por extenso: iniciais; matrícula **opção B**, só os 3 primeiros dígitos, ex. `123.***-*`; número do processo mantido).

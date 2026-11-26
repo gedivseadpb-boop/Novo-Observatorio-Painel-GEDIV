@@ -59,3 +59,8 @@ python -m observatorio.web --dados C:\GEDIV\dados
 
 ## Ao terminar cada etapa
 Atualize `docs/CHECKPOINT.md` (data, o que foi feito, evidência) e faça commit sem dados pessoais. Se não puder fazer commit, entregue à responsável o texto pronto para colar aqui na próxima sessão.
+
+## Mudanças no passo a passo (leia isto para atualizar o documento da responsável)
+- **26/11/2026 — Planilha CSV diária (D-12):** depois de `git pull`, a rotina das 09h04 e 14h04 também gera `C:\GEDIV\dados\exportacao\observatorio-completo.csv` (interno) e `observatorio-publico.csv` (só conferidos). Gerar na hora: `python -m observatorio.operacao exportar-csv --dados C:\GEDIV\dados`.
+- **26/11/2026 — Coluna `Motivo_Alerta` (D-13, etapa A):** a planilha completa traz, em cada linha, o motivo para conferir (processo ou matrícula fora do padrão, página lida por OCR, possível duplicidade, conflito etc.). **Como usar:** no Excel, filtre `Motivo_Alerta` para ver primeiro as linhas com alerta. Linha sem alerta não está garantida; só não disparou nenhuma regra.
+- **Próximas mudanças previstas (ainda não feitas):** revisão pela planilha no Drive (etapa B) e treino por grifos (etapa C).

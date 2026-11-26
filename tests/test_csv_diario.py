@@ -87,6 +87,26 @@ class TesteExportacao(unittest.TestCase):
         self.assertEqual(sorted(p.name for p in (self.dados / "exportacao").iterdir()),
                          ["observatorio-completo.csv", "observatorio-publico.csv"])
 
+    def test_camada1_alertas_objetivos_so_no_completo(self):
+        r = X.exportar(self.dados)
+        self.assertEqual(r["com_alerta"] + r["sem_alerta"], 2)
+        completo = ler(self.dados / "exportacao" / "observatorio-completo.csv")
+        self.assertIn("Motivo_Alerta", completo[0])
+        self.assertNotIn("Motivo_Alerta", ler(self.dados / "exportacao" / "observatorio-publico.csv")[0])
+
+    def test_regras_de_consistencia(self):
+        base = {"id": "x", "processo": "SAD-PSE-2026/90301", "matricula": "123.456-7", "servidor": "MARIA SOUZA",
+                "resultado": "DEFERIDO", "eixo": "PROGRESSAO", "modalidade": "VERTICAL", "grupo": "AST",
+                "subcategoria": None, "metodo": "TEXTO", "conflito": 0, "pendencias": "[]"}
+        self.assertEqual(X.alertas(base, set()), [])
+        ruim = dict(base, processo="SAD-PSE-2O26/9O301", matricula="12A45", servidor="MAR1A", resultado="NAO_INFORMADO",
+                    grupo=None, metodo="OCR", conflito=1)
+        motivos = X.alertas(ruim, {"x"})
+        for esperado in ("processo fora do padrão", "matrícula fora do padrão", "nome com dígitos (possível erro de OCR)",
+                         "resultado não informado", "grupo pendente", "página lida por OCR", "possível duplicidade",
+                         "conflito aberto"):
+            self.assertIn(esperado, motivos)
+
     def test_sem_banco_nao_falha(self):
         with tempfile.TemporaryDirectory() as vazio:
             self.assertEqual(X.exportar(vazio)["situacao"], "SEM_BANCO")

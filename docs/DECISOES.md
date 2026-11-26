@@ -2,6 +2,12 @@
 
 Formato curto: contexto → decisão → consequência. Decisões novas entram no topo.
 
+## D-12 · CSV diário derivado do banco: completo (interno) e público (26/11/2026)
+- **Decisão da responsável:** sem orçamento para PDFs na nuvem, o site fica em modo leitura e oferece um CSV organizado, atualizado todo dia. Os PDFs ficam só em `C:\GEDIV\dados`; o SQLite continua sendo a base verdadeira e o CSV é um produto **derivado** dele.
+- **Implementação:** comando `exportar-csv` e etapa `exportacao_csv` da rotina diária (09h04 e 14h04). Saída em `<dados>/exportacao/` (fora do Git): `observatorio-completo.csv` (todas as decisões vigentes, uso interno) e `observatorio-publico.csv` (só decisões **CONFERIDAS** de publicação original, sem nome por extenso: iniciais; matrícula **opção B**, só os 3 primeiros dígitos, ex. `123.***-*`; número do processo mantido).
+- **Layout:** aba Publicacoes_DOE da planilha-modelo da responsável, com ID da decisão, página do PDF, SHA-256 da edição e versão das regras acrescentados. Status: CONFERIDO = Validado, PENDENTE = Em validação, REJEITADO = Excluído do catálogo.
+- **Limite:** o CSV público só vai para o site por promoção auditada e com autorização da responsável (D-08). Risco registrado: processo + iniciais + parte da matrícula podem permitir reidentificação; a responsável escolheu a opção B ciente disso.
+
 ## D-11 · Executor PROVISÓRIO da coleta: computador da responsável, pelo Agendador do Windows (25/11/2026)
 - **Contexto:** P0-1 comprovado no computador da responsável, no Brasil (C-26). A fonte só aceita acessos do Brasil e ainda não há máquina permanente.
 - **Decisão da responsável (25/11/2026):** autorizada **por enquanto** a opção A. O comando `operacao agendar-windows --dados C:\GEDIV\dados --aplicar` cria as tarefas `ObservatorioGEDIV-Coleta-0904` e `-1404`, que rodam `rotina-diaria` às 09h04 e 14h04. Dados e PDFs ficam só em `C:\GEDIV\dados`, fora do Git. Custo: R$ 0.

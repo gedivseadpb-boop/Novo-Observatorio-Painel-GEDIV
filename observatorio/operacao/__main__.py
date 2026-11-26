@@ -27,7 +27,9 @@
     python -m observatorio.operacao restaurar --arquivo X.gedivbak --destino PASTA_NOVA
         restaura só em pasta nova, confere manifesto/SHA-256/integrity_check e encerra as sessões
     python -m observatorio.operacao rotina-diaria --dados PASTA
-        rotina completa e multiplataforma: coleta, reverificação, leitura/OCR, classificação, candidato e backup
+        rotina completa e multiplataforma: coleta, reverificação, leitura/OCR, classificação, candidato, CSV e backup
+    python -m observatorio.operacao exportar-csv --dados PASTA
+        CSV diário em PASTA/exportacao: completo (interno) e público (só conferidos, iniciais e matrícula mascarada)
     python -m observatorio.operacao agendar-windows --dados PASTA [--aplicar]
         mostra (ou, com --aplicar, cria no Windows) as tarefas diárias de 09:04 e 14:04 no Agendador de Tarefas
     python -m observatorio.operacao prova-coleta --dados PASTA --saida prova-p0-1.json [--data AAAA-MM-DD]
@@ -72,7 +74,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="observatorio.operacao", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("comando", choices=["executar", "demonstracao", "publicar-snapshot-publico", "gerar-candidato-snapshot",
                                         "promover-snapshot-publico", "revogar-snapshot-publico", "backup", "restaurar",
-                                        "rotina-diaria", "agendar-windows", "prova-coleta", "validar-real", "ouro", "corpus",
+                                        "rotina-diaria", "exportar-csv", "agendar-windows", "prova-coleta", "validar-real", "ouro", "corpus",
                                         "sonda", "coletar-dia", "coletar-intervalo", "cobertura", "reabrir", "liberar-fonte"])
     ap.add_argument("origem", nargs="?")
     ap.add_argument("--dados", default="dados")
@@ -103,6 +105,10 @@ def main(argv=None) -> int:
     ap.add_argument("--hashes", help="sonda: JSON {url_oficial: sha256} com hashes históricos para comparação")
     ap.add_argument("--guardar", help="sonda: pasta (fora do Git) onde copiar o PDF baixado")
     a = ap.parse_args(argv)
+    if a.comando == "exportar-csv":
+        from . import csv_diario
+        print(json.dumps(csv_diario.exportar(a.dados), ensure_ascii=False, indent=2))
+        return saida.SUCESSO
     if a.comando == "corpus":
         from . import corpus
         if not a.pdfs or not a.esperado_privado:

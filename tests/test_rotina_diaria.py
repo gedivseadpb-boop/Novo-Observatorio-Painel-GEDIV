@@ -28,7 +28,7 @@ class TesteRotina(unittest.TestCase):
         with self.simular({}):
             r = rotina.executar(self.dados, hoje=date(2026, 11, 25))
         self.assertEqual([e["etapa"] for e in r["etapas"]],
-                         ["coleta", "reverificacao", "leitura_e_classificacao", "candidato_snapshot", "backup_cifrado"])
+                         ["coleta", "reverificacao", "leitura_e_classificacao", "candidato_snapshot", "exportacao_csv", "backup_cifrado"])
         self.assertEqual(r["janela"], {"inicio": "2026-11-22", "fim": "2026-11-25"})
         self.assertIn("--fonte", self.chamadas[0])
         self.assertEqual(r["codigo_de_saida"], saida.SUCESSO)

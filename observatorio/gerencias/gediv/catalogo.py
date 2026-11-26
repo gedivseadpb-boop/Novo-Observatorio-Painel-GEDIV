@@ -388,8 +388,13 @@ def identificar_grupo(preambulo_normalizado: str, *, cargos=None) -> tuple[str |
 
 
 def _sem_espacos(padrao: str) -> str:
-    """Versão do padrão para texto COMPACTO (sem nenhum espaço): "\\s+" e "\\s*" deixam de exigir espaço."""
-    return re.sub(r"\\s[+*]", "", padrao)
+    """Versão do padrão para texto COMPACTO (sem nenhum espaço): "\\s+" e "\\s*" deixam de exigir espaço.
+
+    Grupos como ``(?:\\S+\\s+){0,N}?`` virariam ``(?:\\S+){0,N}?`` ao retirar ``\\s+``, gerando backtracking
+    exponencial O(n^N) sobre a mesma linguagem formal ``\\S*?`` em textos sem espaços.
+    """
+    sem_grupos_redundantes = re.sub(r"\(\?:\\S\+\\s\+\)\{0,\d+\}\?", r"\\S*?", padrao)
+    return re.sub(r"\\s[+*]", "", sem_grupos_redundantes)
 
 
 _SUB_COMPACTA = {s.codigo: re.compile(_sem_espacos(s.padrao)) for s in SUBCATEGORIAS}

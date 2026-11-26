@@ -658,6 +658,7 @@ def classificar(paginas, chave_arquivo: str = "") -> Resultado:
     """paginas: sequência de (número da página, texto). chave_arquivo: SHA-256 do PDF, para ids estáveis."""
     linhas = _linhas(paginas)
     resultado = Resultado()
+    ids_usados: dict[str, int] = {}
     inicios = _inicios(linhas)
     cobertas: set[int] = set()            # linhas dentro de resenhas/portarias: "Lei nº ..." ali é citação, não ato normativo
     for n, (inicio, tipo, marco) in enumerate(inicios):
@@ -735,14 +736,19 @@ def classificar(paginas, chave_arquivo: str = "") -> Resultado:
             continue
 
         expediente = PAT_EXPEDIENTE.search(norm)
+        id_ato_base = _id(chave_arquivo, tipo, numero, natureza, pagina)
+        ocorrencia_ato = ids_usados[id_ato_base] = ids_usados.get(id_ato_base, 0) + 1
+        id_ato = id_ato_base if ocorrencia_ato == 1 else _id(chave_arquivo, tipo, numero, natureza, pagina, ocorrencia_ato)
         ato = Ato(
-            id=_id(chave_arquivo, tipo, numero, natureza, pagina), tipo=tipo, numero=numero, sufixo=sufixo, pagina=pagina,
+            id=id_ato, tipo=tipo, numero=numero, sufixo=sufixo, pagina=pagina,
             pagina_final=corpo[-1].pagina, vinculo=vinculo, expressao_vinculo=gediv.group(0) if gediv else None,
             data_expediente=f"{expediente.group(3)}-{expediente.group(2)}-{expediente.group(1)}" if expediente else None,
             natureza=natureza, eixo=tema["eixo"], modalidade=tema["modalidade"], condicao=tema["condicao"],
             grupo=tema["grupo"], grupo_expressao=tema["grupo_expressao"], subcategoria=tema["subcategoria"],
             resultado=_merito(preambulo), texto=trecho[:6000], pendencias=list(tema["pendencias"]),
         )
+        if ocorrencia_ato > 1:
+            ato.pendencias.append("cabeçalho do ato repetido na mesma página; instâncias reconciliadas, conferir no PDF")
         if pendencia:
             ato.pendencias.append(pendencia)
         if vinculo == NAO_EXPRESSO:
@@ -758,7 +764,10 @@ def classificar(paginas, chave_arquivo: str = "") -> Resultado:
             citadas = sorted({f"{int(a)}/{b}" for a, b in PAT_REF_RESENHA.findall(norm)} - ({numero} if tipo == "RESENHA" and natureza != C.REPUBLICACAO else set()))
             processos = sorted({_processo(m) for m in PAT_PROCESSO.finditer(norm)} | set(PAT_PROCESSO_ANTIGO.findall(norm)))
             publicacoes = sorted({f"{a}-{m}-{d}" for d, m, a in PAT_PUBLICACAO_CITADA.findall(norm)})
-            resultado.eventos.append(Evento(_id(chave_arquivo, "EVENTO", natureza, tipo, numero, pagina), ato.id, natureza, subtipo,
+            id_ev_base = _id(chave_arquivo, "EVENTO", natureza, tipo, numero, pagina)
+            oc_ev = ids_usados[id_ev_base] = ids_usados.get(id_ev_base, 0) + 1
+            id_ev = id_ev_base if oc_ev == 1 else _id(chave_arquivo, "EVENTO", natureza, tipo, numero, pagina, oc_ev)
+            resultado.eventos.append(Evento(id_ev, ato.id, natureza, subtipo,
                                             pagina, titulo, citadas, processos, vinculo, trecho[:2000], publicacoes))
             if subtipo == "POR_INCORRECAO":
                 resultado.outras.append(Outra(_id(chave_arquivo, "REPUB", numero, pagina), "REPUBLICADO_POR_INCORRECAO", pagina,

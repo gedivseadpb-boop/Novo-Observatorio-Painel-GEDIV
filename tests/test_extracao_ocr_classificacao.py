@@ -674,6 +674,38 @@ class TesteGruposEAssuntosAmbiguos(unittest.TestCase):
                 self.assertEqual(ato.subcategoria, esperado)
                 self.assertFalse(any("exige" in p for p in ato.pendencias))
 
+    def test_ts04_compacto_sem_backtracking_exponencial_em_preambulo_longo(self):
+        # Achado real na carga de 2026: sem espaços, (?:\S+\s+){0,8}? virava (?:\S+){0,8}? (mesma linguagem de \S*?,
+        # mas O(n^8) quando "DESISTENCIADALICENCA" aparece num preâmbulo longo sem "INTERESSESPARTICULAR").
+        import time
+        preambulo_longo = "GERENCIA EXECUTIVA GEDIV RESENHA 100/2026 DESISTENCIA DA LICENCA ESPECIAL " + ("SERVIDOR PUBLICO ESTADUAL " * 55)
+        t0 = time.monotonic()
+        sub, pendencia = C.avaliar_subcategoria(C.compactar(C.normalizar(preambulo_longo)), compacto=True)
+        self.assertLess(time.monotonic() - t0, 0.2)
+        self.assertIsNone(sub)
+        self.assertIn("TS-04 exige", pendencia or "")
+
+    def test_mesma_resenha_repetida_na_mesma_pagina_apos_publique_se_nao_quebra_banco_nem_duplica_vigente(self):
+        # Achado real na carga de 2026 (07/04 e 11/08/2026): a mesma Resenha (encerrada por Publique-se) apareceu
+        # impressa duas vezes na mesma página do DOE, gerando IntegrityError em decisao.id antes da desambiguação.
+        bloco = (CAB.format(n=194)
+                 + "O Diretor DEFERIU os processos de LICENÇA ESPECIAL:\n"
+                 + "SEC.EST.SAUDE SAD-PSE-2026/90194 9000194 PESSOA FICTICIA CENTO E NOVENTA E QUATRO\nPUBLIQUE-SE")
+        with tempfile.TemporaryDirectory() as pasta:
+            banco = Banco(Path(pasta) / "o.sqlite3")
+            try:
+                sha = "d" * 64
+                banco.con.execute("INSERT INTO arquivo VALUES (?, 10, 'x', 'agora')", (sha,))
+                banco.registrar_leitura(sha, "LIDA", "t", [{"numero": 5, "metodo": "TEXTO", "colunas": 2,
+                                                            "texto": bloco + "\n" + bloco, "palavras": 80, "qualidade": "OK"}],
+                                        "18701", "2026-04-07", None)
+                resumo = PROC.classificar_pendentes(banco)
+                self.assertEqual(resumo["com_erro"], 0)
+                self.assertEqual(banco.con.execute("SELECT COUNT(*) FROM decisao WHERE vigente = 1").fetchone()[0], 1)
+                self.assertEqual(banco.con.execute("SELECT COUNT(*) FROM decisao WHERE vigente = 0").fetchone()[0], 1)
+            finally:
+                banco.fechar()
+
     def test_assunto_sem_subcategoria_pode_ser_corrigido_pela_revisao_da_etapa_05_3_3(self):
         from observatorio.revisao import servico
         with tempfile.TemporaryDirectory() as pasta:

@@ -1,0 +1,86 @@
+{
+  "o_que_e": "Leitura completa (texto nativo + OCR em português) e classificação GEDIV das 228 edições oficiais de 2026 da A União (06/01/2026 a 25/11/2026) no computador da responsável no Brasil (Etapa 2 de docs/RETOMADA.md). Somente agregados e metadados operacionais, sem nenhum dado pessoal.",
+  "data_conclusao_local": "2026-11-26T02:02:17-03:00",
+  "fim_execucao_utc": "2026-11-26T05:02:17Z",
+  "ambiente": {
+    "sistema": "Windows",
+    "python": "3.12.10",
+    "ci": null
+  },
+  "comando": "python -m observatorio.operacao executar --dados C:\\GEDIV\\dados",
+  "versao_leitor": "0.8",
+  "versao_regras": "gediv-2026.11.24-1",
+  "codigo_saida": 3,
+  "situacao_saida": "CONCLUIDO_COM_PENDENCIAS",
+  "integrity_check": "ok",
+  "leitura": {
+    "arquivos_lidos": 228,
+    "erros_de_leitura": 0,
+    "na_fila": 0,
+    "por_situacao": {
+      "LIDA": 137,
+      "LIDA_COM_PENDENCIAS": 91
+    },
+    "paginas_totais": 11816,
+    "paginas_por_metodo": {
+      "TEXTO": 10352,
+      "TEXTO+OCR": 943,
+      "OCR": 521
+    },
+    "paginas_por_qualidade": {
+      "OK": 11684,
+      "BAIXA_CONFIANCA": 94,
+      "INCONSISTENTE": 34,
+      "LEITURA_INCOMPLETA": 3,
+      "ILEGIVEL": 1
+    }
+  },
+  "classificacao": {
+    "arquivos_classificados": 228,
+    "com_erro": 0,
+    "na_fila": 0,
+    "atos_totais": 595,
+    "atos_por_eixo": {
+      "PROGRESSAO": 405,
+      "TEMPO_SERVICO": 190
+    },
+    "atos_por_natureza": {
+      "ORIGINAL": 574,
+      "REPUBLICACAO": 14,
+      "TORNADO_SEM_EFEITO": 6,
+      "RETIFICACAO": 1
+    },
+    "decisoes_totais": 4250,
+    "decisoes_vigentes": 3821,
+    "decisoes_vigentes_por_resultado": {
+      "DEFERIDO": 2877,
+      "INDEFERIDO": 942,
+      "NAO_INFORMADO": 2
+    },
+    "decisoes_por_validacao": {
+      "PENDENTE": 4250
+    },
+    "eventos_por_estado": {
+      "SUGERIDO": 14,
+      "PENDENTE_VINCULACAO": 7
+    },
+    "outras_publicacoes": 17,
+    "fora_escopo_por_motivo": {
+      "LICENCA_SAUDE": 268,
+      "OUTRA_GERENCIA": 162,
+      "ATO_NORMATIVO": 57,
+      "VACANCIA": 39
+    },
+    "conflitos_abertos_para_revisao": 157
+  },
+  "achados_tecnicos_corrigidos": [
+    {
+      "arquivo": "observatorio/gerencias/gediv/catalogo.py",
+      "descricao": "_sem_espacos transformava (?:\\S+\\s+){0,N}? em (?:\\S+){0,N}?, causando backtracking exponencial O(n^N) na mesma linguagem formal \\S*? em preâmbulos longos sem o termo final; simplificado para \\S*? sem alterar nenhuma regra normativa nem VERSAO_REGRAS."
+    },
+    {
+      "arquivo": "observatorio/gerencias/gediv/classificador.py",
+      "descricao": "Em duas edições reais (07/04/2026 p. 5 e 11/08/2026 p. 8), a mesma Resenha encerrada por Publique-se apareceu impressa duas vezes na mesma página do DOE, gerando IntegrityError em decisao.id; a 2ª ocorrência na mesma página passa a receber ID desambiguado e pendência explícita, sendo reconciliada pelo banco (vigente=0 na cópia)."
+    }
+  ]
+}

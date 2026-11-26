@@ -1,8 +1,15 @@
 # Checkpoint — último estado verificado
 
-**Data:** 25/11/2026 · **Branch:** `claude/loving-goldberg-j5zhoj` (branch padrão do repositório) · **Release:** [`v1.0.0`](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/releases/tag/v1.0.0) no commit `ea07564`
+**Data:** 25/11/2026 (21h35 BRT / 26/11/2026 00h35 UTC) · **Branch:** `claude/loving-goldberg-j5zhoj` (branch padrão do repositório) · **Release:** [`v1.0.0`](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/releases/tag/v1.0.0) no commit `ea07564`
 
-## Estado verificado (25/11/2026, commit da publicação `046595b`)
+## Carga completa de 2026 no computador da responsável (`docs/RETOMADA.md` — "Próxima tarefa")
+- **Etapa 1 concluída em 25/11/2026 21h35 BRT (26/11/2026 00h35 UTC):** coleta oficial de janeiro a 25/11/2026 diretamente da A União (`auniao.pb.gov.br`), mês a mês, fora dos horários agendados (09h04 e 14h04), gravando somente na pasta privada local `C:\GEDIV\dados` (fora do Git).
+  - **Comando:** `1..11 | ForEach-Object { $i = Get-Date -Year 2026 -Month $_ -Day 1; $f = if ($_ -eq 11) { Get-Date } else { $i.AddMonths(1).AddDays(-1) }; python -m observatorio.operacao coletar-intervalo --inicio $i.ToString('yyyy-MM-dd') --fim $f.ToString('yyyy-MM-dd') --dados C:\GEDIV\dados }`
+  - **Resultado:** código de saída `0` e `pendencias: false` em todos os 11 meses; `robots.txt` `LIDO` e respeitado (`urls_negadas_por_robots: 0`); 11/11 varreduras mensais sem erro; **228 publicações oficiais no estado `BAIXADA`** (jan: 22, fev: 18, mar: 23, abr: 19, mai: 23, jun: 18, jul: 23, ago: 22, set: 22, out: 23, nov até 25/11: 15), **228 PDFs íntegros no acervo privado** (`639.548.768` bytes, **11.816 páginas** com estrutura e SHA-256 verificados), 0 falhas e 0 quarentenas.
+  - **Evidência (sem dados pessoais):** `docs/evidencias/aquisicao-2026-11-25/carga-2026-auniao-etapa1.json`.
+  - **Falta nesta tarefa:** Etapa 2 (leitura/OCR e classificação), Etapa 3 (cobertura do ano), Etapa 4 (conta de administradora local digitada pela responsável) e Etapa 5 (abertura do painel local em `http://127.0.0.1:8000/painel/`).
+
+## Estado verificado anterior (25/11/2026, commit da publicação `046595b`)
 - Suíte Python: **735 testes, 0 falhas** (7 pulados por dados privados). Interface (jsdom): 5/5. Teste no navegador do pacote oficial (computador e celular): aprovado.
 - Conjunto-ouro com PDFs oficiais: 5/5 (evidência de 12/11; não reexecutado depois, sem mudança no código de leitura e classificação).
 - **Site oficial no ar: https://paineldoepb.centralgestaopublica.com.br** (HTTPS), publicado em 25/11/2026 pela execução [45683094708](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/actions/runs/45683094708). Estado **"Dados oficiais em validação"**: interface aprovada e 7 abas; indicadores, gráficos e tabelas indisponíveis; 0 registros; nenhum dado fictício. Publicação só por disparo manual autorizado.

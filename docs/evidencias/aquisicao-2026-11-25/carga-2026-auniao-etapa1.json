@@ -1,0 +1,164 @@
+{
+  "o_que_e": "Carga oficial de 2026 (janeiro a 25/11/2026) diretamente da A União (auniao.pb.gov.br), mês a mês, no computador da responsável no Brasil (Etapa 1 de docs/RETOMADA.md). Somente agregados e metadados operacionais, sem nenhum dado pessoal.",
+  "data_execucao_local": "2026-11-25T21:21:15-03:00",
+  "fim_execucao_utc": "2026-11-26T00:35:04Z",
+  "ambiente": {
+    "sistema": "Windows",
+    "python": "3.12.10",
+    "ci": null
+  },
+  "comando": "1..11 | ForEach-Object { $i = Get-Date -Year 2026 -Month $_ -Day 1; $f = if ($_ -eq 11) { Get-Date } else { $i.AddMonths(1).AddDays(-1) }; python -m observatorio.operacao coletar-intervalo --inicio $i.ToString('yyyy-MM-dd') --fim $f.ToString('yyyy-MM-dd') --dados C:\\GEDIV\\dados }",
+  "versao_coletor": "coletor-etapa05.3.2-2026.11.14",
+  "fonte": "auniao",
+  "transporte": "direto",
+  "totais_verificados": {
+    "meses_varridos_sem_erro": 11,
+    "publicacoes_por_estado": {
+      "BAIXADA": 228
+    },
+    "arquivos_integros_no_banco": 228,
+    "pdfs_no_acervo_privado": 228,
+    "bytes_totais": 639548768,
+    "paginas_totais_verificadas": 11816,
+    "falhas_download": 0,
+    "quarentena": 0,
+    "urls_negadas_por_robots": 0,
+    "pendencias": false
+  },
+  "publicacoes_baixadas_por_mes": {
+    "2026-01": 22,
+    "2026-02": 18,
+    "2026-03": 23,
+    "2026-04": 19,
+    "2026-05": 23,
+    "2026-06": 18,
+    "2026-07": 23,
+    "2026-08": 22,
+    "2026-09": 22,
+    "2026-10": 23,
+    "2026-11": 15
+  },
+  "execucoes_mensais": [
+    {
+      "mes": 1,
+      "inicio": "2026-01-01",
+      "fim": "2026-01-31",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 22,
+      "downloads": { "NOVO": 22 },
+      "segundos": 72.55,
+      "pendencias": false
+    },
+    {
+      "mes": 2,
+      "inicio": "2026-02-01",
+      "fim": "2026-02-28",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 19,
+      "downloads": { "NOVO": 18 },
+      "segundos": 59.0,
+      "pendencias": false
+    },
+    {
+      "mes": 3,
+      "inicio": "2026-03-01",
+      "fim": "2026-03-31",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 23,
+      "downloads": { "NOVO": 23 },
+      "segundos": 76.77,
+      "pendencias": false
+    },
+    {
+      "mes": 4,
+      "inicio": "2026-04-01",
+      "fim": "2026-04-30",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 19,
+      "downloads": { "NOVO": 19 },
+      "segundos": 72.8,
+      "pendencias": false
+    },
+    {
+      "mes": 5,
+      "inicio": "2026-05-01",
+      "fim": "2026-05-31",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 23,
+      "downloads": { "NOVO": 10, "IGUAL": 13 },
+      "segundos": 93.22,
+      "pendencias": false
+    },
+    {
+      "mes": 6,
+      "inicio": "2026-06-01",
+      "fim": "2026-06-30",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 18,
+      "downloads": { "IGUAL": 17 },
+      "segundos": 58.91,
+      "pendencias": false
+    },
+    {
+      "mes": 7,
+      "inicio": "2026-07-01",
+      "fim": "2026-07-31",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 23,
+      "downloads": { "IGUAL": 22 },
+      "segundos": 77.81,
+      "pendencias": false
+    },
+    {
+      "mes": 8,
+      "inicio": "2026-08-01",
+      "fim": "2026-08-31",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 22,
+      "downloads": { "IGUAL": 21 },
+      "segundos": 71.55,
+      "pendencias": false
+    },
+    {
+      "mes": 9,
+      "inicio": "2026-09-01",
+      "fim": "2026-09-30",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 22,
+      "downloads": { "IGUAL": 3, "NOVO": 19 },
+      "segundos": 78.86,
+      "pendencias": false
+    },
+    {
+      "mes": 10,
+      "inicio": "2026-10-01",
+      "fim": "2026-10-31",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 23,
+      "downloads": { "IGUAL": 7, "NOVO": 16 },
+      "segundos": 76.0,
+      "pendencias": false
+    },
+    {
+      "mes": 11,
+      "inicio": "2026-11-01",
+      "fim": "2026-11-25",
+      "codigo_saida": 0,
+      "robots": "LIDO",
+      "listadas_no_mes": 15,
+      "downloads": { "IGUAL": 13 },
+      "segundos": 46.14,
+      "pendencias": false
+    }
+  ]
+}

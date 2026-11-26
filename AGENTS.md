@@ -1,6 +1,6 @@
 # Instruções para agentes de IA (Claude, Codex, Gemini, ChatGPT e outros)
 
-Este é o **repositório-mãe único** do Observatório GEDIV. Antes de alterar qualquer coisa, leia nesta ordem:
+Este é o **repositório-mãe único** do Observatório GEDIV. Antes de alterar qualquer coisa, leia `docs/RETOMADA.md` (ponto de continuidade) e, nesta ordem:
 `docs/CHECKPOINT.md` (último estado verificado) → `docs/GOAL.md` → `docs/BLOQUEIOS.md` → `docs/DECISOES.md` → `docs/MATRIZ_MIGRACAO.md`.
 
 ## A responsável pelo projeto

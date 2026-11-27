@@ -1,6 +1,12 @@
 # Checkpoint — último estado verificado
 
-**Data:** 26/11/2026 (07h12 BRT / 10h12 UTC) · **Branch:** `claude/loving-goldberg-j5zhoj` (branch padrão do repositório) · **Release:** [`v1.0.0`](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/releases/tag/v1.0.0) no commit `ea07564`
+**Data:** 27/11/2026 · **Branch:** `claude/loving-goldberg-j5zhoj` (branch padrão do repositório) · **Release:** [`v1.0.0`](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/releases/tag/v1.0.0) no commit `ea07564`
+
+## Planilha diária e revisão (26/11/2026, commits `8761a95` e `6448158`)
+- **CSV diário (D-12):** comando `exportar-csv` e etapa `exportacao_csv` da rotina (09h04/14h04). No PC da responsável, em 26/11: `observatorio-completo.csv` com 3.821 decisões vigentes (inclui 119 de republicações, coluna Natureza) e `observatorio-publico.csv` com 0 linhas (nada conferido ainda). Pasta privada, fora do Git.
+- **Camada 1 de revisão (D-13, etapa A):** coluna `Motivo_Alerta` no CSV completo, com regras objetivas de consistência. Testes: 9/9 em `tests/test_csv_diario.py`; suíte 730 aprovados (1 falha conhecida só na nuvem, por falta do Tesseract).
+- **Coleta agendada:** 26/11 às 09h04 terminou com código 3 (backup não configurado e edição do dia na janela de suplementos), o esperado.
+- **Falta:** etapa B (revisão pela planilha no Drive), C (grifos como gabarito), D (ML de triagem), E (qualidade por campo), F (Nivel_Conferencia e dicionário no CSV público).
 
 ## Carga completa de 2026 no computador da responsável (`docs/RETOMADA.md` — "Próxima tarefa": 5/5 concluídas)
 - **Etapa 1 concluída em 25/11/2026 21h35 BRT (`5067c1e`):** coleta oficial de janeiro a 25/11/2026 diretamente da A União (`auniao.pb.gov.br`), mês a mês, fora dos horários agendados (09h04 e 14h04), gravando somente na pasta privada local `C:\GEDIV\dados` (fora do Git).

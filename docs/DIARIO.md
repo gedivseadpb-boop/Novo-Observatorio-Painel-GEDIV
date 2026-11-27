@@ -28,6 +28,13 @@ retome de onde parou. Complementa o `docs/CHECKPOINT.md` (último estado verific
 
 ## Registros
 
+### 2026-11-26 — planilha CSV diária e coluna de alertas
+
+- **Quem fez:** Agente de IA (Claude), a pedido da responsável pelo projeto
+- **O que mudou:** CSV diário completo e público (D-12, `8761a95`); coluna `Motivo_Alerta` (D-13 etapa A, `6448158`)
+- **Evidência:** 9 testes do CSV aprovados; gerado no PC da responsável (3.821 linhas no completo, 0 no público)
+- **Próximo passo:** etapa B, revisão pela planilha no Drive (Agente de IA)
+
 ### 2026-11-26 — criação do diário
 
 - **Quem fez:** Agente de IA (Claude), a pedido da responsável pelo projeto

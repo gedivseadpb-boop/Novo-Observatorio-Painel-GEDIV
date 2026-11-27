@@ -28,6 +28,13 @@ retome de onde parou. Complementa o `docs/CHECKPOINT.md` (último estado verific
 
 ## Registros
 
+### 2026-11-27 — revisão pela planilha (etapa B)
+
+- **Quem fez:** Agente de IA (Claude), a pedido da responsável pelo projeto
+- **O que mudou:** comandos `configurar-revisao`, `gerar-revisao` e `aplicar-revisao`; etapas na rotina diária; trava de versão por impressão digital da linha
+- **Evidência:** 6 testes novos aprovados (edição simulada como no Excel); suíte 736 aprovados, 1 falha conhecida só na nuvem (sem Tesseract)
+- **Próximo passo:** responsável roda `git pull` e `configurar-revisao` no PC; depois, etapa C (grifos)
+
 ### 2026-11-26 — planilha CSV diária e coluna de alertas
 
 - **Quem fez:** Agente de IA (Claude), a pedido da responsável pelo projeto

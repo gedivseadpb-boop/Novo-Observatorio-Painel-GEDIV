@@ -28,6 +28,9 @@
         restaura só em pasta nova, confere manifesto/SHA-256/integrity_check e encerra as sessões
     python -m observatorio.operacao rotina-diaria --dados PASTA
         rotina completa e multiplataforma: coleta, reverificação, leitura/OCR, classificação, candidato, CSV e backup
+    python -m observatorio.operacao configurar-revisao --autor USUARIO --dados PASTA
+    python -m observatorio.operacao gerar-revisao --dados PASTA / aplicar-revisao --dados PASTA
+        revisão pela planilha PASTA/revisao/revisao-pendente.xlsx (Excel ou Drive), aplicada com auditoria
     python -m observatorio.operacao exportar-csv --dados PASTA
         CSV diário em PASTA/exportacao: completo (interno) e público (só conferidos, iniciais e matrícula mascarada)
     python -m observatorio.operacao agendar-windows --dados PASTA [--aplicar]
@@ -74,7 +77,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="observatorio.operacao", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("comando", choices=["executar", "demonstracao", "publicar-snapshot-publico", "gerar-candidato-snapshot",
                                         "promover-snapshot-publico", "revogar-snapshot-publico", "backup", "restaurar",
-                                        "rotina-diaria", "exportar-csv", "agendar-windows", "prova-coleta", "validar-real", "ouro", "corpus",
+                                        "rotina-diaria", "exportar-csv", "gerar-revisao", "aplicar-revisao", "configurar-revisao", "agendar-windows", "prova-coleta", "validar-real", "ouro", "corpus",
                                         "sonda", "coletar-dia", "coletar-intervalo", "cobertura", "reabrir", "liberar-fonte"])
     ap.add_argument("origem", nargs="?")
     ap.add_argument("--dados", default="dados")
@@ -99,12 +102,23 @@ def main(argv=None) -> int:
     ap.add_argument("--contingencia", help="aquisição: manifesto JSON de arquivos obtidos por outro meio")
     ap.add_argument("--permitir-longo", action="store_true", help=argparse.SUPPRESS)
     ap.add_argument("--aplicar", action="store_true", help="agendar-windows: cria as tarefas (somente no Windows)")
-    ap.add_argument("--arquivo", help="restaurar: arquivo .gedivbak")
+    ap.add_argument("--arquivo", help="restaurar: arquivo .gedivbak; aplicar-revisao: planilha preenchida")
+    ap.add_argument("--autor", help="configurar-revisao / aplicar-revisao: usuário da revisora (fica na auditoria)")
     ap.add_argument("--destino", help="restaurar: pasta NOVA de destino")
     ap.add_argument("--gerar", action="store_true", help="promover-snapshot-publico: gera o candidato antes de promover")
     ap.add_argument("--hashes", help="sonda: JSON {url_oficial: sha256} com hashes históricos para comparação")
     ap.add_argument("--guardar", help="sonda: pasta (fora do Git) onde copiar o PDF baixado")
     a = ap.parse_args(argv)
+    if a.comando in ("gerar-revisao", "aplicar-revisao", "configurar-revisao"):
+        from . import revisao_planilha as RP
+        if a.comando == "configurar-revisao":
+            r = RP.configurar(a.dados, a.autor)
+        elif a.comando == "gerar-revisao":
+            r = RP.gerar(a.dados)
+        else:
+            r = RP.aplicar(a.dados, a.arquivo, a.autor)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return saida.CONCLUIDO_COM_PENDENCIAS if r.get("recusadas") else saida.SUCESSO
     if a.comando == "exportar-csv":
         from . import csv_diario
         print(json.dumps(csv_diario.exportar(a.dados), ensure_ascii=False, indent=2))

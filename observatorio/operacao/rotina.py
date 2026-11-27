@@ -112,9 +112,11 @@ def executar(dados: str | Path, *, fontes=("auniao",), dias_recuo: int = 3, reve
                                     "--inicio", (hoje - timedelta(days=reverificar_dias)).isoformat(),
                                     "--fim", hoje.isoformat(), "--limite", str(limite_reverificacao), "--dados", str(pasta)])
         if (pasta / "observatorio.sqlite3").is_file():
+            etapa("aplicar_revisao", ["aplicar-revisao", "--dados", str(pasta)])
             etapa("leitura_e_classificacao", ["executar", "--dados", str(pasta)])
             etapa("candidato_snapshot", ["gerar-candidato-snapshot", "--dados", str(pasta)])
             etapa("exportacao_csv", ["exportar-csv", "--dados", str(pasta)])
+            etapa("gerar_revisao", ["gerar-revisao", "--dados", str(pasta)])
             if os.environ.get("GEDIV_BACKUP_CHAVE") or os.environ.get("GEDIV_BACKUP_CHAVE_ARQUIVO"):
                 etapa("backup_cifrado", ["backup", "--dados", str(pasta), "--saida", str(backup_dir or pasta.parent / "backups")])
             else:

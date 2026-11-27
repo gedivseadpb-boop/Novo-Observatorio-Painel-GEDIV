@@ -28,6 +28,13 @@ retome de onde parou. Complementa o `docs/CHECKPOINT.md` (último estado verific
 
 ## Registros
 
+### 2026-11-26 — reconciliação em somente leitura entre banco (3.821 vigentes) e painel (3.702 originais)
+
+- **Quem fez:** Agente de IA (Antigravity), a pedido da responsável pelo projeto
+- **O que mudou:** consulta em somente leitura (`?mode=ro` + `PRAGMA query_only=ON`) explicou a diferença exata de 119 decisões entre as 3.821 vigentes do banco e os 3.702 registros primários do painel (494 resenhas originais): 100% das 119 pertencem a 14 resenhas de `REPUBLICACAO` (94 em Progressão e 25 em Tempo de Serviço; 0 bloqueios por `versao_regras`, `revisao_leitura`, leitura em erro ou outra gerência); evidência agregada salva em `docs/evidencias/aquisicao-2026-11-25/reconciliacao-painel-2026-11-26.json` e registrada em `docs/CHECKPOINT.md` e `docs/CATALOGO_CONQUISTAS.md` (C-31)
+- **Evidência:** varredura automática de privacidade no JSON de evidência (0 nomes, 0 CPFs, 0 matrículas, 0 processos, 0 caminhos privados); contagens conferidas soma a soma (2.877 − 102 = 2.775 deferidos; 942 − 17 = 925 indeferidos; 2 − 0 = 2 não informados)
+- **Próximo passo:** acompanhar o piloto agendado de 7 dias e executar `configurar-revisao` para iniciar a conferência humana pela planilha
+
 ### 2026-11-27 — revisão pela planilha (etapa B)
 
 - **Quem fez:** Agente de IA (Claude), a pedido da responsável pelo projeto

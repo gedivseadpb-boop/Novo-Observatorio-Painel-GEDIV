@@ -1,0 +1,119 @@
+{
+  "o_que_e": "Auditoria em modo estritamente somente leitura (?mode=ro + PRAGMA query_only=ON) da reconciliação entre as 3.821 decisões vigentes do banco privado (Etapa 2) e os 3.702 registros exibidos na tabela/cartões primários do painel local (Etapa 5). Somente contagens agregadas, sem nenhum dado pessoal.",
+  "data_execucao_local": "2026-11-26T07:34:52-03:00",
+  "versao_regras_codigo": "gediv-2026.11.24-1",
+  "reconciliacao_geral": {
+    "decisoes_vigentes_no_banco": 3821,
+    "decisoes_originais_no_painel": 3702,
+    "resenhas_originais_com_decisoes_no_painel": 494,
+    "diferenca": 119,
+    "motivo_unico_da_diferenca": "ATO_MODIFICADOR_REPUBLICACAO (ato.natureza = 'REPUBLICACAO': republicação não vira decisão nova nos indicadores primários para evitar dupla contagem; entra em Alterações/Eventos)",
+    "bloqueadas_por_versao_regras": 0,
+    "bloqueadas_por_revisao_leitura": 0,
+    "bloqueadas_por_leitura_em_erro": 0,
+    "de_outra_gerencia": 0
+  },
+  "reconciliacao_por_resultado": {
+    "DEFERIDO": {
+      "vigentes_no_banco": 2877,
+      "em_republicacao": 102,
+      "originais_no_painel": 2775
+    },
+    "INDEFERIDO": {
+      "vigentes_no_banco": 942,
+      "em_republicacao": 17,
+      "originais_no_painel": 925
+    },
+    "NAO_INFORMADO": {
+      "vigentes_no_banco": 2,
+      "em_republicacao": 0,
+      "originais_no_painel": 2
+    }
+  },
+  "agrupamento_das_119_fora_dos_cartoes_primarios": [
+    {
+      "gerencia": "GEDIV",
+      "eixo": "PROGRESSAO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA",
+      "resultado": "DEFERIDO",
+      "resenhas": 3,
+      "decisoes": 44
+    },
+    {
+      "gerencia": "GEDIV",
+      "eixo": "PROGRESSAO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA_COM_PENDENCIAS",
+      "resultado": "DEFERIDO",
+      "resenhas": 3,
+      "decisoes": 45
+    },
+    {
+      "gerencia": "GEDIV",
+      "eixo": "PROGRESSAO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA_COM_PENDENCIAS",
+      "resultado": "INDEFERIDO",
+      "resenhas": 1,
+      "decisoes": 5
+    },
+    {
+      "gerencia": "GEDIV",
+      "eixo": "TEMPO_SERVICO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA",
+      "resultado": "DEFERIDO",
+      "resenhas": 3,
+      "decisoes": 12
+    },
+    {
+      "gerencia": "GEDIV",
+      "eixo": "TEMPO_SERVICO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA",
+      "resultado": "INDEFERIDO",
+      "resenhas": 2,
+      "decisoes": 9
+    },
+    {
+      "gerencia": "GEDIV",
+      "eixo": "TEMPO_SERVICO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA_COM_PENDENCIAS",
+      "resultado": "DEFERIDO",
+      "resenhas": 1,
+      "decisoes": 1
+    },
+    {
+      "gerencia": "GEDIV",
+      "eixo": "TEMPO_SERVICO",
+      "tipo_ato": "RESENHA",
+      "natureza_ato": "REPUBLICACAO",
+      "versao_regras": "gediv-2026.11.24-1",
+      "revisao_leitura": "sincronizada",
+      "situacao_leitura": "LIDA_COM_PENDENCIAS",
+      "resultado": "INDEFERIDO",
+      "resenhas": 1,
+      "decisoes": 3
+    }
+  ]
+}

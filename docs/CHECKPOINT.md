@@ -1,6 +1,6 @@
 # Checkpoint — último estado verificado
 
-**Data:** 27/11/2026 · **Branch:** `claude/loving-goldberg-j5zhoj` (branch padrão do repositório) · **Release:** [`v1.0.0`](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/releases/tag/v1.0.0) no commit `ea07564`
+**Data:** 27/11/2026 (UTC) / 26/11/2026 (BRT) · **Branch:** `claude/loving-goldberg-j5zhoj` (branch padrão do repositório) · **Release:** [`v1.0.0`](https://github.com/gedivseadpb-boop/Novo-Observatorio-Painel-GEDIV/releases/tag/v1.0.0) no commit `ea07564`
 
 ## Planilha diária e revisão (26/11/2026, commits `8761a95` e `6448158`)
 - **CSV diário (D-12):** comando `exportar-csv` e etapa `exportacao_csv` da rotina (09h04/14h04). No PC da responsável, em 26/11: `observatorio-completo.csv` com 3.821 decisões vigentes (inclui 119 de republicações, coluna Natureza) e `observatorio-publico.csv` com 0 linhas (nada conferido ainda). Pasta privada, fora do Git.
@@ -25,9 +25,10 @@
 - **Etapa 4 concluída em 26/11/2026 (pela responsável):** conta local com papel `admin` criada diretamente pela responsável no computador (senha escolhida e digitada exclusivamente por ela, armazenada somente como hash em `C:\GEDIV\dados\contas.sqlite3`, fora do Git).
   - **Comando:** `python -m observatorio.web.usuarios --dados C:\GEDIV\dados criar <login> --nome "<Nome>" --papel admin`
   - **Evidência (sem dados pessoais):** autenticação confirmada localmente pela responsável na área da gerência.
-- **Etapa 5 concluída em 26/11/2026 (pela responsável):** painel local aberto em `http://127.0.0.1:8000/painel/` ("Acesso da gerência", somente no computador, sem publicar no site oficial).
+- **Etapa 5 concluída em 26/11/2026 (`e4b0faf`, pela responsável):** painel local aberto em `http://127.0.0.1:8000/painel/` ("Acesso da gerência", somente no computador, sem publicar no site oficial).
   - **Comando:** `python -m observatorio.web --dados C:\GEDIV\dados`
   - **Resultado e evidência verificada na interface local (sem dados pessoais):** área da gerência aberta e autenticada exibindo os dados oficiais reais de 2026 — **494 resenhas** e **3.702 registros** (**2.775 deferidos**, **925 indeferidos** e **2 não informados**), **todos no estado "em conferência"**; site público permanece inalterado no estado "Dados oficiais em validação".
+- **Reconciliação auditada banco × painel (26/11/2026, somente leitura):** conferida com `?mode=ro` + `PRAGMA query_only = ON` a diferença exata de **`119` decisões** entre as `3.821` decisões vigentes do banco e os `3.702` registros primários do painel: **100% das `119` pertencem a `14` resenhas de `REPUBLICACAO`** (`94` em `PROGRESSAO` — `89` deferidas e `5` indeferidas — e `25` em `TEMPO_SERVICO` — `13` deferidas e `12` indeferidas; `65` em edições `LIDA` e `54` em `LIDA_COM_PENDENCIAS`). Há **`0` bloqueios técnicos** (`0` por `versao_regras`, `0` por `revisao_leitura`, `0` em `ERRO`, `0` de outra gerência): `2.877 − 102 = 2.775` deferidos, `942 − 17 = 925` indeferidos e `2 − 0 = 2` não informados. Conforme a Especificação V3, republicações não viram decisões novas para evitar dupla contagem e entram em Alterações/Eventos. Evidência (sem dados pessoais): `docs/evidencias/aquisicao-2026-11-25/reconciliacao-painel-2026-11-26.json`.
   - **Próximas pendências (`docs/RETOMADA.md`):** (1) acompanhar as 14 execuções do piloto agendado de 7 dias (`26/11` a `02/12/2026` às 09h04 e 14h04); (2) migrar para o executor permanente no Brasil (D-11); (3) configurar a frase-senha do backup cifrado (`docs/OPERACAO.md` §5); (4) registrar homologações normativas (B-02) e realizar a conferência humana das decisões na tela de revisão.
 
 ## Estado verificado anterior (25/11/2026, commit da publicação `046595b`)

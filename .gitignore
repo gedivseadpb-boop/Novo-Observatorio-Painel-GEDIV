@@ -34,3 +34,6 @@ dados-*/
 amostra*.txt
 validacao-real*.json
 !docs/evidencias/**/validacao-real*.json
+
+# Modelos com dados FICTÍCIOS (editáveis pela responsável); dados reais nunca entram aqui
+!docs/modelos/*.xlsx

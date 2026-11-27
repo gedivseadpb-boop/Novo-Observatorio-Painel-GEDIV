@@ -1,5 +1,7 @@
 # Dicionário da planilha de revisão (`revisao-pendente.xlsx`)
 
+> **Documento e modelo editáveis.** Este dicionário e a planilha-modelo `docs/modelos/dicionario-e-modelo-revisao.xlsx` (dados fictícios) **podem ser alterados livremente** pela responsável para propor a organização correta dos eixos, colunas e categorias da GEDIV. A versão que ela aprovar passa a valer; versões superadas ou com erro serão removidas na limpeza do repositório, com o histórico preservado no Git.
+
 Explica cada coluna da primeira linha (cabeçalho): de onde vem o dado, como o sistema o extrai do Diário Oficial e o que a revisora faz com ele. Cada linha da planilha é **uma decisão sobre um servidor** dentro de uma resenha.
 
 ## Parte 1 — colunas preenchidas pelo sistema (não alterar)

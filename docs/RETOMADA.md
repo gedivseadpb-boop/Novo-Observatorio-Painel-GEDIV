@@ -2,6 +2,11 @@
 
 Atualizado em 26/11/2026. Leia este arquivo inteiro antes de agir. Depois leia, nesta ordem: `AGENTS.md`, `docs/CHECKPOINT.md`, `docs/DECISOES.md` (D-11) e `docs/BLOQUEIOS.md`.
 
+## ORDEM COMBINADA COM A RESPONSÁVEL (27/11/2026) — leia antes de agir
+1. **Primeiro: ajustar a tela.** A responsável vai preencher a planilha-modelo `docs/modelos/dicionario-e-modelo-revisao.xlsx` (dados fictícios, editável) com a organização correta dos eixos, colunas e categorias da GEDIV. A IA analisa a viabilidade, propõe as mudanças nas regras (nova versão, com homologação dela) e na interface, e implementa só com a aprovação dela.
+2. **Só depois: retomar o plano e o passo a passo** já registrados: conferência das decisões (planilha de revisão, etapa B pronta), treino por grifos (C), ML de triagem (D), qualidade por campo (E), CSV público com nível de conferência (F), piloto da coleta e executor permanente (D-11).
+3. **Até o ajuste da tela:** não iniciar a conferência em massa, porque os eixos podem mudar.
+
 ## Quem é a responsável
 Profissional de gestão pública, **não desenvolvedora**. Responda em português, com passos numerados e um comando por bloco. Execute você mesmo o trabalho técnico. Não publique, não exclua e não mude permissões sem a autorização dela.
 

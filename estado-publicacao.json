@@ -1,0 +1,15 @@
+{
+ "estado": "EM_VALIDACAO",
+ "titulo": "Dados oficiais em validação",
+ "mensagem": "Indicadores, gráficos e tabelas ficam indisponíveis até a publicação de dados aprovados do Diário Oficial do Estado da Paraíba, coletados, conferidos e homologados pela GEDIV.",
+ "dados_publicados": false,
+ "cobertura_validada": false,
+ "registros": 0,
+ "gerado_em": "2026-11-28T14:18:34+00:00",
+ "liberacao_de_dados_reais": [
+  "coleta real comprovada a partir de ambiente autorizado no Brasil (P0-1)",
+  "executor permanente e piloto de 7 dias sem intervenção",
+  "homologações e conferência das decisões pela GEDIV",
+  "snapshot público agregado promovido com responsável e justificativa"
+ ]
+}

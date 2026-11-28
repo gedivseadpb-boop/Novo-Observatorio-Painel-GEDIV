@@ -280,7 +280,7 @@ class TesteAPI(Base):
     def test_pagina_e_arquivos_estaticos_com_cabecalhos_de_seguranca(self):
         status, cabecalhos, corpo = self.pedir("/")
         self.assertEqual(status, 200)
-        self.assertIn("Observatório do Diário Oficial", corpo.decode())
+        self.assertIn("Observatório de Dados GEDIV", corpo.decode())
         self.assertIn("default-src 'self'", cabecalhos["Content-Security-Policy"])
         self.assertEqual(self.pedir("/estatico/app.js")[0], 200)
         self.assertEqual(self.pedir("/estatico/../servidor.py")[0], 404)

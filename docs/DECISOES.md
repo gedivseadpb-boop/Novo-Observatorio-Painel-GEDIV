@@ -2,6 +2,10 @@
 
 Formato curto: contexto → decisão → consequência. Decisões novas entram no topo.
 
+## D-14 · Novo cabeçalho do painel aprovado: "Observatório de Dados GEDIV" (28/11/2026)
+- **Decisão da responsável:** layout aprovado por imagem ("Layout aprovado, pode aplicar"). Texto à esquerda "GEDIV · DEREH · SEAD / Gerência Executiva de Concessão de Direitos e Vantagens", logo do Governo da Paraíba em branco, título central "Observatório de Dados GEDIV" com o subtítulo mantido, faixas laranja em cima e embaixo.
+- **Escopo:** só o cabeçalho de `observatorio/web/unificado/index.html` (e do modelo sanitizado). O resto da interface aprovada não mudou. Publicar no site exige autorização à parte.
+
 ## D-13 · Revisão pela planilha no Drive, amostragem e treino por grifos (26/11/2026)
 - **Decisões da responsável (pelo chat de dúvidas, encaminhadas e autorizadas por ela):**
   1. A planilha de revisão pode ir **completa** (com nomes) para o Drive da conta dela, **só** na pasta "02 Base privada - NAO PUBLICAR", sem link público, compartilhada apenas por e-mail. Ela decidiu ciente de que é uma conta pessoal, não institucional.

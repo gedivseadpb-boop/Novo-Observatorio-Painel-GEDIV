@@ -159,7 +159,7 @@ window.GEDIV_READY=(async()=>{
                        "texto da faixa de cobertura")
 
     html = _substituir(html, "</head>", ESTILO + "</head>", "</head>")
-    html = _substituir(html, "<body>", '<body class="estado-validacao">\n' + AVISO_HTML, "<body>")
+    html = _substituir(html, "<body>", '<body class="estado-validacao">', "<body>")
 
     cores_aprovadas = {c.lower() for c in json.loads(PALETA_JSON.read_text(encoding="utf-8"))["cores_hex"]}
     novas = {c.lower() for c in re.findall(r"#[0-9a-fA-F]{3,8}\b", html)} - cores_aprovadas
@@ -220,7 +220,10 @@ def validar_pacote_oficial(pasta: Path, permitir_cname: bool = False) -> dict:
     assert estado.get("registros") == 0 and estado.get("cobertura_validada") is False, "Estado vazio exige 0 registros e cobertura não validada"
     assert not ({"rows", "linhas", "decisoes", "events"} & set(estado)), "O estado da publicação não pode conter registros"
 
-    assert html.count('id="avisoValidacao"') == 1 and TITULO_AVISO in html, "Aviso 'Dados oficiais em validação' ausente"
+    # Faixa azul de aviso no topo removida a pedido da responsável (28/11/2026); o estado vazio continua sinalizado
+    # pela faixa da própria interface ("Dados oficiais em validação") e pelos cartões "Indisponível".
+    assert 'id="avisoValidacao"' not in html, "A faixa azul de aviso no topo foi removida e não deve voltar"
+    assert 'GEDIV_OFICIAL_VAZIO' in html, "Estado vazio não sinalizado"
     assert '<body class="estado-validacao">' in html, "Estado vazio não ativado no <body>"
     assert html.count("window.GEDIV_OFICIAL_VAZIO=true") == 1, "Modo oficial vazio não ativado"
     assert html.count('data-view="') >= 7, "Navegação das 7 abas não preservada"

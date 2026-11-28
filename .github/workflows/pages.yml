@@ -125,7 +125,7 @@ jobs:
               if curl -fsSL -m 20 "$url" -o index.html; then
                 sha=$(sha256sum index.html | cut -d' ' -f1)
                 echo "Publicado: $url · index.html sha256=$sha" | tee -a "$GITHUB_STEP_SUMMARY"
-                if [ "$sha" = "$ESPERADO" ] && grep -q 'id="avisoValidacao"' index.html && ! grep -q -E "FICT[IÍ]CI|avisoDemonstracao" index.html; then
+                if [ "$sha" = "$ESPERADO" ] && grep -q 'GEDIV_OFICIAL_VAZIO' index.html && ! grep -q -E "FICT[IÍ]CI|avisoDemonstracao" index.html; then
                   echo "Idêntico ao pacote oficial validado: aviso 'Dados oficiais em validação', sem dados fictícios." | tee -a "$GITHUB_STEP_SUMMARY"
                   case "$url" in https://*) echo "Servido por HTTPS." | tee -a "$GITHUB_STEP_SUMMARY";; *) echo "Atenção: respondeu só por HTTP (certificado em emissão)." | tee -a "$GITHUB_STEP_SUMMARY";; esac
                   exit 0

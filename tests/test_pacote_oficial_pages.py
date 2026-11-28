@@ -50,8 +50,7 @@ class TestePacoteOficialVazio(unittest.TestCase):
         self.assertEqual(estado["registros"], 0)
 
     def test_aviso_navegacao_e_sem_registros(self):
-        self.assertEqual(self.html.count('id="avisoValidacao"'), 1)
-        self.assertIn("Dados oficiais em validação", self.html)
+        self.assertNotIn('id="avisoValidacao"', self.html)          # faixa azul removida (28/11/2026)
         self.assertIn('<body class="estado-validacao">', self.html)
         for vista in ("geral", "vertical", "horizontal", "tempo", "outras", "hoje", "historico"):
             self.assertIn(f'data-view="{vista}"', self.html)

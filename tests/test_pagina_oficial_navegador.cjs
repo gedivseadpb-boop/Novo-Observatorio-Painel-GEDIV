@@ -39,8 +39,9 @@ const servidor = http.createServer((req, res) => {
     p.on('request', r => { if (!r.url().startsWith(base) && !r.url().startsWith('data:')) externos.push(r.url()); });
     await p.goto(base, { waitUntil: 'networkidle' });
     await p.waitForTimeout(800);
-    const aviso = await p.locator('#avisoValidacao').innerText();
-    if (!aviso.includes('Dados oficiais em validação')) falhas.push(`${nome}: aviso ausente`);
+    if (await p.locator('#avisoValidacao').count()) falhas.push(`${nome}: faixa azul de aviso não deveria existir`);
+    const faixa = await p.locator('body').innerText();
+    if (!faixa.includes('Dados oficiais em validação')) falhas.push(`${nome}: estado de validação não sinalizado`);
     if (await p.evaluate(() => document.documentElement.scrollWidth - innerWidth) > 0) falhas.push(`${nome}: rolagem lateral`);
     for (const v of VISTAS) {
       await p.evaluate(v => document.querySelector(`nav.tabs [data-view="${v}"]`).click(), v);
